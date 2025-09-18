@@ -15,11 +15,11 @@ public class BookRoom extends JFrame {
     public BookRoom() {
         ModelList1 = new DefaultListModel<>();
         ModelList2 = new DefaultListModel<>();
-        for (int i = 0; i < 11; i++) {
-            if (!(system.checkTimeIsSame(LocalTime.of(12 + i, 0)))) {
-                ModelList1.addElement((12 + i) + ":00-" + (13 + i) + ":00"); // ยังมีบัค24:00
-            }
-        }
+        // for (int i = 0; i < 11; i++) {
+        //     if (!(system.checkTimeIsSame(LocalTime.of(12 + i, 0)))) {
+        //         ModelList1.addElement((12 + i) + ":00-" + (13 + i) + ":00"); // ยังมีบัค24:00
+        //     }
+        // }
         initComponents();
     }
 
@@ -188,33 +188,19 @@ public class BookRoom extends JFrame {
         for (int i = 0; i < ModelList2.size(); i++) {
             String tempModel = ModelList2.get(i);
             String[] tempArray = tempModel.split("[:\\-]");
-            system.addBookRoom(
-                    LocalTime.of(Integer.parseInt(tempArray[0]), Integer.parseInt(tempArray[1])),
-                    LocalTime.of(Integer.parseInt(tempArray[2]), Integer.parseInt(tempArray[3])));
+            // system.addBookRoom(
+            //         LocalTime.of(Integer.parseInt(tempArray[0]), Integer.parseInt(tempArray[1])),
+            //         LocalTime.of(Integer.parseInt(tempArray[2]), Integer.parseInt(tempArray[3])));
         }
         ModelList2.clear();
         jList2.setModel(ModelList2);
-        system.setupRoomUser();
-        system.showRoomUser();
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        system = new RoomSystem();
-        User B = new User(2);
-        Room room1 = new Room("1-5", 101, 150);
-        system.registerId(B);
-        system.loginId(B);
-        system.selectRoom(room1);
-        system.addBookRoom(LocalTime.of(12, 00), LocalTime.of(13, 00));
-        system.addBookRoom(LocalTime.of(16, 00), LocalTime.of(17, 00));
-
-        User A = new User(1);
-        system.registerId(A);
-        system.loginId(A);
-        system.selectRoom(room1);
+        
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

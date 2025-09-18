@@ -1,14 +1,15 @@
 package lib;
 
-import java.time.LocalTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 /**
  * ADI ค่าที่เปลี่ยนแปลงได้ (Mutable) ห้องคาราโอเกะ+เวลาของห้องนั้นๆ
  */
 public class RoomTime {
     private final Room room;
-    private final LocalTime timeStart;
-    private final LocalTime timeEnd;
+    private final LocalDateTime timeStart;
+    private final LocalDateTime timeEnd;
     private final User user;
     //Rep Invariant (RI)
     //  - room is not null
@@ -30,7 +31,7 @@ public class RoomTime {
      * @param room 
      * @param timeStart
      */
-    public RoomTime(Room room,User user ,LocalTime timeStart,LocalTime timeEnd){
+    public RoomTime(Room room,User user ,LocalDateTime timeStart,LocalDateTime timeEnd){
         this.room = room;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
@@ -48,10 +49,10 @@ public class RoomTime {
     /**
      * @return เวลาของห้องนั้นๆ
      */
-    public LocalTime getTimeStart() {
+    public LocalDateTime getTimeStart() {
         return timeStart;
     }
-    public LocalTime getTimeEnd() {
+    public LocalDateTime getTimeEnd() {
         return timeEnd;
     }
     public User getUser() {
@@ -60,7 +61,11 @@ public class RoomTime {
 
     @Override
     public String toString(){
-        return room.getIdRoom()+"("+user.getUserId()+")"+" = "+timeStart+" - "+timeEnd;
+        return room.getIdRoom()+"("+user.getUserId()+")"+
+        timeStart.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+        +";"+(timeEnd.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))+";"
+        +room.getPrice());
+        //IdRoom(UserId)01-10-2025 12:00:00;01-10-2025 15:00:00;price
     }
 
 
