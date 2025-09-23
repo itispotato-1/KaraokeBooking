@@ -26,8 +26,13 @@ public class Mainframe extends JFrame {
         container = new JPanel(cardLayout);
 
         // ใส่ panel ต่าง ๆ
-        container.add(new login1(this), "login");
+        container.add(new Login(this), "login");
         container.add(new book(this), "book");
+        container.add(new Mybooking(this), "mybooking");
+        container.add(new SignUp(this), "signup");
+        container.add(new menudrink(this), "menudrink");
+        container.add(new menufood(this), "menufood");
+        container.add(new TOPUP(this), "topup");
 
         add(container);
         setResizable(false);
@@ -35,7 +40,7 @@ public class Mainframe extends JFrame {
         setSize(new Dimension(440, 664));
         setLocationRelativeTo(null);
 
-        showPanel("book");
+        showPanel("signup");
         setVisible(true);
     }
 
