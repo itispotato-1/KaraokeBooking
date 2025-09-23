@@ -67,7 +67,7 @@ public class listbook extends javax.swing.JFrame {
         jScrollPane1.setBackground(new java.awt.Color(255, 241, 234));
 
         jList1.setBackground(new java.awt.Color(255, 241, 234));
-        jList1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jList1.setBorder(javax.swing.BorderFactory.createLineBorder(null));
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "12:00 - 13:00 P.M.", "13:00 - 14:00 P.M.", "14:00 - 15:00 P.M.", "15:00 - 16:00 P.M.", "17:00 - 18:00 P.M.", "18:00 - 19:00 P.M.", "20:00 - 21:00 P.M.", "22:00 - 23:00 P.M." };
             public int getSize() { return strings.length; }
@@ -76,13 +76,13 @@ public class listbook extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jList1);
 
         jList2.setBackground(new java.awt.Color(255, 241, 234));
-        jList2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jList2.setBorder(javax.swing.BorderFactory.createLineBorder(null));
         jScrollPane2.setViewportView(jList2);
 
         jButton1.setBackground(new java.awt.Color(183, 255, 207));
         jButton1.setFont(new java.awt.Font("MS Gothic", 0, 18)); // NOI18N
         jButton1.setText("Add Room");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(null));
 
         jButton2.setBackground(new java.awt.Color(255, 107, 131));
         jButton2.setFont(new java.awt.Font("MS Gothic", 0, 18)); // NOI18N
@@ -93,7 +93,7 @@ public class listbook extends javax.swing.JFrame {
         jButton3.setBackground(new java.awt.Color(205, 255, 255));
         jButton3.setFont(new java.awt.Font("MS Gothic", 0, 18)); // NOI18N
         jButton3.setText("Confirm");
-        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(null));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -104,14 +104,15 @@ public class listbook extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(19, 19, 19))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
