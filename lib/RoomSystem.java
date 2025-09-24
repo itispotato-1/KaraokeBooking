@@ -15,9 +15,11 @@ public class RoomSystem {
     private FileWriter fw = null;
     private BufferedWriter bw = null;
     private ArrayList<Room> rooms = new ArrayList<>();
+    
 
     public RoomSystem() {
         fileRoomList = new File("./file/RoomTimes.csv");
+        
     }
 
     /**
