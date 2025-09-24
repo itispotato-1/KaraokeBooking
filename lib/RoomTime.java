@@ -1,4 +1,5 @@
 package lib;
+import lib.loginregister.*;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -61,7 +62,7 @@ public class RoomTime {
 
     @Override
     public String toString(){
-        return room.getIdRoom()+"("+user.getUserId()+")"+
+        return room.getIdRoom()+"("+user.getUserId()+")"+//แก้
         timeStart.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
         +";"+(timeEnd.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))+";"
         +room.getPrice());
