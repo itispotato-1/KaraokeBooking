@@ -309,9 +309,9 @@ public class Login extends JPanel {
                 if (check == false) {
                         String [] tempStr = loginService.getValueUserList(user.getText(), pass.getText());
                         User tempUser = new User(tempStr[0], tempStr[1], tempStr[2]);
-                        tempUser.setMoney(Integer.parseInt(tempStr[3]) );//ตั้งค่าเงินของผู้ใช้
+                        tempUser.setMoney(Double.parseDouble(tempStr[3]) );//ตั้งค่าเงินของผู้ใช้
                         mainframe.setUser(tempUser);//ตั้งว่าผู้ใช้คือใคร
-                        
+
                         removeTextInTextField();
                         mainframe.showPanel("book");
                 }

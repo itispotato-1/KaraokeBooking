@@ -36,7 +36,7 @@ public class LoginRegisterService {
         return null;
     }
 
-    public void setMoneyUserInUserList(double Money, User user) {
+    public void setMoneyUserInUserList(User user) {
         try {
             String tempS;
             String UserList = "";
@@ -44,8 +44,11 @@ public class LoginRegisterService {
             br = new BufferedReader(fr);
             while ((tempS = br.readLine()) != null) {
                 String[] tempSplit = tempS.split(",");
-                if (tempSplit[0] == user.getUsername() && tempSplit[1] == user.getPassword()) {
-                    UserList += (tempSplit[0]+","+tempSplit[1]+","+tempSplit[2]+user.getMoney());
+                System.out.println(user.getUsername()+" "+tempSplit[0]);
+                System.out.println(user.getPassword()+" "+tempSplit[1]);
+                if (tempSplit[0].equals(user.getUsername()) && tempSplit[1].equals(user.getPassword())) {
+                    System.out.println("check");
+                    UserList += (tempSplit[0]+","+tempSplit[1]+","+tempSplit[2]+","+user.getMoney()+"\n");
                 } else {
                     UserList += tempS+"\n";
                 }
