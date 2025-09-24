@@ -2,7 +2,8 @@ package GUI;
 
 import javax.swing.*;
 
-import lib.loginregister.LoginRegisterService;
+import lib.*;
+import lib.loginregister.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -30,7 +31,7 @@ public class Login extends JPanel {
                 jLabelImageK2 = new JLabel();
                 jLabelImageLogo = new JLabel();
                 jPanel1 = new JPanel();
-                pass = new JTextField();
+                pass = new JPasswordField();
                 user = new JTextField();
                 jLabelLogin = new JButton();
                 jLabelPassWord = new JLabel();
@@ -293,21 +294,33 @@ public class Login extends JPanel {
 
         }
 
+        private void signUpActionPerformed(ActionEvent evt) {
+                removeTextInTextField();
+                mainframe.showPanel("signup");
+        }
+
         private void loginActionPerformed(ActionEvent evt) {
-              boolean check=false;
+                boolean check = false;
                 try {
-                handleLogin();
-              } catch (Exception e) {
-                check=true;
-              }
-              if(check==false){
-                      mainframe.showPanel("book");
-              }
+                        handleLogin();
+                } catch (Exception e) {
+                        check = true;
+                }
+                if (check == false) {
+                        String [] tempStr = loginService.getValueUserList(user.getText(), pass.getText());
+                        User tempUser = new User(tempStr[0], tempStr[1], tempStr[2]);
+                        tempUser.setMoney(Integer.parseInt(tempStr[3]) );//ตั้งค่าเงินของผู้ใช้
+                        mainframe.setUser(tempUser);//ตั้งว่าผู้ใช้คือใคร
+                        
+                        removeTextInTextField();
+                        mainframe.showPanel("book");
+                }
 
         }
 
-        private void signUpActionPerformed(ActionEvent evt) {
-                mainframe.showPanel("signup");
+        private void removeTextInTextField() {
+                user.setText("");
+                pass.setText("");
         }
 
         private void setUpFont() {
@@ -349,11 +362,11 @@ public class Login extends JPanel {
                 String password = pass.getText();
 
                 // เชื่อมกับ LoginService
-                if (!(loginService.checkCredentials(username, password))) {
+                if (!(loginService.checkUseramePassword(username, password))) {
 
                         jPassOrNameWrong.setForeground(Color.RED);
                         jPassOrNameWrong.setText("❌ Invalid Username or Password");
-                        throw new Exception("Invalid password"); 
+                        throw new Exception("Invalid password");
                 }
         }
 
@@ -370,7 +383,7 @@ public class Login extends JPanel {
         private JPanel jPanel4;
         private JButton jLabelLogin;
         private JButton jButtonLogin;
-        private JTextField pass;
+        private JPasswordField pass;
         private JTextField user;
-        // End of variables declaration//GEN-END:variables
+
 }

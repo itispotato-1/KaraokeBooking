@@ -2,9 +2,9 @@ package GUI;
 
 import javax.swing.*;
 
-import GUI.Decorate.RoundedButton;
-import GUI.Decorate.RoundedPanel;
+import GUI.Decorate.*;
 import lib.*;
+import lib.loginregister.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -52,13 +52,7 @@ public class book extends JPanel {
                 jLabelOnlist = new JLabel();
                 jComboBoxDate = new JComboBox<>();
                 jScrollPane1 = new JScrollPane();
-                jLabel5 = new JLabel();
-                jLabel11 = new JLabel();
-                jButton3 = new JButton();
-                jRoomId1 = new JLabel();
-                jAccom1 = new JLabel();
-                jRoomId = new JLabel();
-                jAccommodate = new JLabel();
+
 
                 jLogOut = new JButton();
                 jOrderFood = new JButton();
@@ -72,9 +66,6 @@ public class book extends JPanel {
                 jPanel4 = new JPanel();
                 jPanelRoom = new JPanel();
                 jPanelOpen = new JPanel();
-                jPanel7 = new JPanel();
-                jPanel8 = new JPanel();
-                jPanel9 = new JPanel();
 
                 this.add(jMainPanel);
 
@@ -210,7 +201,7 @@ public class book extends JPanel {
                                                 date = LocalDate.now();
                                         }
                                         system.ClearRoomTimeBeforeDate(LocalDate.now());
-                                        listbook list = new listbook(new User(1, 150), tempRoom, book.this, date,mainframe);
+                                        listbook list = new listbook(user, tempRoom, book.this, date,mainframe);
                                         list.setVisible(true);
                                 }
                         });
@@ -578,21 +569,14 @@ public class book extends JPanel {
         private JButton jOrderFood;
         private JButton jTopUp;
         private JButton jMyBooking;
-        private JButton jButton3;
         private JButton jLogOut;
         private JComboBox<String> jComboBoxDate;
         private JLabel jLabel1;
-        private JLabel jLabel11;
-        private JLabel jAccom1;
         private JLabel jLabelBookRoom;
         private JLabel jOpen;
-        private JLabel jAccommodate;
         private JLabel jMoney;
         private JLabel jLabelOnlist;
-        private JLabel jLabel5;
         private JLabel jPleaseTopUp;
-        private JLabel jRoomId1;
-        private JLabel jRoomId;
 
         private JPanel jMainPanel;
         private JPanel jPanel2;
@@ -600,9 +584,6 @@ public class book extends JPanel {
         private JPanel jPanel4;
         private JPanel jPanelRoom;
         private JPanel jPanelOpen;
-        private JPanel jPanel7;
-        private JPanel jPanel8;
-        private JPanel jPanel9;
         private JScrollPane jScrollPane1;
 }
 

@@ -443,6 +443,7 @@ public class SignUp extends JPanel {
 
         private void LoginActionPerformed(ActionEvent evt) {
                 mainframe.showPanel("login");
+                removeTextInTextField();
         }
 
         private void SignUpActionPerformed(ActionEvent evt) {
@@ -454,10 +455,15 @@ public class SignUp extends JPanel {
                 }
                 if (check == false) {
                         mainframe.showPanel("login");
+                        removeTextInTextField();
                 }
 
         }
-
+        private void removeTextInTextField(){
+                passwordField.setText("");
+                usernameField.setText("");
+                phoneNumberField.setText("");
+        }
         private void setUpLookAndFeel() {
                 try {
                         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

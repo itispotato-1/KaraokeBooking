@@ -5,7 +5,7 @@ import javax.swing.*;
 import GUI.Decorate.RoundedButton;
 import GUI.Decorate.RoundedPanel;
 import lib.Room;
-import lib.User;
+import lib.loginregister.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -31,24 +31,6 @@ public class menudrink extends JPanel {
         jLabelMenuDrink = new JLabel();
         jScrollPane1 = new JScrollPane();
         jPanelOrderMain = new JPanel();
-
-        jButton3TTT = new JButton();
-        jButton6TTT = new JButton();
-        jButton7TTT = new JButton();
-        jButton8TTT = new JButton();
-        jButton9TTT = new JButton();
-        jLabelNameFood = new JLabel();
-        jLabel3TTT = new JLabel();
-        jLabel4TTT = new JLabel();
-        jLabel5TTT = new JLabel();
-        jLabel6TTT = new JLabel();
-        jLabel7TTT = new JLabel();
-        jLabel8TTT = new JLabel();
-        jLabel9TTT = new JLabel();
-        jLabel10TTT = new JLabel();
-        jLabel11TTT = new JLabel();
-        jLabel12TTT = new JLabel();
-        jLabel13TTT = new JLabel();
 
         add(jPanelMain);
 
@@ -236,26 +218,9 @@ public class menudrink extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton jButtonBack;
 
-    private JButton jButton3TTT;
     private JButton jButtonDrink;
     private JButton jButtonFood;
-    private JButton jButton6TTT;
-    private JButton jButton7TTT;
-    private JButton jButton8TTT;
-    private JButton jButton9TTT;
     private JLabel jLabelMenuDrink;
-    private JLabel jLabel10TTT;
-    private JLabel jLabel11TTT;
-    private JLabel jLabel12TTT;
-    private JLabel jLabel13TTT;
-    private JLabel jLabelNameFood;
-    private JLabel jLabel3TTT;
-    private JLabel jLabel4TTT;
-    private JLabel jLabel5TTT;
-    private JLabel jLabel6TTT;
-    private JLabel jLabel7TTT;
-    private JLabel jLabel8TTT;
-    private JLabel jLabel9TTT;
     private JPanel jPanelMain;
     private JPanel jPanelInMyDrink;
     private JPanel jPanelOrderMain;
