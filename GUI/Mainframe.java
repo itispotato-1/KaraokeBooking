@@ -40,7 +40,7 @@ public class Mainframe extends JFrame {
         setSize(new Dimension(440, 664));
         setLocationRelativeTo(null);
 
-        showPanel("signup");
+        showPanel("mybooking");
         setVisible(true);
     }
 
