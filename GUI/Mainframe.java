@@ -10,7 +10,7 @@ import java.awt.*;
 public class Mainframe extends JFrame {
     private CardLayout cardLayout;
     private JPanel container;
-    private User user = new User("1", "150","00");
+    private User user = new User("", "", "");
     private RoomSystem system;
     private int hourStart = 13;
     private int hourEnd = 4;
@@ -41,7 +41,7 @@ public class Mainframe extends JFrame {
         setSize(new Dimension(440, 664));
         setLocationRelativeTo(null);
 
-        showPanel("mybooking");
+        showPanel("login");
         setVisible(true);
     }
 

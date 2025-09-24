@@ -1,6 +1,9 @@
 package GUI;
 
 import javax.swing.*;
+
+import lib.loginregister.LoginRegisterService;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -9,9 +12,11 @@ public class TOPUP extends JPanel {
     private Mainframe mainframe;
     private Font FontITCKRIST;
     private Font FontTWCENMT;
+    LoginRegisterService service;
 
     public TOPUP(Mainframe mainframe) {
         this.mainframe = mainframe;
+        service = new LoginRegisterService();
         setUpLookAndFeel();
         setUpFont();
         initComponents();
@@ -24,7 +29,7 @@ public class TOPUP extends JPanel {
         jPanel2 = new JPanel();
         jPanel3 = new JPanel();
         jConfirm = new JButton();
-        jTextField1 = new JTextField();
+        jTextFieldMoney = new JTextField();
         jLabel1 = new JLabel();
         jLabel2 = new JLabel();
 
@@ -86,9 +91,9 @@ public class TOPUP extends JPanel {
             
         });
 
-        jTextField1.setHorizontalAlignment(JTextField.CENTER);
-        jTextField1.setText("textField");
-        jTextField1.addActionListener(new ActionListener() {
+        jTextFieldMoney.setHorizontalAlignment(JTextField.CENTER);
+        jTextFieldMoney.setText("textField");
+        jTextFieldMoney.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
@@ -116,7 +121,7 @@ public class TOPUP extends JPanel {
                                                                 .createParallelGroup(GroupLayout.Alignment.LEADING)
                                                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                                                         .addGap(37, 37, 37)
-                                                                        .addComponent(jTextField1,
+                                                                        .addComponent(jTextFieldMoney,
                                                                                 GroupLayout.PREFERRED_SIZE, 307,
                                                                                 GroupLayout.PREFERRED_SIZE))
                                                                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -149,7 +154,7 @@ public class TOPUP extends JPanel {
                                 .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldMoney, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jConfirm, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(141, Short.MAX_VALUE)));
@@ -160,7 +165,8 @@ public class TOPUP extends JPanel {
 
     }
     private void jButtonConfirmActionPerformed(ActionEvent evt) {
-        
+            mainframe.getUser().setMoney(mainframe.getUser().getMoney()+Double.parseDouble(jTextFieldMoney.getText()));
+            service.setMoneyUserInUserList(mainframe.getUser());
     }
     private void jButtonBackActionPerformed(ActionEvent evt) {
         mainframe.showPanel("book");
@@ -202,6 +208,6 @@ public class TOPUP extends JPanel {
     private JPanel jPanelMain;
     private JPanel jPanel2;
     private JPanel jPanel3;
-    private JTextField jTextField1;
+    private JTextField jTextFieldMoney;
     // End of variables declaration//GEN-END:variables
 }
