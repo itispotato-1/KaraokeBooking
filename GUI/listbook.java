@@ -2,10 +2,8 @@ package GUI;
 
 import javax.swing.*;
 
-import lib.Room;
-import lib.RoomSystem;
-import lib.RoomTime;
-import lib.User;
+import lib.*;
+import lib.loginregister.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -30,13 +28,12 @@ public class listbook extends JDialog {
                 @Override
                 public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                 boolean isSelected, boolean cellHasFocus) {
-               
+
                         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-                       
                         if (value instanceof RoomTime) {
                                 RoomTime roomTime = (RoomTime) value;
-                               
+
                                 if (roomTime.getTimeStart().getMinute() == 0) {
                                         setText(roomTime.getTimeStart().getHour() + ":"
                                                         + roomTime.getTimeStart().getMinute() + "0 - "
@@ -53,7 +50,7 @@ public class listbook extends JDialog {
                 }
         }
 
-        public listbook(User user, Room room, JPanel j, LocalDate date,Mainframe mainFrame) {
+        public listbook(User user, Room room, JPanel j, LocalDate date, Mainframe mainFrame) {
                 this.user = user;
                 this.room = room;
                 this.date = date;
@@ -61,8 +58,8 @@ public class listbook extends JDialog {
                 hourStart = mainFrame.getHourStart();
                 hourEnd = mainFrame.getHourEnd();
                 minuteStartEnd = mainFrame.getMinuteStartEnd();
-                
-                setUpTime(hourStart,hourEnd);
+
+                setUpTime(hourStart, hourEnd);
                 setModal(true);
                 setResizable(false);
                 setDefaultCloseOperation(DISPOSE_ON_CLOSE);//
@@ -72,29 +69,29 @@ public class listbook extends JDialog {
         }
 
         // ----------------------------- test -------------------------------------
-        public listbook(User user, Room room) {
-                this.user = user;
-                this.room = room;
+        // public listbook(User user, Room room) {
+        // this.user = user;
+        // this.room = room;
 
-                user = new User(1,150);
-                room = new Room("1-5", 101, 150);
+        // user = new User(1,150);
+        // room = new Room("1-5", 101, 150);
 
-                system = new RoomSystem();
-                year = LocalDate.now().getYear();
-                month = LocalDate.now().getMonthValue();
-                day = LocalDate.now().getDayOfMonth();
-                // System.out.println(day + " " + month + " " + year);
-                ModelList1 = new DefaultListModel<>();
-                ModelList2 = new DefaultListModel<>();
-                setUpTime(hourStart, hourEnd);
+        // system = new RoomSystem();
+        // year = LocalDate.now().getYear();
+        // month = LocalDate.now().getMonthValue();
+        // day = LocalDate.now().getDayOfMonth();
+        // // System.out.println(day + " " + month + " " + year);
+        // ModelList1 = new DefaultListModel<>();
+        // ModelList2 = new DefaultListModel<>();
+        // setUpTime(hourStart, hourEnd);
 
-                setModal(true);
-                setResizable(false);
-                setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                setSize(new Dimension(250, 350));
-                setLocationRelativeTo(null);
-                initComponents();
-        }
+        // setModal(true);
+        // setResizable(false);
+        // setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        // setSize(new Dimension(250, 350));
+        // setLocationRelativeTo(null);
+        // initComponents();
+        // }
         // ----------------------------- test -------------------------------------
 
         private void initComponents() {
@@ -290,7 +287,6 @@ public class listbook extends JDialog {
                 pack();
         }// </editor-fold>//GEN-END:initComponents
 
-
         private void jButtonRemoveRoom(ActionEvent evt) {
                 if (jListRight.getSelectedValue() != null) {
                         // System.out.println(jList2.getSelectedValue());
@@ -330,7 +326,8 @@ public class listbook extends JDialog {
                 for (int i = 0; i < ModelList2.size(); i++) {
                         RoomTime tempModel = ModelList2.get(i);
                         if (!(system.checkLocalDateTimeIsSame(tempModel.getRoom(), tempModel.getTimeStart(),
-                                        tempModel.getTimeEnd())) && !(LocalDateTime.now().isAfter(tempModel.getTimeEnd()))) {
+                                        tempModel.getTimeEnd()))
+                                        && !(LocalDateTime.now().isAfter(tempModel.getTimeEnd()))) {
                                 tempRoomTime.add(tempModel);
 
                         } else {
@@ -364,8 +361,9 @@ public class listbook extends JDialog {
                 }
                 jListRight.setModel(ModelList2);
         }
-        public void setUpTime(int TimeStart,int TimeEnd){
-                if(TimeStart == TimeEnd){
+
+        public void setUpTime(int TimeStart, int TimeEnd) {
+                if (TimeStart == TimeEnd) {
                         throw new RuntimeException("TimeStart and TimeEnd is same");
                 }
                 system = new RoomSystem();
@@ -376,20 +374,21 @@ public class listbook extends JDialog {
                 ModelList2 = new DefaultListModel<>();
                 int loopHour1;
                 int loopHour2;
-                if(hourEnd-hourStart >= 0){
+                if (hourEnd - hourStart >= 0) {
                         loopHour1 = 0;
-                        loopHour2 = hourEnd-hourStart;
-                }else{
+                        loopHour2 = hourEnd - hourStart;
+                } else {
                         loopHour1 = hourEnd;
-                        loopHour2 = 24-hourStart;
+                        loopHour2 = 24 - hourStart;
                 }
                 for (int i = 0; i < loopHour1; i++) {
                         hourStart = hourStart % 24;
                         if (!(system.checkLocalDateTimeIsSame(room,
-                                        LocalDateTime.of(year, month, day, loopHour1+ i,
+                                        LocalDateTime.of(year, month, day, loopHour1 + i,
                                                         minuteStartEnd),
                                         LocalDateTime.of(year, month, day, loopHour1 + i + 1, minuteStartEnd)))
-                                        && LocalDateTime.now().isBefore(LocalDateTime.of(year, month, day,0+i,minuteStartEnd))) {
+                                        && LocalDateTime.now().isBefore(
+                                                        LocalDateTime.of(year, month, day, 0 + i, minuteStartEnd))) {
                                 ModelList1.addElement(new RoomTime(room, user,
                                                 LocalDateTime.of(year, month, day, 0 + i, minuteStartEnd),
                                                 LocalDateTime.of(year, month, day, 0 + i + 1, minuteStartEnd)));
@@ -405,7 +404,8 @@ public class listbook extends JDialog {
                                         LocalDateTime.of(year, month, day, temphourStart,
                                                         minuteStartEnd),
                                         LocalDateTime.of(year, month, day, temphourStartNext, minuteStartEnd)))
-                                        && LocalDateTime.now().isBefore(LocalDateTime.of(year, month, day,temphourStart,minuteStartEnd))) {
+                                        && LocalDateTime.now().isBefore(LocalDateTime.of(year, month, day,
+                                                        temphourStart, minuteStartEnd))) {
                                 ModelList1.addElement(new RoomTime(room, user,
                                                 LocalDateTime.of(year, month, day, temphourStart, minuteStartEnd),
                                                 LocalDateTime.of(year, month, day, temphourStartNext, minuteStartEnd)));
@@ -413,31 +413,7 @@ public class listbook extends JDialog {
                 }
         }
 
-        /**
-         * @param args the command line arguments
-         */
-        public static void main(String args[]) {
-                RoomSystem system = new RoomSystem();
-                Room room1 = new Room("1-5", 101, 150);
-                User user1 = new User(2,150);
-                try {
-                        system.addBookRoom(room1, user1,
-                                        LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
-                                                        LocalDate.now().getDayOfMonth(),
-                                                        12, 0, 0),
-                                        LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
-                                                        LocalDate.now().getDayOfMonth(),
-                                                        13, 0, 0));
-                        system.addBookRoom(room1, user1,
-                                        LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
-                                                        LocalDate.now().getDayOfMonth(),
-                                                        15, 0, 0),
-                                        LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
-                                                        LocalDate.now().getDayOfMonth(),
-                                                        16, 0, 0));
-                } catch (Exception e) {
-                        System.out.println(e);
-                }
+        private void setUpLookAndFeel() {
                 try {
                         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                                 if ("Nimbus".equals(info.getName())) {
@@ -458,17 +434,9 @@ public class listbook extends JDialog {
                         java.util.logging.Logger.getLogger(listbook.class.getName()).log(java.util.logging.Level.SEVERE,
                                         null, ex);
                 }
-                // </editor-fold>
-
-                /* Create and display the form */
-                EventQueue.invokeLater(new Runnable() {
-                        public void run() {
-                                new listbook(new User(1,150), new Room("1-5", 101, 150)).setVisible(true);
-                        }
-                });
         }
 
-        // Variables declaration - do not modify//GEN-BEGIN:variables
+
         private JButton jButton1;
         private JButton jButton2;
         private JButton jButton3;
@@ -479,5 +447,5 @@ public class listbook extends JDialog {
         private JPanel jPanel2;
         private JScrollPane jScrollPane1;
         private JScrollPane jScrollPane2;
-        // End of variables declaration//GEN-END:variables
+
 }

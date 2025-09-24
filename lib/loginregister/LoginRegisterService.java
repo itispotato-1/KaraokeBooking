@@ -1,9 +1,73 @@
 package lib.loginregister;
+
 import java.io.*;
+import java.util.ArrayList;
+
+import lib.RoomTime;
 
 public class LoginRegisterService {
     private static final String FILE_NAME = "./file/UserList.csv";
-    public boolean checkCredentials(String username, String password) {
+    private FileReader fr = null;
+    private BufferedReader br = null;
+    private FileWriter fw = null;
+    private BufferedWriter bw = null;
+
+    public String[] getValueUserList(String username, String password) {
+        try {
+            String tempS;
+            fr = new FileReader(FILE_NAME);
+            br = new BufferedReader(fr);
+            while ((tempS = br.readLine()) != null) {
+                String[] tempSplit = tempS.split(",");
+                if (tempSplit[0].equals(username) && tempSplit[1].equals(password)) {
+                    return tempSplit;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                br.close();
+                fr.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        return null;
+    }
+
+    public void setMoneyUserInUserList(double Money, User user) {
+        try {
+            String tempS;
+            String UserList = "";
+            fr = new FileReader(FILE_NAME);
+            br = new BufferedReader(fr);
+            while ((tempS = br.readLine()) != null) {
+                String[] tempSplit = tempS.split(",");
+                if (tempSplit[0] == user.getUsername() && tempSplit[1] == user.getPassword()) {
+                    UserList += (tempSplit[0]+","+tempSplit[1]+","+tempSplit[2]+user.getMoney());
+                } else {
+                    UserList += tempS+"\n";
+                }
+            }
+            fw = new FileWriter(FILE_NAME, false); // เซ็ตว่าให้ลบข้อมูลห้องที่ตรง
+            bw = new BufferedWriter(fw);
+            bw.write(UserList);
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                br.close();
+                fr.close();
+                bw.close();
+                fw.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }
+
+    public boolean checkUseramePassword(String username, String password) {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -33,16 +97,16 @@ public class LoginRegisterService {
         return false;
     }
 
-   public boolean registerAccount(String username, String password, String phoneNumber) {
-    if (isUsernameExists(username)) {
+    public boolean registerAccount(String username, String password, String phoneNumber) {
+        if (isUsernameExists(username)) {
+            return false;
+        }
+        try (FileWriter writer = new FileWriter(FILE_NAME, true)) {
+            writer.write(username + "," + password + "," + phoneNumber + ",0\n");
+            return true;
+        } catch (IOException e) {
+            System.out.println("Error writing to file");
+        }
         return false;
-    }
-    try (FileWriter writer = new FileWriter(FILE_NAME, true)) {
-        writer.write(username + "," + password + "," + phoneNumber + ",0\n");
-        return true;
-    } catch (IOException e) {
-        System.out.println("Error writing to file");
-    }
-    return false;
     }
 }

@@ -29,7 +29,7 @@ public class User {
     }
 
     public static void plusUserId(){
-
+        userId++;
     }
     public static int getUserId() {
         return userId;

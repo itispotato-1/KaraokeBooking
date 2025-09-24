@@ -3,13 +3,14 @@ package GUI;
 import javax.swing.*;
 
 import lib.*;
+import lib.loginregister.*;
 
 import java.awt.*;
 
 public class Mainframe extends JFrame {
     private CardLayout cardLayout;
     private JPanel container;
-    private User user = new User(1, 150);
+    private User user = new User("1", "150","00");
     private RoomSystem system;
     private int hourStart = 13;
     private int hourEnd = 4;
