@@ -50,11 +50,11 @@ public class Login extends JPanel {
         jMainPanel.setPreferredSize(new Dimension(440, 664));
         jMainPanel.setVerifyInputWhenFocusTarget(false);
 
-        jLabelImageK2.setIcon(new ImageIcon(getClass().getResource("/GUI/Picture/k2.png"))); // NOI18N
+        jLabelImageK2.setIcon(new ImageIcon(getClass().getResource("/GUI/Picture/k2.png"))); 
         jLabelImageK2.setText("jLabel1");
         ImageIcon tempIcon = new ImageIcon("./GUI/Picture/Logo.png");
         Image tempImage = tempIcon.getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH);
-        jLabelImageLogo.setIcon(new ImageIcon(tempImage)); // NOI18N
+        jLabelImageLogo.setIcon(new ImageIcon(tempImage)); 
 
         jPanel1.setBackground(new Color(255, 255, 255));
 
@@ -75,7 +75,7 @@ public class Login extends JPanel {
         });
 
         jLabelLogin.setBackground(new Color(0, 57, 134));
-        jLabelLogin.setFont(new Font("Serif", 1, 18)); // NOI18N
+        jLabelLogin.setFont(FontTWCENMT.deriveFont(1).deriveFont((float)18)); 
         jLabelLogin.setForeground(new Color(255, 255, 255));
         jLabelLogin.setText("LOGIN");
         jLabelLogin.addActionListener(new ActionListener() {
@@ -84,13 +84,13 @@ public class Login extends JPanel {
             }
         });
 
-        jLabelPassWord.setFont(new Font("Sitka Text", 1, 18)); // NOI18N
+        jLabelPassWord.setFont(FontTWCENMT.deriveFont(1).deriveFont((float)18)); 
         jLabelPassWord.setText("PASSWORD");
 
-        jLabelUserName.setFont(new Font("Sitka Text", 1, 18)); // NOI18N
+        jLabelUserName.setFont(FontTWCENMT.deriveFont(1).deriveFont((float)18)); 
         jLabelUserName.setText("USERNAME");
 
-        jPassOrNameWrong.setFont(FontTWCENMT.deriveFont(1).deriveFont((float)14)); // NOI18N
+        jPassOrNameWrong.setFont(FontTWCENMT.deriveFont(1).deriveFont((float)14)); 
         jPassOrNameWrong.setForeground(new Color(255, 51, 0));
         jPassOrNameWrong.setText("username or password wrong");
 
@@ -155,11 +155,12 @@ public class Login extends JPanel {
                 jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGap(0, 13, Short.MAX_VALUE));
 
-        jLabelLogIn.setFont(new Font("Serif", 1, 48)); // NOI18N
+        jLabelLogIn.setFont(new Font("Serif", 1, 48)); 
+        jLabelLogIn.setForeground(new Color(0, 57, 134));
         jLabelLogIn.setText("LOGIN");
 
         jButtonLogin.setBackground(new Color(0, 57, 134));
-        jButtonLogin.setFont(new Font("Serif", 1, 18)); // NOI18N
+        jButtonLogin.setFont(FontTWCENMT.deriveFont(1).deriveFont((float)18)); 
         jButtonLogin.setForeground(new Color(255, 255, 255));
         jButtonLogin.setText("SIGN UP");
         jButtonLogin.addActionListener(new ActionListener() {
@@ -173,7 +174,7 @@ public class Login extends JPanel {
         P1Layout.setHorizontalGroup(
                 P1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(P1Layout.createSequentialGroup()
-                                .addGap(45)//หัวๆ
+                                .addGap(45)//Password
                                 .addGroup(P1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                                         .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
                                                 GroupLayout.PREFERRED_SIZE)
@@ -187,9 +188,12 @@ public class Login extends JPanel {
                                         GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(P1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        
                                         .addComponent(jLabelImageLogo, GroupLayout.PREFERRED_SIZE, 135,
                                                 GroupLayout.PREFERRED_SIZE)
+                                                
                                         .addGroup(P1Layout.createSequentialGroup()
+                                                
                                                 .addComponent(jLabelLogIn)
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jPanelLineRight, GroupLayout.PREFERRED_SIZE, 99,

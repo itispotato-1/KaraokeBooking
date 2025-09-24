@@ -45,11 +45,11 @@ public class book extends JPanel {
         private void initComponents() {
 
                 jLabel1 = new JLabel();
-                jLabel2 = new JLabel();
+                jLabelBookRoom = new JLabel();
                 jMoney = new JLabel();
                 jBookingButton = new JButton();
                 jMyBooking = new JButton();
-                jLabel4 = new JLabel();
+                jLabelOnlist = new JLabel();
                 jComboBoxDate = new JComboBox<>();
                 jScrollPane1 = new JScrollPane();
                 jLabel5 = new JLabel();
@@ -83,8 +83,8 @@ public class book extends JPanel {
 
                 jMainPanel.setPreferredSize(new Dimension(440, 664));
 
-                jLabel2.setFont(FontITCKRIST.deriveFont((float) 14)); 
-                jLabel2.setText("BOOK A ROOM");
+                jLabelBookRoom.setFont(FontITCKRIST.deriveFont((float) 14)); 
+                jLabelBookRoom.setText("BOOK A ROOM");
 
                 jPanel2.setBackground(new Color(255, 255, 204));
 
@@ -144,8 +144,8 @@ public class book extends JPanel {
                 //
                 jPanel4.setBackground(new Color(255, 254, 241));
 
-                jLabel4.setFont(FontTWCENMT.deriveFont((float) 14).deriveFont((int) 1)); // NOI18N
-                jLabel4.setText("WHAT KIND OF ROOM WOLD YOU LIKE ?");
+                jLabelOnlist.setFont(FontTWCENMT.deriveFont((float) 14).deriveFont((int) 1)); // NOI18N
+                jLabelOnlist.setText("WHAT KIND OF ROOM WOLD YOU LIKE ?");
 
                 jComboBoxDate.setModel(
                                 new DefaultComboBoxModel<>(
@@ -263,7 +263,7 @@ public class book extends JPanel {
                                                 .addGroup(GroupLayout.Alignment.TRAILING, jPanel4Layout
                                                                 .createSequentialGroup()
                                                                 .addGap(14, 14, 14)
-                                                                .addComponent(jLabel4, GroupLayout.PREFERRED_SIZE, 265,
+                                                                .addComponent(jLabelOnlist, GroupLayout.PREFERRED_SIZE, 265,
                                                                                 GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
                                                                                 GroupLayout.DEFAULT_SIZE,
@@ -282,7 +282,7 @@ public class book extends JPanel {
                                                                 .addGap(12, 12, 12)
                                                                 .addGroup(jPanel4Layout.createParallelGroup(
                                                                                 GroupLayout.Alignment.BASELINE)
-                                                                                .addComponent(jLabel4,
+                                                                                .addComponent(jLabelOnlist,
                                                                                                 GroupLayout.PREFERRED_SIZE,
                                                                                                 38,
                                                                                                 GroupLayout.PREFERRED_SIZE)
@@ -332,6 +332,7 @@ public class book extends JPanel {
                 jOpen.setFont(FontITCKRIST.deriveFont((float) 18));
                 jOpen.setText("OPEN 12 : 00 P.M. - 23 : 00 P.M.");
                 jPanelOpen.setBackground(Color.white);
+                
                 GroupLayout jPanel11SetJOpen = new GroupLayout(jPanelOpen);
                 jPanelOpen.setLayout(jPanel11SetJOpen);
                 jPanel11SetJOpen.setHorizontalGroup(
@@ -373,7 +374,7 @@ public class book extends JPanel {
                                                                                 .addComponent(jPanel3,
                                                                                                 GroupLayout.DEFAULT_SIZE,
                                                                                                 121, Short.MAX_VALUE)
-                                                                                .addComponent(jLabel2,
+                                                                                .addComponent(jLabelBookRoom,
                                                                                                 GroupLayout.DEFAULT_SIZE,
                                                                                                 GroupLayout.DEFAULT_SIZE,
                                                                                                 Short.MAX_VALUE))
@@ -467,7 +468,7 @@ public class book extends JPanel {
                                                                                                                                 GroupLayout.PREFERRED_SIZE)
                                                                                                                 .addGroup(jPanel1Layout
                                                                                                                                 .createSequentialGroup()
-                                                                                                                                .addComponent(jLabel2,
+                                                                                                                                .addComponent(jLabelBookRoom,
                                                                                                                                                 GroupLayout.PREFERRED_SIZE,
                                                                                                                                                 25,
                                                                                                                                                 GroupLayout.PREFERRED_SIZE)
@@ -583,11 +584,11 @@ public class book extends JPanel {
         private JLabel jLabel1;
         private JLabel jLabel11;
         private JLabel jAccom1;
-        private JLabel jLabel2;
+        private JLabel jLabelBookRoom;
         private JLabel jOpen;
         private JLabel jAccommodate;
         private JLabel jMoney;
-        private JLabel jLabel4;
+        private JLabel jLabelOnlist;
         private JLabel jLabel5;
         private JLabel jPleaseTopUp;
         private JLabel jRoomId1;
