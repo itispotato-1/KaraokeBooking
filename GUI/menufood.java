@@ -3,18 +3,26 @@ package GUI;
 import javax.swing.*;
 
 import GUI.Decorate.*;
+import store.Product;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 
-
 public class menufood extends JPanel {
     private Mainframe mainframe;
     private Font FontITCKRIST;
     private Font FontTWCENMT;
+    private JPanel panelOrder[];
+    private JButton ButtonImage[];
+    private JLabel jLabelNameFood[];
+    private JLabel jLabelCost[];
 
     public menufood(Mainframe mainframe) {
+        ButtonImage = new JButton[100];
+        jLabelNameFood = new JLabel[100];
+        panelOrder = new JPanel[100];
+        jLabelCost = new JLabel[100];
         this.mainframe = mainframe;
         setUpFont();
         setLookAndFeel();
@@ -27,6 +35,7 @@ public class menufood extends JPanel {
 
         jLabelMenuDrink = new JLabel();
         jScrollPane1 = new JScrollPane();
+
         jPanelOrderMain = new JPanel();
 
         add(jPanelMain);
@@ -64,34 +73,61 @@ public class menufood extends JPanel {
         jLabelMenuDrink.setText("MENU FOOD");
 
         jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.getVerticalScrollBar().setUnitIncrement(8);
 
-        
         // ----------------------------- SetupRoom --------------------------------
-        int x = 20, y = 20, count = 0;
-        jPanelOrderMain.setLayout(null);
-        jPanelOrderMain.setBackground(new Color(255, 254, 241));
-        JPanel panelOrder1 = new RoundedPanel(30, 30, Color.black, 6);
-        panelOrder1.setBounds(x, y, 175, 150);
-        panelOrder1.setLayout(null);
+        int x = 20, y = 20, count = 0, i = 0;
+        for (Product product : mainframe.getCatalog().getAllProducts()) {
+            if (product.getProductId().charAt(0) == 'F') {
+                jPanelOrderMain.setLayout(null);
+                jPanelOrderMain.setBackground(new Color(255, 254, 241));
 
-        JButton ButtonImage = new JButton();
-        ButtonImage.setBounds(10, 10, 155, 90);
-        ImageIcon tempIcon = new ImageIcon(getClass().getResource("/GUI/Picture/Food.png"));
-        Image img = tempIcon.getImage().getScaledInstance(ButtonImage.getSize().width, ButtonImage.getSize().height,
-                Image.SCALE_SMOOTH);
-        ButtonImage.setIcon(new ImageIcon(img));
-        JLabel jLabelNameFood = new JLabel("NameFood");
-        JLabel jLabelCost = new JLabel("Cost : 150");
-        jLabelCost.setFont(FontTWCENMT.deriveFont((float) 14).deriveFont(1));
-        jLabelNameFood.setFont(FontTWCENMT.deriveFont((float) 14).deriveFont(1));
+                panelOrder[i] = new RoundedPanel(30, 30, Color.black, 6);
+                panelOrder[i].setLayout(null);
 
-        jLabelCost.setBounds(100, 90, 100, 70);
-        jLabelNameFood.setBounds(10,90, 100, 70);
-        panelOrder1.add(jLabelNameFood);
-        panelOrder1.add(jLabelCost);
-        panelOrder1.add(ButtonImage);
+                ButtonImage[i] = new JButton();
+                ButtonImage[i].setBounds(10, 10, 155, 90);
+                ImageIcon tempIcon = new ImageIcon(
+                        getClass().getResource("/GUI/Picture/" + product.getProductId() + ".jpg"));
+                Image img = tempIcon.getImage().getScaledInstance(ButtonImage[i].getSize().width,
+                        ButtonImage[i].getSize().height,
+                        Image.SCALE_SMOOTH);
+                ButtonImage[i].setIcon(new ImageIcon(img));
+                jLabelNameFood[i] = new JLabel(product.getProductName());
 
-        jPanelOrderMain.add(panelOrder1);
+                jLabelCost[i] = new JLabel("Cost : " + product.getPrice());
+                jLabelCost[i].setFont(FontTWCENMT.deriveFont((float) 14).deriveFont(1));
+                jLabelNameFood[i].setFont(FontTWCENMT.deriveFont((float) 14).deriveFont(1));
+
+                jLabelCost[i].setBounds(100, 90, 100, 70);
+                jLabelNameFood[i].setBounds(10, 90, 100, 70);
+                panelOrder[i].add(jLabelNameFood[i]);
+                panelOrder[i].add(jLabelCost[i]);
+                panelOrder[i].add(ButtonImage[i]);
+
+                if ((i + 1) % 2 == 0) {
+                    x = 205;
+                } else {
+                    x = 15;
+                }
+                if (count == 2) {
+                    count = 0;
+                    y += 170;
+                }
+                panelOrder[i].setBounds(x, y, 175, 150);
+                count++;
+                jPanelOrderMain.add(panelOrder[i]);
+                i++;
+            }
+        }
+        int maxHeight = 0;
+        for (Component comp : jPanelOrderMain.getComponents()) {
+            Rectangle bounds = comp.getBounds();
+            maxHeight = Math.max(maxHeight, bounds.y + bounds.height);
+        }
+        jPanelOrderMain.setPreferredSize(new Dimension(getSize().width, maxHeight + 50));
+        JScrollPane scroll = new JScrollPane(jPanelOrderMain);
+        add(scroll);
         // ----------------------------- SetupRoom --------------------------------
 
         jScrollPane1.setViewportView(jPanelOrderMain);
@@ -127,9 +163,9 @@ public class menufood extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-               jButtonExitActionPerformed(e);
+                jButtonExitActionPerformed(e);
             }
-            
+
         });
 
         GroupLayout jPanel1Layout = new GroupLayout(jPanelMain);
@@ -177,8 +213,9 @@ public class menufood extends JPanel {
     private void jButtonDrinkActionPerformed(ActionEvent evt) {
         mainframe.showPanel("menudrink");
     }
+
     private void jButtonExitActionPerformed(ActionEvent evt) {
-         mainframe.showPanel("book");
+        mainframe.showPanel("book");
     }
 
     private void setUpFont() {
