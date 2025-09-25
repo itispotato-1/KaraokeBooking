@@ -4,6 +4,8 @@ import javax.swing.*;
 
 import lib.*;
 import lib.loginregister.*;
+import store.Product;
+import store.ProductCatalog;
 
 import java.awt.*;
 
@@ -25,7 +27,29 @@ public class Mainframe extends JFrame {
     private menufood food;
     private TOPUP topup;
 
+    private ProductCatalog catalog;
+
     public Mainframe() {
+        Product fried_rice = new Product("F001", "fried rice", 40.0);
+        Product Holy_basil_rice = new Product("F002", "Holy basil rice", 50.0);
+        Product Noodles = new Product("F003", "Noodles", 40.0);
+        Product od1 = new Product("F004", "od1", 40.0);
+        Product od2 = new Product("F005", "od2", 40.0);
+        Product od3 = new Product("F006", "od3", 40.0);
+        Product od4 = new Product("F007", "od4", 40.0);
+        Product od5 = new Product("F008", "od5", 40.0);
+
+
+        catalog = new ProductCatalog();
+        catalog.addProduct(fried_rice);
+        catalog.addProduct(Holy_basil_rice);
+        catalog.addProduct(Noodles);
+        catalog.addProduct(od1);
+        catalog.addProduct(od2);
+        catalog.addProduct(od3);
+        catalog.addProduct(od4);
+        catalog.addProduct(od5);
+
         system = new RoomSystem();
         for (int i = 0; i < 10; i++) {
             Room a = new Room("1-5", 301 + i, 150);
@@ -98,6 +122,10 @@ public class Mainframe extends JFrame {
 
     public int getMinuteStartEnd() {
         return minuteStartEnd;
+    }
+
+    public ProductCatalog getCatalog() {
+        return catalog;
     }
 
     public static void main(String[] args) {
