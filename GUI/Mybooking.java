@@ -203,7 +203,25 @@ public class Mybooking extends JPanel {
                 jPanelOpen.setBackground(new Color(255, 255, 255));
 
                 jOpen.setFont(FontITCKRIST.deriveFont((float) 18));
-                jOpen.setText("OPEN 12 : 00 P.M. - 23 : 00 P.M.");
+                String tempPMAM1;
+                String tempPMAM2;
+                if (mainframe.getHourStart() <= 12) {
+                        tempPMAM1 = "A.M.";
+                }else{
+                        tempPMAM1 = "P.M.";
+                }
+                if (mainframe.getHourEnd() <= 12) {
+                        tempPMAM2 = "A.M.";
+                }else{
+                        tempPMAM2 = "P.M.";
+                }
+
+                if(mainframe.getMinuteStartEnd() == 0){
+                        jOpen.setText("OPEN "+mainframe.getHourStart()+" : 00 "+tempPMAM1+" - "+mainframe.getHourEnd()+" : 00 "+tempPMAM2);
+                }else{
+
+                        jOpen.setText("OPEN "+mainframe.getHourStart()+" : "+mainframe.getMinuteStartEnd()+" "+tempPMAM1+" - "+mainframe.getHourEnd()+" : "+mainframe.getMinuteStartEnd()+" "+tempPMAM2);
+                }
                 jPanelOpen.setBackground(Color.white);
 
                 GroupLayout jPanel11Layout = new GroupLayout(jPanelOpen);

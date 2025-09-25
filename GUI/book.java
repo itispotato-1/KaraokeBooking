@@ -2,9 +2,9 @@ package GUI;
 
 import javax.swing.*;
 
-import GUI.Decorate.RoundedButton;
-import GUI.Decorate.RoundedPanel;
+import GUI.Decorate.*;
 import lib.*;
+import lib.loginregister.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -28,6 +28,7 @@ public class book extends JPanel {
         public book(Mainframe mainFrame) {
                 this.system = mainFrame.getSystem();
                 this.user = mainFrame.getUser();
+                //System.out.println(user.getUserId());
                 this.mainframe = mainFrame;
 
                 jLabelRoom = new JLabel[100];//
@@ -43,7 +44,6 @@ public class book extends JPanel {
         }
 
         private void initComponents() {
-
                 jLabel1 = new JLabel();
                 jLabelBookRoom = new JLabel();
                 jMoney = new JLabel();
@@ -52,14 +52,8 @@ public class book extends JPanel {
                 jLabelOnlist = new JLabel();
                 jComboBoxDate = new JComboBox<>();
                 jScrollPane1 = new JScrollPane();
-                jLabel5 = new JLabel();
-                jLabel11 = new JLabel();
-                jButton3 = new JButton();
-                jRoomId1 = new JLabel();
-                jAccom1 = new JLabel();
-                jRoomId = new JLabel();
-                jAccommodate = new JLabel();
-
+                
+                
                 jLogOut = new JButton();
                 jOrderFood = new JButton();
                 jTopUp = new JButton();
@@ -72,25 +66,23 @@ public class book extends JPanel {
                 jPanel4 = new JPanel();
                 jPanelRoom = new JPanel();
                 jPanelOpen = new JPanel();
-                jPanel7 = new JPanel();
-                jPanel8 = new JPanel();
-                jPanel9 = new JPanel();
-
+                
                 this.add(jMainPanel);
-
+                
                 jMainPanel.setBackground(new Color(235, 240, 255));
                 //jMainPanel.setBackground(Color.BLUE);
-
+                
                 jMainPanel.setPreferredSize(new Dimension(440, 664));
-
+                
                 jLabelBookRoom.setFont(FontITCKRIST.deriveFont((float) 14)); 
                 jLabelBookRoom.setText("BOOK A ROOM");
-
+                
                 jPanel2.setBackground(new Color(255, 255, 204));
-
+                
+                System.out.println(mainframe.getUser().getMoney());
                 jMoney.setBackground(new Color(255, 255, 255));
                 jMoney.setFont(FontTWCENMT.deriveFont((float) 14).deriveFont((int) 1)); // NOI18N
-                jMoney.setText("MONEY : " + user.getMoney());// ไว้แก้Money
+                jMoney.setText("MONEY : " + mainframe.getUser().getMoney());// ไว้แก้Money
 
                 GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
                 jPanel2.setLayout(jPanel2Layout);
@@ -195,7 +187,7 @@ public class book extends JPanel {
                         jButton[i].setBackground(new Color(252, 136, 161));
                         jButton[i].setPreferredSize(new Dimension(100, 50));
                         jButton[i].setFont(FontTWCENMT.deriveFont((float) 18).deriveFont(1));
-                        jButton[i].setText("Booking");
+                        jButton[i].setText("  BOOK  ");
                         jButton[i].setForeground(Color.WHITE);
                         jButton[i].setAlignmentX(Component.CENTER_ALIGNMENT);
                         jButton[i].putClientProperty(1,
@@ -210,7 +202,7 @@ public class book extends JPanel {
                                                 date = LocalDate.now();
                                         }
                                         system.ClearRoomTimeBeforeDate(LocalDate.now());
-                                        listbook list = new listbook(new User(1, 150), tempRoom, book.this, date,mainframe);
+                                        listbook list = new listbook(mainframe.getUser(), tempRoom, book.this, date,mainframe);
                                         list.setVisible(true);
                                 }
                         });
@@ -330,7 +322,25 @@ public class book extends JPanel {
                 });
 
                 jOpen.setFont(FontITCKRIST.deriveFont((float) 18));
-                jOpen.setText("OPEN 12 : 00 P.M. - 23 : 00 P.M.");
+                String tempPMAM1;
+                String tempPMAM2;
+                if (mainframe.getHourStart() <= 12) {
+                        tempPMAM1 = "A.M.";
+                }else{
+                        tempPMAM1 = "P.M.";
+                }
+                if (mainframe.getHourEnd() <= 12) {
+                        tempPMAM2 = "A.M.";
+                }else{
+                        tempPMAM2 = "P.M.";
+                }
+
+                if(mainframe.getMinuteStartEnd() == 0){
+                        jOpen.setText("OPEN "+mainframe.getHourStart()+" : 00 "+tempPMAM1+" - "+mainframe.getHourEnd()+" : 00 "+tempPMAM2);
+                }else{
+
+                        jOpen.setText("OPEN "+mainframe.getHourStart()+" : "+mainframe.getMinuteStartEnd()+" "+tempPMAM1+" - "+mainframe.getHourEnd()+" : "+mainframe.getMinuteStartEnd()+" "+tempPMAM2);
+                }
                 jPanelOpen.setBackground(Color.white);
                 
                 GroupLayout jPanel11SetJOpen = new GroupLayout(jPanelOpen);
@@ -578,21 +588,14 @@ public class book extends JPanel {
         private JButton jOrderFood;
         private JButton jTopUp;
         private JButton jMyBooking;
-        private JButton jButton3;
         private JButton jLogOut;
         private JComboBox<String> jComboBoxDate;
         private JLabel jLabel1;
-        private JLabel jLabel11;
-        private JLabel jAccom1;
         private JLabel jLabelBookRoom;
         private JLabel jOpen;
-        private JLabel jAccommodate;
         private JLabel jMoney;
         private JLabel jLabelOnlist;
-        private JLabel jLabel5;
         private JLabel jPleaseTopUp;
-        private JLabel jRoomId1;
-        private JLabel jRoomId;
 
         private JPanel jMainPanel;
         private JPanel jPanel2;
@@ -600,9 +603,6 @@ public class book extends JPanel {
         private JPanel jPanel4;
         private JPanel jPanelRoom;
         private JPanel jPanelOpen;
-        private JPanel jPanel7;
-        private JPanel jPanel8;
-        private JPanel jPanel9;
         private JScrollPane jScrollPane1;
 }
 
