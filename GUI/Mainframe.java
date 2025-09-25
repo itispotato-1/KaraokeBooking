@@ -15,6 +15,8 @@ public class Mainframe extends JFrame {
     private int hourStart = 13;
     private int hourEnd = 4;
     private int minuteStartEnd = 00;
+    private int userId;
+
     public Mainframe() {
         system = new RoomSystem();
         for (int i = 0; i < 10; i++) {
@@ -49,7 +51,12 @@ public class Mainframe extends JFrame {
     public void showPanel(String name) {
         cardLayout.show(container, name);
     }
-
+    public int getUserId() {
+        return userId;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
     public void setUser(User user) {
         this.user = user;
     }
