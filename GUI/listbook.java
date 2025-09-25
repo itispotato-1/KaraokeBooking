@@ -52,6 +52,7 @@ public class listbook extends JDialog {
 
         public listbook(User user, Room room, JPanel j, LocalDate date, Mainframe mainFrame) {
                 this.user = user;
+                System.out.println(user.getUserId());
                 this.room = room;
                 this.date = date;
                 this.main = mainFrame;
@@ -97,7 +98,7 @@ public class listbook extends JDialog {
         private void initComponents() {
                 jPanel1 = new JPanel();
                 jPanel2 = new JPanel();
-                jLabel1 = new JLabel();
+                jBookTime = new JLabel();
                 jScrollPane1 = new JScrollPane();
                 jListLeft = new JList<>();
                 jScrollPane2 = new JScrollPane();
@@ -110,8 +111,8 @@ public class listbook extends JDialog {
 
                 jPanel2.setBackground(new Color(255, 255, 255));
 
-                jLabel1.setFont(new Font("Tw Cen MT", 1, 24)); // NOI18N
-                jLabel1.setText("BOOK A TIME");
+                jBookTime.setFont(new Font("Tw Cen MT", 1, 22)); // NOI18N
+                jBookTime.setText("BOOK A TIME");
 
                 GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
                 jPanel2.setLayout(jPanel2Layout);
@@ -119,13 +120,13 @@ public class listbook extends JDialog {
                                 jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                                                 .addGap(19, 19, 19)
-                                                                .addComponent(jLabel1)
+                                                                .addComponent(jBookTime)
                                                                 .addContainerGap(19, Short.MAX_VALUE)));
                 jPanel2Layout.setVerticalGroup(
                                 jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                                                 .addContainerGap()
-                                                                .addComponent(jLabel1, GroupLayout.DEFAULT_SIZE,
+                                                                .addComponent(jBookTime, GroupLayout.DEFAULT_SIZE,
                                                                                 GroupLayout.DEFAULT_SIZE,
                                                                                 Short.MAX_VALUE)
                                                                 .addContainerGap()));
@@ -327,7 +328,7 @@ public class listbook extends JDialog {
                         RoomTime tempModel = ModelList2.get(i);
                         if (!(system.checkLocalDateTimeIsSame(tempModel.getRoom(), tempModel.getTimeStart(),
                                         tempModel.getTimeEnd()))
-                                        && !(LocalDateTime.now().isAfter(tempModel.getTimeEnd()))) {
+                                        && !(LocalDateTime.now().isAfter(tempModel.getTimeStart()))) {
                                 tempRoomTime.add(tempModel);
 
                         } else {
@@ -440,7 +441,7 @@ public class listbook extends JDialog {
         private JButton jButton1;
         private JButton jButton2;
         private JButton jButton3;
-        private JLabel jLabel1;
+        private JLabel jBookTime;
         private JList<RoomTime> jListLeft;
         private JList<RoomTime> jListRight;
         private JPanel jPanel1;

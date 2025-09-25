@@ -28,6 +28,7 @@ public class book extends JPanel {
         public book(Mainframe mainFrame) {
                 this.system = mainFrame.getSystem();
                 this.user = mainFrame.getUser();
+                //System.out.println(user.getUserId());
                 this.mainframe = mainFrame;
 
                 jLabelRoom = new JLabel[100];//
@@ -186,7 +187,7 @@ public class book extends JPanel {
                         jButton[i].setBackground(new Color(252, 136, 161));
                         jButton[i].setPreferredSize(new Dimension(100, 50));
                         jButton[i].setFont(FontTWCENMT.deriveFont((float) 18).deriveFont(1));
-                        jButton[i].setText("Booking");
+                        jButton[i].setText("  BOOK  ");
                         jButton[i].setForeground(Color.WHITE);
                         jButton[i].setAlignmentX(Component.CENTER_ALIGNMENT);
                         jButton[i].putClientProperty(1,
@@ -201,7 +202,7 @@ public class book extends JPanel {
                                                 date = LocalDate.now();
                                         }
                                         system.ClearRoomTimeBeforeDate(LocalDate.now());
-                                        listbook list = new listbook(user, tempRoom, book.this, date,mainframe);
+                                        listbook list = new listbook(mainframe.getUser(), tempRoom, book.this, date,mainframe);
                                         list.setVisible(true);
                                 }
                         });
@@ -321,7 +322,25 @@ public class book extends JPanel {
                 });
 
                 jOpen.setFont(FontITCKRIST.deriveFont((float) 18));
-                jOpen.setText("OPEN 12 : 00 P.M. - 23 : 00 P.M.");
+                String tempPMAM1;
+                String tempPMAM2;
+                if (mainframe.getHourStart() <= 12) {
+                        tempPMAM1 = "A.M.";
+                }else{
+                        tempPMAM1 = "P.M.";
+                }
+                if (mainframe.getHourEnd() <= 12) {
+                        tempPMAM2 = "A.M.";
+                }else{
+                        tempPMAM2 = "P.M.";
+                }
+
+                if(mainframe.getMinuteStartEnd() == 0){
+                        jOpen.setText("OPEN "+mainframe.getHourStart()+" : 00 "+tempPMAM1+" - "+mainframe.getHourEnd()+" : 00 "+tempPMAM2);
+                }else{
+
+                        jOpen.setText("OPEN "+mainframe.getHourStart()+" : "+mainframe.getMinuteStartEnd()+" "+tempPMAM1+" - "+mainframe.getHourEnd()+" : "+mainframe.getMinuteStartEnd()+" "+tempPMAM2);
+                }
                 jPanelOpen.setBackground(Color.white);
                 
                 GroupLayout jPanel11SetJOpen = new GroupLayout(jPanelOpen);

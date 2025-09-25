@@ -62,12 +62,18 @@ public class RoomTime {
 
     @Override
     public String toString(){
+        
         return room.getIdRoom()+"("+user.getUserId()+")"+//แก้
         timeStart.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
         +";"+(timeEnd.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))+";"
         +room.getPrice());
         //IdRoom(UserId)01-10-2025 12:00:00;01-10-2025 15:00:00;price
     }
+    
+public static void main(String[] args) {
+    RoomTime a = new RoomTime(new Room("a", 1, 0), new User("a", "88888888", "1"), LocalDateTime.now(), LocalDateTime.now());
+    System.out.println(a.toString());
+}
 
 
 }

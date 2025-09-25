@@ -12,14 +12,36 @@ public class LoginRegisterService {
     private FileWriter fw = null;
     private BufferedWriter bw = null;
 
+    public int getUserIdLast() {
+        String tempS;
+        int tempInt = 0;
+        try {
+            fr = new FileReader(FILE_NAME);
+            br = new BufferedReader(fr);
+            while ((tempS = br.readLine()) != null) {
+                String[] tempSplit = tempS.split("[,\\|]");
+                    tempInt = Integer.parseInt(tempSplit[0]);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                br.close();
+                fr.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        return tempInt;
+    }
     public String[] getValueUserList(String username, String password) {
         try {
             String tempS;
             fr = new FileReader(FILE_NAME);
             br = new BufferedReader(fr);
             while ((tempS = br.readLine()) != null) {
-                String[] tempSplit = tempS.split(",");
-                if (tempSplit[0].equals(username) && tempSplit[1].equals(password)) {
+                String[] tempSplit = tempS.split("[,\\|]");
+                if (tempSplit[1].equals(username) && tempSplit[2].equals(password)) {
                     return tempSplit;
                 }
             }
@@ -43,12 +65,12 @@ public class LoginRegisterService {
             fr = new FileReader(FILE_NAME);
             br = new BufferedReader(fr);
             while ((tempS = br.readLine()) != null) {
-                String[] tempSplit = tempS.split(",");
-                System.out.println(user.getUsername()+" "+tempSplit[0]);
-                System.out.println(user.getPassword()+" "+tempSplit[1]);
-                if (tempSplit[0].equals(user.getUsername()) && tempSplit[1].equals(user.getPassword())) {
+                String[] tempSplit = tempS.split("[,\\|]");
+                System.out.println(user.getUsername()+" "+tempSplit[1]);
+                System.out.println(user.getPassword()+" "+tempSplit[2]);
+                if (tempSplit[1].equals(user.getUsername()) && tempSplit[2].equals(user.getPassword())) {
                     System.out.println("check");
-                    UserList += (tempSplit[0]+","+tempSplit[1]+","+tempSplit[2]+","+user.getMoney()+"\n");
+                    UserList += (tempSplit[0]+"|"+tempSplit[1]+","+tempSplit[2]+","+tempSplit[3]+","+user.getMoney()+"\n");
                 } else {
                     UserList += tempS+"\n";
                 }
@@ -74,8 +96,8 @@ public class LoginRegisterService {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts[0].equals(username) && parts[1].equals(password)) {
+                String[] parts = line.split("[,\\|]");
+                if (parts[1].equals(username) && parts[2].equals(password)) {
                     return true;
                 }
             }
@@ -89,8 +111,8 @@ public class LoginRegisterService {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length >= 1 && parts[0].equals(username)) {
+                String[] parts = line.split("[,\\|]");
+                if (parts.length >= 1 && parts[1].equals(username)) {
                     return true;
                 }
             }
@@ -105,7 +127,7 @@ public class LoginRegisterService {
             return false;
         }
         try (FileWriter writer = new FileWriter(FILE_NAME, true)) {
-            writer.write(username + "," + password + "," + phoneNumber + ",0\n");
+            writer.write((getUserIdLast()+1)+"|"+username + "," + password + "," + phoneNumber + ",0\n");//
             return true;
         } catch (IOException e) {
             System.out.println("Error writing to file");
