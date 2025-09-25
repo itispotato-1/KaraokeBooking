@@ -92,7 +92,7 @@ public class TOPUP extends JPanel {
         });
 
         jTextFieldMoney.setHorizontalAlignment(JTextField.CENTER);
-        jTextFieldMoney.setText("textField");
+        //jTextFieldMoney.setText("textField");
         jTextFieldMoney.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -165,6 +165,7 @@ public class TOPUP extends JPanel {
 
     }
     private void jButtonConfirmActionPerformed(ActionEvent evt) {
+        System.out.println(mainframe.getUser().getMoney());
             mainframe.getUser().setMoney(mainframe.getUser().getMoney()+Double.parseDouble(jTextFieldMoney.getText()));
             service.setMoneyUserInUserList(mainframe.getUser());
     }

@@ -44,7 +44,6 @@ public class book extends JPanel {
         }
 
         private void initComponents() {
-
                 jLabel1 = new JLabel();
                 jLabelBookRoom = new JLabel();
                 jMoney = new JLabel();
@@ -53,8 +52,8 @@ public class book extends JPanel {
                 jLabelOnlist = new JLabel();
                 jComboBoxDate = new JComboBox<>();
                 jScrollPane1 = new JScrollPane();
-
-
+                
+                
                 jLogOut = new JButton();
                 jOrderFood = new JButton();
                 jTopUp = new JButton();
@@ -67,22 +66,23 @@ public class book extends JPanel {
                 jPanel4 = new JPanel();
                 jPanelRoom = new JPanel();
                 jPanelOpen = new JPanel();
-
+                
                 this.add(jMainPanel);
-
+                
                 jMainPanel.setBackground(new Color(235, 240, 255));
                 //jMainPanel.setBackground(Color.BLUE);
-
+                
                 jMainPanel.setPreferredSize(new Dimension(440, 664));
-
+                
                 jLabelBookRoom.setFont(FontITCKRIST.deriveFont((float) 14)); 
                 jLabelBookRoom.setText("BOOK A ROOM");
-
+                
                 jPanel2.setBackground(new Color(255, 255, 204));
-
+                
+                System.out.println(mainframe.getUser().getMoney());
                 jMoney.setBackground(new Color(255, 255, 255));
                 jMoney.setFont(FontTWCENMT.deriveFont((float) 14).deriveFont((int) 1)); // NOI18N
-                jMoney.setText("MONEY : " + user.getMoney());// ไว้แก้Money
+                jMoney.setText("MONEY : " + mainframe.getUser().getMoney());// ไว้แก้Money
 
                 GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
                 jPanel2.setLayout(jPanel2Layout);

@@ -512,13 +512,13 @@ public class SignUp extends JPanel {
                 // ตรวจสอบความแข็งแรงของรหัสผ่าน
                 PasswordStrength strength = PasswordValidator.validate(password);
 
-                if (phoneNumber.length() != 8 || strength == PasswordStrength.INVALID) {
+                if (phoneNumber.length() != 10 || strength == PasswordStrength.INVALID) {
                         JOptionPane.showMessageDialog(this,
                                         "Invalid phone number or password didn't has atleast 8 characters",
                                         "Invalid password",
                                         JOptionPane.ERROR_MESSAGE);
                         throw new Exception("Invalid phone number or password didn't has atleast 8 characters");
-                } else if (phoneNumber.length() != 8 || strength == PasswordStrength.WEAK) {
+                } else if (strength == PasswordStrength.WEAK) {
                         JOptionPane.showMessageDialog(this,
                                         "Invalid phone number or your password is too weak. Please use a number or a uppercase letter or both",
                                         "Weak password",

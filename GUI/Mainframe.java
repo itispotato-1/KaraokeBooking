@@ -17,6 +17,14 @@ public class Mainframe extends JFrame {
     private int minuteStartEnd = 00;
     private int userId;
 
+    private book Book;
+    private Login login;
+    private Mybooking mybooking;
+    private SignUp signUp;
+    private menudrink drink;
+    private menufood food;
+    private TOPUP topup;
+
     public Mainframe() {
         system = new RoomSystem();
         for (int i = 0; i < 10; i++) {
@@ -27,15 +35,22 @@ public class Mainframe extends JFrame {
 
         cardLayout = new CardLayout();
         container = new JPanel(cardLayout);
+        login = new Login(this);
+        Book = new book(this);
+        mybooking = new Mybooking(this);
+        signUp = new SignUp(this);
+        drink = new menudrink(this);
+        food = new menufood(this);
+        topup = new TOPUP(this);
 
         // ใส่ panel ต่าง ๆ
-        container.add(new Login(this), "login");
-        container.add(new book(this), "book");
-        container.add(new Mybooking(this), "mybooking");
-        container.add(new SignUp(this), "signup");
-        container.add(new menudrink(this), "menudrink");
-        container.add(new menufood(this), "menufood");
-        container.add(new TOPUP(this), "topup");
+        container.add(login, "login");
+        container.add(Book, "book");
+        container.add(mybooking, "mybooking");
+        container.add(signUp, "signup");
+        container.add(drink, "menudrink");
+        container.add(food, "menufood");
+        container.add(topup, "topup");
 
         add(container);
         setResizable(false);
@@ -49,14 +64,18 @@ public class Mainframe extends JFrame {
 
     // เมธอดใช้สลับหน้า
     public void showPanel(String name) {
+        //Book.initComponents();
         cardLayout.show(container, name);
     }
+
     public int getUserId() {
         return userId;
     }
+
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -68,15 +87,19 @@ public class Mainframe extends JFrame {
     public RoomSystem getSystem() {
         return system;
     }
+
     public int getHourStart() {
         return hourStart;
     }
+
     public int getHourEnd() {
         return hourEnd;
     }
+
     public int getMinuteStartEnd() {
         return minuteStartEnd;
     }
+
     public static void main(String[] args) {
         new Mainframe();
     }
