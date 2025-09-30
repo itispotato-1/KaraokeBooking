@@ -4,6 +4,8 @@ import javax.swing.*;
 
 import GUI.Decorate.*;
 import lib.*;
+import lib.BookRoom.Room;
+import lib.BookRoom.RoomSystem;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -25,7 +27,7 @@ public class book extends JPanel {
 
         public book(Mainframe mainFrame) {
                 this.system = mainFrame.getSystem();
-                //System.out.println(user.getUserId());
+     
                 this.mainframe = mainFrame;
 
                 jLabelRoom = new JLabel[100];//
@@ -35,7 +37,6 @@ public class book extends JPanel {
                 jButton = new JButton[100];//
 
                 setUpFont();
-                setUpLookAndFeel();
 
                 initComponents();
         }
@@ -50,8 +51,7 @@ public class book extends JPanel {
                 jLabelOnlist = new JLabel();
                 jComboBoxDate = new JComboBox<>();
                 jScrollPane1 = new JScrollPane();
-                
-                
+
                 jLogOut = new JButton();
                 jOrderFood = new JButton();
                 jTopUp = new JButton();
@@ -64,20 +64,20 @@ public class book extends JPanel {
                 jPanel4 = new JPanel();
                 jPanelRoom = new JPanel();
                 jPanelOpen = new JPanel();
-                
+
                 this.add(jMainPanel);
-                
+
                 jMainPanel.setBackground(new Color(235, 240, 255));
-                //jMainPanel.setBackground(Color.BLUE);
-                
+                // jMainPanel.setBackground(Color.BLUE);
+
                 jMainPanel.setPreferredSize(new Dimension(440, 664));
-                
-                jLabelBookRoom.setFont(FontITCKRIST.deriveFont((float) 14)); 
+
+                jLabelBookRoom.setFont(FontITCKRIST.deriveFont((float) 14));
                 jLabelBookRoom.setText("BOOK A ROOM");
-                
+
                 jPanel2.setBackground(new Color(255, 255, 204));
-                
-                //System.out.println(mainframe.getUser().getMoney());
+
+                // System.out.println(mainframe.getUser().getMoney());
                 jMoney.setBackground(new Color(255, 255, 255));
                 jMoney.setFont(FontTWCENMT.deriveFont((float) 14).deriveFont((int) 1)); // NOI18N
                 jMoney.setText("MONEY : " + mainframe.getUser().getMoney());// ไว้แก้Money
@@ -181,7 +181,7 @@ public class book extends JPanel {
                         jLabelCost[i].setHorizontalAlignment(SwingConstants.CENTER);
                         jLabelCost[i].setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                        jButton[i] = new RoundedButton(30, 30, Color.BLACK,4);
+                        jButton[i] = new RoundedButton(30, 30, Color.BLACK, 4);
                         jButton[i].setBackground(new Color(252, 136, 161));
                         jButton[i].setPreferredSize(new Dimension(100, 50));
                         jButton[i].setFont(FontTWCENMT.deriveFont((float) 18).deriveFont(1));
@@ -195,16 +195,17 @@ public class book extends JPanel {
                                 public void actionPerformed(ActionEvent e) {
                                         JButton tempButton = (JButton) e.getSource();//
                                         Room tempRoom = (Room) tempButton.getClientProperty(1);
-                                        //System.out.println(tempRoom);
+                                        // System.out.println(tempRoom);
                                         if (date == null) {
                                                 date = LocalDate.now();
                                         }
                                         system.ClearRoomTimeBeforeDate(LocalDate.now());
-                                        listbook list = new listbook(mainframe.getUser(), tempRoom, book.this, date,mainframe);
+                                        listbook list = new listbook(mainframe.getUser(), tempRoom, book.this, date,
+                                                        mainframe);
                                         list.setVisible(true);
                                 }
                         });
-                        jPanelBooking[i] = new RoundedPanel(30, 30, Color.black,4);
+                        jPanelBooking[i] = new RoundedPanel(30, 30, Color.black, 4);
 
                         jPanelBooking[i].setBackground(Color.white);
                         jPanelBooking[i].setLayout(new BoxLayout(jPanelBooking[i], BoxLayout.Y_AXIS));
@@ -253,7 +254,8 @@ public class book extends JPanel {
                                                 .addGroup(GroupLayout.Alignment.TRAILING, jPanel4Layout
                                                                 .createSequentialGroup()
                                                                 .addGap(14, 14, 14)
-                                                                .addComponent(jLabelOnlist, GroupLayout.PREFERRED_SIZE, 265,
+                                                                .addComponent(jLabelOnlist, GroupLayout.PREFERRED_SIZE,
+                                                                                265,
                                                                                 GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
                                                                                 GroupLayout.DEFAULT_SIZE,
@@ -295,7 +297,7 @@ public class book extends JPanel {
                         public void actionPerformed(ActionEvent e) {
                                 jButtonLogoutActionPerformed(e);
                         }
-                        
+
                 });
 
                 jOrderFood.setBackground(new Color(250, 206, 172));
@@ -305,9 +307,9 @@ public class book extends JPanel {
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                               jButtonOrderActionPerFormed(e);
+                                jButtonOrderActionPerFormed(e);
                         }
-                        
+
                 });
 
                 jTopUp.setBackground(new Color(204, 255, 204));
@@ -324,23 +326,26 @@ public class book extends JPanel {
                 String tempPMAM2;
                 if (mainframe.getHourStart() <= 12) {
                         tempPMAM1 = "A.M.";
-                }else{
+                } else {
                         tempPMAM1 = "P.M.";
                 }
                 if (mainframe.getHourEnd() <= 12) {
                         tempPMAM2 = "A.M.";
-                }else{
+                } else {
                         tempPMAM2 = "P.M.";
                 }
 
-                if(mainframe.getMinuteStartEnd() == 0){
-                        jOpen.setText("OPEN "+mainframe.getHourStart()+" : 00 "+tempPMAM1+" - "+mainframe.getHourEnd()+" : 00 "+tempPMAM2);
-                }else{
+                if (mainframe.getMinuteStartEnd() == 0) {
+                        jOpen.setText("OPEN " + mainframe.getHourStart() + " : 00 " + tempPMAM1 + " - "
+                                        + mainframe.getHourEnd() + " : 00 " + tempPMAM2);
+                } else {
 
-                        jOpen.setText("OPEN "+mainframe.getHourStart()+" : "+mainframe.getMinuteStartEnd()+" "+tempPMAM1+" - "+mainframe.getHourEnd()+" : "+mainframe.getMinuteStartEnd()+" "+tempPMAM2);
+                        jOpen.setText("OPEN " + mainframe.getHourStart() + " : " + mainframe.getMinuteStartEnd() + " "
+                                        + tempPMAM1 + " - " + mainframe.getHourEnd() + " : "
+                                        + mainframe.getMinuteStartEnd() + " " + tempPMAM2);
                 }
                 jPanelOpen.setBackground(Color.white);
-                
+
                 GroupLayout jPanel11SetJOpen = new GroupLayout(jPanelOpen);
                 jPanelOpen.setLayout(jPanel11SetJOpen);
                 jPanel11SetJOpen.setHorizontalGroup(
@@ -429,8 +434,7 @@ public class book extends JPanel {
                                                                                                                                                 GroupLayout.PREFERRED_SIZE,
                                                                                                                                                 136,
                                                                                                                                                 GroupLayout.PREFERRED_SIZE)
-                                                                                                                                .addGap(0, 0, Short.MAX_VALUE)
-                                                                                                                                )
+                                                                                                                                .addGap(0, 0, Short.MAX_VALUE))
                                                                                                                 .addComponent(jPleaseTopUp,
                                                                                                                                 GroupLayout.PREFERRED_SIZE,
                                                                                                                                 193,
@@ -524,15 +528,17 @@ public class book extends JPanel {
         private void jButtonOrderActionPerFormed(ActionEvent evt) {
                 mainframe.showPanel("menufood");
         }
+
         private void jButtonBookingActionPerFormed(ActionEvent evt) {
                 mainframe.showPanel("book");
         }
+
         private void jButtonLogoutActionPerformed(ActionEvent evt) {
                 mainframe.showPanel("login");
         }
 
         private void jButtonMyBookingActionPerFormed(ActionEvent evt) {
-                 mainframe.showPanel("mybooking");
+                mainframe.showPanel("mybooking");
         }
 
         private void jButton1TopupActionPerformed(ActionEvent evt) {
@@ -550,29 +556,7 @@ public class book extends JPanel {
                 }
         }
 
-        private void setUpLookAndFeel() {
-                try {
-                        for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                                if ("Nimbus".equals(info.getName())) {
-                                        UIManager.setLookAndFeel(info.getClassName());
-                                        break;
-                                }
-                        }
-                } catch (ClassNotFoundException ex) {
-                        java.util.logging.Logger.getLogger(book.class.getName()).log(java.util.logging.Level.SEVERE,
-                                        null, ex);
-                } catch (InstantiationException ex) {
-                        java.util.logging.Logger.getLogger(book.class.getName()).log(java.util.logging.Level.SEVERE,
-                                        null, ex);
-                } catch (IllegalAccessException ex) {
-                        java.util.logging.Logger.getLogger(book.class.getName()).log(java.util.logging.Level.SEVERE,
-                                        null, ex);
-                } catch (UnsupportedLookAndFeelException ex) {
-                        java.util.logging.Logger.getLogger(book.class.getName()).log(java.util.logging.Level.SEVERE,
-                                        null, ex);
-                }
-        }
-
+     
         public static void main(String args[]) {
                 RoomSystem system = new RoomSystem();
                 for (int i = 0; i < 10; i++) {
@@ -606,9 +590,9 @@ public class book extends JPanel {
 }
 
 // class RoundedPanel extends JPanel {
-        
+
 // }
 
 // class RoundedButton extends JButton {
-        
+
 // }

@@ -3,7 +3,7 @@ package GUI;
 import javax.swing.*;
 
 import GUI.Decorate.RoundedButton;
-import lib.Room;
+import lib.BookRoom.Room;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -25,7 +25,6 @@ public class Mybooking extends JPanel {
                 this.mainframe = mainframe;
 
                 setUpFont();
-                setUpLookAndFeel();
                 initComponents();
         }
 
@@ -486,29 +485,6 @@ public class Mybooking extends JPanel {
                                         tempInt[15], tempInt[16]);
                         mainframe.getSystem().removeBookRoom(tempRoom, mainframe.getUser(), timeStart, timeEnd);
                         initComponents();
-                }
-        }
-
-        private void setUpLookAndFeel() {
-                try {
-                        for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                                if ("Nimbus".equals(info.getName())) {
-                                        UIManager.setLookAndFeel(info.getClassName());
-                                        break;
-                                }
-                        }
-                } catch (ClassNotFoundException ex) {
-                        java.util.logging.Logger.getLogger(Mybooking.class.getName())
-                                        .log(java.util.logging.Level.SEVERE, null, ex);
-                } catch (InstantiationException ex) {
-                        java.util.logging.Logger.getLogger(Mybooking.class.getName())
-                                        .log(java.util.logging.Level.SEVERE, null, ex);
-                } catch (IllegalAccessException ex) {
-                        java.util.logging.Logger.getLogger(Mybooking.class.getName())
-                                        .log(java.util.logging.Level.SEVERE, null, ex);
-                } catch (UnsupportedLookAndFeelException ex) {
-                        java.util.logging.Logger.getLogger(Mybooking.class.getName())
-                                        .log(java.util.logging.Level.SEVERE, null, ex);
                 }
         }
 

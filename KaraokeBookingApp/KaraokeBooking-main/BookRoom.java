@@ -1,6 +1,6 @@
-import lib.Room;
-import lib.RoomSystem;
 import lib.User;
+import lib.BookRoom.Room;
+import lib.BookRoom.RoomSystem;
 
 import javax.swing.*;
 import java.awt.*;

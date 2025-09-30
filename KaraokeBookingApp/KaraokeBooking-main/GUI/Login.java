@@ -35,7 +35,6 @@ public class Login extends JPanel {
     public Login(Mainframe mainframe) {
         loginService = new LoginRegisterService();
         this.mainframe = mainframe;
-        setUpLookAndFeel();
         setUpFont();
         initComponents();
     }
@@ -76,7 +75,7 @@ public class Login extends JPanel {
         // --------------------------------- panelกลาง ---------------------------------
         panel2.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelLineLeft = new JPanel();
-        panelLineLeft.setPreferredSize(new Dimension(113, 20));
+        panelLineLeft.setPreferredSize(new Dimension(113, 10));
         panelLineLeft.setBackground(new Color(0, 57, 134));
 
         labelLoginTop = new JLabel();
@@ -85,7 +84,7 @@ public class Login extends JPanel {
         labelLoginTop.setText("LOGIN");
 
         panelLineRight = new JPanel();
-        panelLineRight.setPreferredSize(new Dimension(113, 20));
+        panelLineRight.setPreferredSize(new Dimension(113, 10));
         panelLineRight.setBackground(new Color(0, 57, 134));
 
         panelLineLeft.setAlignmentY(CENTER_ALIGNMENT);
@@ -105,7 +104,7 @@ public class Login extends JPanel {
         panelIn3.setPreferredSize(new Dimension(350, 410));
 
         LabelImageK2 = new JLabel("");
-        LabelImageK2.setSize(new Dimension(100, 100));
+        LabelImageK2.setSize(new Dimension(70, 70));
         ImageIcon tempIcon1 = new ImageIcon(getClass().getResource("/GUI/Picture/k2.png"));
         Image img = tempIcon1.getImage().getScaledInstance(LabelImageK2.getSize().width, LabelImageK2.getSize().height,
                 Image.SCALE_SMOOTH);
@@ -188,6 +187,7 @@ public class Login extends JPanel {
 
         panelBottomIn3.add(jButtonSignUp);
 
+        panelIn3.add(Box.createVerticalStrut(40));
         panelIn3.add(LabelImageK2);
         panelIn3.add(Box.createVerticalStrut(10));
         panelIn3.add(panelUserName);
@@ -223,10 +223,8 @@ public class Login extends JPanel {
             mainframe.setUserId(Integer.parseInt(tempStr[0]));
             tempUser.setUserId(Integer.parseInt(tempStr[0]));
             mainframe.setUser(tempUser);// ตั้งว่าผู้ใช้คือใคร
-            //System.out.println(mainframe.getUser().getMoney());
 
             removeTextInTextField();
-            jPassOrNameWrong.setText("X Invalid Username or Password");
             mainframe.showPanel("book");
         }
 
@@ -259,19 +257,6 @@ public class Login extends JPanel {
     private void removeTextInTextField() {
         user.setText("");
         pass.setText("");
-    }
-
-    private void setUpLookAndFeel() {
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        }
+        jPassOrNameWrong.setText("");
     }
 }

@@ -1,9 +1,9 @@
 import javax.swing.*;
 
 import GUI.listbook;
-import lib.Room;
-import lib.RoomSystem;
 import lib.User;
+import lib.BookRoom.Room;
+import lib.BookRoom.RoomSystem;
 
 import java.util.logging.*;
 import java.awt.*;
