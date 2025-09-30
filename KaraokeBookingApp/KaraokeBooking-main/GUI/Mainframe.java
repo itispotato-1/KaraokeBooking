@@ -3,6 +3,8 @@ package GUI;
 import javax.swing.*;
 
 import lib.*;
+import lib.BookRoom.Room;
+import lib.BookRoom.RoomSystem;
 import lib.loginregister.*;
 import store.Product;
 import store.ProductCatalog;
@@ -15,6 +17,7 @@ public class Mainframe extends JFrame {
     private JPanel container;
     private User user = new User("", "", "");
     private RoomSystem system;
+
     private int hourStart = 13;
     private int hourEnd = 4;
     private int minuteStartEnd = 00;
@@ -33,15 +36,16 @@ public class Mainframe extends JFrame {
 
     public Mainframe() {
         service = new LoginRegisterService();
+        setUpLookAndFeel();
+
         Product fried_rice = new Product("F001", "fried rice", 40.0);
         Product Holy_basil_rice = new Product("F002", "Holy basil rice", 50.0);
         Product Noodles = new Product("F003", "Noodles", 40.0);
         Product od1 = new Product("F004", "od1", 40.0);
-        Product od2 = new Product("F005", "od2", 40.0);
-        Product od3 = new Product("F006", "od3", 40.0);
+        Product Water1 = new Product("D001", "od2", 40.0);
+        Product od2 = new Product("F006", "od3", 40.0);
         Product od4 = new Product("F007", "od4", 40.0);
         Product od5 = new Product("F008", "od5", 40.0);
-
 
         catalog = new ProductCatalog();
         catalog.addProduct(fried_rice);
@@ -49,7 +53,7 @@ public class Mainframe extends JFrame {
         catalog.addProduct(Noodles);
         catalog.addProduct(od1);
         catalog.addProduct(od2);
-        catalog.addProduct(od3);
+        catalog.addProduct(Water1);
         catalog.addProduct(od4);
         catalog.addProduct(od5);
 
@@ -78,7 +82,7 @@ public class Mainframe extends JFrame {
         container.add(drink, "menudrink");
         container.add(food, "menufood");
         container.add(topup, "topup");
-        container.add(new test(this), "test");
+        //container.add(new test(this), "test");
 
         add(container);
         setResizable(false);
@@ -93,11 +97,9 @@ public class Mainframe extends JFrame {
     // เมธอดใช้สลับหน้า
     public void showPanel(String name) {
         system.ClearRoomTimeBeforeDate(LocalDate.now());
-        if(name.equals("book")){
+        if (name.equals("book")) {
             Book.initComponents();
-        }
-        else if(name.equals("mybooking"))
-        {
+        } else if (name.equals("mybooking")) {
             mybooking.initComponents();
         }
 
@@ -139,10 +141,27 @@ public class Mainframe extends JFrame {
     public ProductCatalog getCatalog() {
         return catalog;
     }
+
     public LoginRegisterService getService() {
         return service;
     }
+
+    private void setUpLookAndFeel() {
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(Mainframe.class.getName()).log(java.util.logging.Level.SEVERE,
+                    null, ex);
+        }
+    }
+
     public static void main(String[] args) {
         new Mainframe();
     }
+
 }

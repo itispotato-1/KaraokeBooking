@@ -22,7 +22,6 @@ public class TOPUP extends JPanel {
     public TOPUP(Mainframe mainframe) {
         this.mainframe = mainframe;
         service = new LoginRegisterService();
-        setUpLookAndFeel();
         setUpFont();
         initComponents();
     }
@@ -76,6 +75,14 @@ public class TOPUP extends JPanel {
         jTextFieldMoney.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 21));
         jTextFieldMoney.setHorizontalAlignment(JTextField.RIGHT);
         jTextFieldMoney.setBounds(38, 10, 320, 40);
+        jTextFieldMoney.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    e.consume();
+                }
+            }
+        });
 
         JButton jConfirm = new JButton();
         jConfirm.setBackground(new Color(0, 140, 0));
@@ -109,32 +116,23 @@ public class TOPUP extends JPanel {
     }
 
     private void jButtonConfirmActionPerformed(ActionEvent evt) {
-        mainframe.getUser().setMoney(mainframe.getUser().getMoney() + Double.parseDouble(jTextFieldMoney.getText()));
-        service.setMoneyUserInUserList(mainframe.getUser());
+        if (Double.parseDouble(jTextFieldMoney.getText()) >= 0) {
+            mainframe.getUser()
+                    .setMoney(mainframe.getUser().getMoney() + Double.parseDouble(jTextFieldMoney.getText()));
+            service.setMoneyUserInUserList(mainframe.getUser());
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Money must be more than 0.",
+                    "",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void jButtonBackActionPerformed(ActionEvent evt) {
         mainframe.showPanel("book");
     }
 
-    private void setUpLookAndFeel() {
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TOPUP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TOPUP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TOPUP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TOPUP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-    }
+
 
     private void setUpFont() {
         File fileTwCenMT = new File("./Font/TwCenMT.ttf");

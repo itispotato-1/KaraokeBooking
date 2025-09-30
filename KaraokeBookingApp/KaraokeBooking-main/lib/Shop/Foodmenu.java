@@ -12,7 +12,7 @@ public class Foodmenu extends JDialog {
         super(parent, modal);
         initComponents();
     }
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+                          
     private void initComponents() {
 
         jButton1 = new JButton();
