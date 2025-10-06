@@ -1,130 +1,264 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.JSpinner.*;
+import javax.swing.border.*;
 
-import GUI.Decorate.RoundedButton;
+import GUI.Decorate.*;
 import lib.BookRoom.Room;
+import lib.BookRoom.RoomSystem;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Mybooking extends JPanel {
+        private Font FontITCKRIST;
+        private Font FontTWCENMT;
         private Mainframe mainframe;
         private DefaultListModel<String> ModelList1;
         private File fileRoomList = null;
         private FileReader fr = null;
         private BufferedReader br = null;
-        private Font FontITCKRIST;
-        private Font FontTWCENMT;
+
+        private JList<String> jListRoom;
+
+        JLabel jOpen;
 
         public Mybooking(Mainframe mainframe) {
                 ModelList1 = new DefaultListModel<>();
                 fileRoomList = new File("./file/RoomTimes.csv");
                 this.mainframe = mainframe;
-
                 setUpFont();
+                setVisible(true);
                 initComponents();
         }
 
-        public void initComponents() {
+        private void initComponents() {
                 removeAll();
-                jLabel1 = new JLabel();
-                jLabelBookRoom = new JLabel();
-                jMoney = new JLabel();
-                jBookingButton = new JButton();
-                jMyBooking = new JButton();
-                jLabelOnlist = new JLabel();
 
-                jScrollPane1 = new JScrollPane();
-                jListRoom = new JList<>();
-                jLogOut = new JButton();
-                jOrderFood = new JButton();
-                jTopUp = new JButton();
-                jOpen = new JLabel();
-                jPleaseTopUp = new JLabel();
-                jPleaseTopUp = new JLabel();
+                JPanel panelMain = new JPanel();
+                panelMain.setLayout(new BoxLayout(panelMain, BoxLayout.Y_AXIS));
+                panelMain.setPreferredSize(new Dimension(440, 664));
+                panelMain.setBackground(Color.WHITE);
+                add(panelMain);
 
-                jMainPanel = new JPanel();
-                jPanel2 = new JPanel();
-                jPanel3 = new JPanel();
-                jPanel4 = new JPanel();
-                jPanelOpen = new JPanel();
+                JPanel panelSecound = new JPanel();
+                panelSecound.setOpaque(false);
+                panelSecound.setLayout(new BoxLayout(panelSecound, BoxLayout.Y_AXIS));
+                panelSecound.setBackground(Color.WHITE);
+                panelSecound.setMaximumSize(new Dimension(400, 600));
 
-                add(jMainPanel);
-                jMainPanel.setBackground(new Color(235, 240, 255));
-                jMainPanel.setPreferredSize(new Dimension(440, 664));
+                // -------------------------------- Panel ข้างบนสุด ------------------------
+                JPanel panelTop = new JPanel(null);
+                panelTop.setOpaque(false);
+                panelTop.setBackground(Color.WHITE);
+                panelTop.setMaximumSize(new Dimension(400, 60));
 
+                JButton buttonExit = new JButton("X");
+                buttonExit.setForeground(Color.WHITE);
+                buttonExit.setBackground(Color.RED);
+                buttonExit.setMaximumSize(new Dimension(40, 40));
+                buttonExit.setBounds(5, 10, 35, 35);
+                buttonExit.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                jButtonLogoutActionPerformed(e);
+                        }
+                });
+
+                JPanel panelMoney = new JPanel();
+                panelMoney.setLayout(new BoxLayout(panelMoney, BoxLayout.X_AXIS));
+                panelMoney.setBackground(new Color(255, 255, 204));
+                panelMoney.setMaximumSize(new Dimension(200, 40));
+                panelMoney.setBounds(150, 15, 115, 30);
+
+                JLabel labelMoney = new JLabel();
+                labelMoney.setBackground(new Color(255, 255, 255));
+                labelMoney.setFont(FontTWCENMT.deriveFont((float) 14).deriveFont((int) 1)); // NOI18N
+                labelMoney.setText("MONEY : " + mainframe.getUser().getMoney());// ไว้แก้Money
+
+                panelMoney.add(Box.createHorizontalStrut(5));
+                panelMoney.add(labelMoney);
+
+                JPanel panelBookRoom = new JPanel();
+                panelBookRoom.setOpaque(false);
+                panelBookRoom.setLayout(new BoxLayout(panelBookRoom, BoxLayout.Y_AXIS));
+                panelBookRoom.setBackground(Color.WHITE);
+                panelBookRoom.setPreferredSize(new Dimension(250, 50));
+                panelBookRoom.setMaximumSize(new Dimension(250, 50));
+                panelBookRoom.setBounds(270, 5, 130, 50);
+
+                JLabel jLabelBookRoom = new JLabel();
                 jLabelBookRoom.setFont(FontITCKRIST.deriveFont((float) 14));
                 jLabelBookRoom.setText("BOOK A ROOM");
 
-                jPanel2.setBackground(new Color(255, 255, 204));
+                JPanel panelLine = new JPanel();
+                panelLine.setBackground(Color.BLACK);
+                panelLine.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
+                panelLine.setPreferredSize(new Dimension(250, 5));
+                panelLine.setMaximumSize(new Dimension(250, 4));
 
-                jMoney.setBackground(new Color(255, 255, 255));
-                jMoney.setFont(FontTWCENMT.deriveFont((float) 14).deriveFont((int) 1)); // NOI18N
-                jMoney.setText("MONEY : " + mainframe.getUser().getMoney());// ไว้แก้Money
+                panelBookRoom.add(Box.createVerticalStrut(10));
+                panelBookRoom.add(jLabelBookRoom);
+                panelBookRoom.add(Box.createVerticalStrut(5));
+                panelBookRoom.add(panelLine);
+                panelBookRoom.add(Box.createVerticalStrut(10));
 
-                GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
-                jPanel2.setLayout(jPanel2Layout);
-                jPanel2Layout.setHorizontalGroup(
-                                jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                                                .addContainerGap()
-                                                                .addComponent(jMoney, GroupLayout.DEFAULT_SIZE, 68,
-                                                                                Short.MAX_VALUE)
-                                                // .addGap(56, 56, 56)
-                                                ));
-                jPanel2Layout.setVerticalGroup(
-                                jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                                                .addContainerGap()
-                                                                .addComponent(jMoney)
-                                                                .addContainerGap(GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)));
+                panelTop.add(buttonExit);
+                panelTop.add(panelMoney);
+                panelTop.add(panelBookRoom);
+                // -------------------------------- Panel ข้างบนสุด ------------------------
 
-                jPanel3.setBackground(new Color(0, 0, 0));
-                jPanel3.setBorder(
-                                BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1), null));
-                jPanel3.setPreferredSize(new Dimension(0, 5));
+                // -------------------------------- Panel เวลา ------------------------
+                JPanel panelTime = new JPanel(new BorderLayout());
+                panelTime.setOpaque(false);
+                panelTime.setLayout(new BoxLayout(panelTime, BoxLayout.X_AXIS));
+                panelTime.setBackground(Color.WHITE);
+                panelTime.setMaximumSize(new Dimension(300, 50));
 
-                GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
-                jPanel3.setLayout(jPanel3Layout);
-                jPanel3Layout.setHorizontalGroup(
-                                jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addGap(0, 119, Short.MAX_VALUE));
-                jPanel3Layout.setVerticalGroup(
-                                jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addGap(0, 0, Short.MAX_VALUE));
+                jOpen = new JLabel("NULL");
+                jOpen.setFont(FontITCKRIST.deriveFont((float) 18));
+                setUpTime();
 
+                panelTime.add(Box.createHorizontalGlue());
+                panelTime.add(jOpen);
+                panelTime.add(Box.createHorizontalGlue());
+                // -------------------------------- Panel เวลา ------------------------
+
+                // -------------------------------- Panel ปุ่มเปลี่ยนหน้า -----------------
+                JPanel panelButtonSwitch = new JPanel();
+                panelButtonSwitch.setOpaque(false);
+                panelButtonSwitch.setLayout(new GridLayout(2, 3, 5, 5));
+                panelButtonSwitch.setBackground(Color.WHITE);
+                panelButtonSwitch.setMaximumSize(new Dimension(400, 100));
+
+                int SIZE_FONTBUTTON = 16;
+                int STYLE_FONTBUTTON = 1;
+                Font fontButton = FontTWCENMT.deriveFont(STYLE_FONTBUTTON, SIZE_FONTBUTTON)
+                                .deriveFont((float) SIZE_FONTBUTTON);
+
+                JButton jBookingButton = new JButton();
                 jBookingButton.setBackground(new Color(163, 228, 255));
-                jBookingButton.setFont(FontTWCENMT.deriveFont((float) 18)); // NOI18N
+                jBookingButton.setFont(fontButton);
                 jBookingButton.setText("BOOKING");
                 jBookingButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                                jButtonBookingActionPerFormed(evt);
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                jButtonBookingActionPerFormed(e);
                         }
                 });
 
+                JButton jMyBooking = new JButton();
                 jMyBooking.setBackground(new Color(245, 147, 130));
-                jMyBooking.setFont(FontTWCENMT.deriveFont((float) 18)); // NOI18N
+                jMyBooking.setFont(fontButton);
                 jMyBooking.setText("MY BOOKING");
-                jMyBooking.setPreferredSize(new Dimension(125, 28));
                 jMyBooking.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                                jButtonMyBookingActionPerFormed(evt);
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                jButtonMyBookingActionPerFormed(e);
                         }
                 });
 
-                jPanel4.setBackground(new Color(255, 254, 241));
+                JButton jOrderFood = new JButton();
+                jOrderFood.setBackground(new Color(250, 206, 172));
+                jOrderFood.setFont(fontButton);
+                jOrderFood.setText("ORDER FOOD");
+                jOrderFood.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                jButtonOrderActionPerFormed(e);
+                        }
+                });
 
-                jLabelOnlist.setFont(FontTWCENMT.deriveFont((float) 24).deriveFont((int) 1)); // NOI18N
+                JButton jTopUp = new JButton();
+                jTopUp.setBackground(new Color(204, 255, 204));
+                jTopUp.setFont(fontButton);
+                jTopUp.setText("TOP UP");
+                jTopUp.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                jButton1TopupActionPerformed(e);
+                        }
+                });
+
+                panelButtonSwitch.add(jMyBooking);
+                panelButtonSwitch.add(jBookingButton);
+                panelButtonSwitch.add(jOrderFood);
+                panelButtonSwitch.add(jTopUp);
+                panelButtonSwitch.add(Box.createRigidArea(new Dimension(50, 50)));
+                panelButtonSwitch.add(Box.createRigidArea(new Dimension(50, 50)));
+                // -------------------------------- Panel ปุ่มเปลี่ยนหน้า -----------------
+
+                // -------------------------------- Panel อักษรใต้ปุ่ม -----------------
+                JPanel panelText = new JPanel();
+                panelText.setOpaque(false);
+                panelText.setLayout(new BoxLayout(panelText, BoxLayout.X_AXIS));
+                panelText.setBackground(Color.WHITE);
+                panelText.setMaximumSize(new Dimension(400, 20));
+
+                JLabel jPleaseTopUp = new JLabel();
+                jPleaseTopUp.setFont(new Font("Segoe UI", 0, 10));
+                jPleaseTopUp.setForeground(new Color(255, 0, 0));
+                jPleaseTopUp.setText("* PLEASE TOP UP TO USE THE APP");
+
+                panelText.add(jPleaseTopUp);
+                // -------------------------------- Panel อักษรใต้ปุ่ม -----------------
+
+                // -------------------------------- Panel ห้อง -----------------
+                JPanel jPanelRoom = new JPanel();
+                jPanelRoom.setLayout(new BoxLayout(jPanelRoom, BoxLayout.Y_AXIS));
+                jPanelRoom.setBackground(new Color(250, 248, 227));
+                jPanelRoom.setMaximumSize(new Dimension(400, 390));
+
+                JPanel jPanelRoomTop = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                jPanelRoomTop.setBackground(Color.WHITE);
+                jPanelRoomTop.setOpaque(false);
+                jPanelRoomTop.setMaximumSize(new Dimension(350, 50));
+                jPanelRoomTop.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+                JLabel jLabelOnlist = new JLabel();
+                jLabelOnlist.setFont(FontTWCENMT.deriveFont((float) 35).deriveFont((int) 1));
+                jLabelOnlist.setForeground(new Color(1, 41, 94));
                 jLabelOnlist.setText("MY BOOKING");
 
-                jButtonCancel = new RoundedButton(20, 20, Color.BLACK, 4);
-                jButtonCancel.setBackground(new Color(255, 102, 102));
-                jButtonCancel.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 16)); // NOI18N
+                jPanelRoomTop.add(jLabelOnlist, BorderLayout.CENTER);
+
+                JPanel jPanelRoomCenter = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+                jPanelRoomCenter.setBackground(Color.WHITE);
+                jPanelRoomCenter.setOpaque(false);
+                jPanelRoomCenter.setMaximumSize(new Dimension(380, 300));
+                
+                jListRoom = new JList<>();
+                jListRoom.setBackground(Color.WHITE);
+                //jListRoom.setOpaque(false);
+                jListRoom.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+                jListRoom.setFont(FontITCKRIST.deriveFont(1).deriveFont((float) 14));
+                loadRoom();
+                jListRoom.setModel(ModelList1);
+                JScrollPane jScrollPane1 = new JScrollPane();
+                jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                jScrollPane1.getVerticalScrollBar().setUnitIncrement(8);
+                jScrollPane1.setBackground(Color.WHITE);
+                jScrollPane1.setViewportView(jListRoom);
+                jScrollPane1.setPreferredSize(new Dimension(380, 280));
+                jScrollPane1.setBorder(BorderFactory.createLineBorder(new Color(0, 74, 173), 3));
+
+                jPanelRoomCenter.add(jScrollPane1);
+
+                JPanel jPanelRoomButtom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+                jPanelRoomButtom.setBackground(Color.WHITE);
+                jPanelRoomButtom.setOpaque(false);
+                jPanelRoomButtom.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
+                jPanelRoomButtom.setMaximumSize(new Dimension(380, 50));
+
+                JButton jButtonCancel = new JButton();
+                jButtonCancel.setBackground(new Color(255, 25, 25));
+                jButtonCancel.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 18)); // NOI18N
                 jButtonCancel.setForeground(new Color(255, 255, 255));
+                jButtonCancel.setPreferredSize(new Dimension(130, 40));
                 jButtonCancel.setText("Cancel Room");
                 jButtonCancel.addActionListener(new ActionListener() {
                         @Override
@@ -133,309 +267,25 @@ public class Mybooking extends JPanel {
                         }
                 });
 
-                jListRoom.setBackground(new Color(255, 241, 234));
-                jListRoom.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
-                jListRoom.setFont(FontITCKRIST.deriveFont(1).deriveFont((float) 14));
-                loadRoom();
-                jListRoom.setModel(ModelList1);
-                jScrollPane1.setViewportView(jListRoom);
+                jPanelRoomButtom.add(jButtonCancel);
 
-                GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
-                jPanel4.setLayout(jPanel4Layout);
-                jPanel4Layout.setHorizontalGroup(
-                                jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel4Layout.createSequentialGroup()
-                                                                .addContainerGap(GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)
-                                                                .addComponent(jButtonCancel, GroupLayout.PREFERRED_SIZE,
-                                                                                135, GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(21, 21, 21))
-                                                .addGroup(jPanel4Layout.createSequentialGroup()
-                                                                .addGap(102, 102, 102)
-                                                                .addComponent(jLabelOnlist)
-                                                                .addContainerGap(GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE))
-                                                .addGroup(jPanel4Layout.createSequentialGroup()
-                                                                .addContainerGap()
-                                                                .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE,
-                                                                                351, Short.MAX_VALUE)
-                                                                .addContainerGap()));
-                jPanel4Layout.setVerticalGroup(
-                                jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel4Layout.createSequentialGroup()
-                                                                .addContainerGap()
-                                                                .addComponent(jLabelOnlist, GroupLayout.PREFERRED_SIZE,
-                                                                                38, GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(8, 8, 8)
-                                                                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE,
-                                                                                282, GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(jButtonCancel)
-                                                                .addContainerGap(14, Short.MAX_VALUE)));
+                jPanelRoom.add(jPanelRoomTop);
+                jPanelRoom.add(jPanelRoomCenter);
+                jPanelRoom.add(jPanelRoomButtom);
 
-                jLogOut.setBackground(new Color(255, 89, 100));
-                jLogOut.setForeground(new Color(255, 255, 255));
-                jLogOut.setText("X");
-                jLogOut.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                jButtonLogoutActionPerformed(e);
-                        }
+                // -------------------------------- Panel ห้อง -----------------
 
-                });
+                panelSecound.add(panelTop);
+                panelSecound.add(panelTime);
+                panelSecound.add(panelButtonSwitch);
+                panelSecound.add(panelText);
+                panelSecound.add(jPanelRoom);
 
-                jOrderFood.setBackground(new Color(250, 206, 172));
-                jOrderFood.setFont(FontTWCENMT.deriveFont((float) 18));
-                jOrderFood.setText("ORDER FOOD");
-                jOrderFood.addActionListener(new ActionListener() {
+                panelMain.add(Box.createVerticalStrut(10));
+                panelMain.add(panelSecound);
 
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                jButtonOrderActionPerFormed(e);
-                        }
-
-                });
-
-                jTopUp.setBackground(new Color(204, 255, 204));
-                jTopUp.setFont(FontTWCENMT.deriveFont((float) 18));
-                jTopUp.setText("TOP UP");
-                jTopUp.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                                jButton1TopupActionPerformed(evt);
-                        }
-                });
-
-                jPanelOpen.setBackground(new Color(255, 255, 255));
-
-                jOpen.setFont(FontITCKRIST.deriveFont((float) 18));
-                String tempPMAM1;
-                String tempPMAM2;
-                if (mainframe.getHourStart() <= 12) {
-                        tempPMAM1 = "A.M.";
-                } else {
-                        tempPMAM1 = "P.M.";
-                }
-                if (mainframe.getHourEnd() <= 12) {
-                        tempPMAM2 = "A.M.";
-                } else {
-                        tempPMAM2 = "P.M.";
-                }
-
-                if (mainframe.getMinuteStartEnd() == 0) {
-                        jOpen.setText("OPEN " + mainframe.getHourStart() + " : 00 " + tempPMAM1 + " - "
-                                        + mainframe.getHourEnd() + " : 00 " + tempPMAM2);
-                } else {
-
-                        jOpen.setText("OPEN " + mainframe.getHourStart() + " : " + mainframe.getMinuteStartEnd() + " "
-                                        + tempPMAM1 + " - " + mainframe.getHourEnd() + " : "
-                                        + mainframe.getMinuteStartEnd() + " " + tempPMAM2);
-                }
-                jPanelOpen.setBackground(Color.white);
-
-                GroupLayout jPanel11Layout = new GroupLayout(jPanelOpen);
-                jPanelOpen.setLayout(jPanel11Layout);
-                jPanel11Layout.setHorizontalGroup(
-                                jPanel11Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel11Layout.createSequentialGroup()
-                                                                .addContainerGap()
-                                                                .addComponent(jOpen)
-                                                                .addContainerGap(GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)));
-                jPanel11Layout.setVerticalGroup(
-                                jPanel11Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel11Layout.createSequentialGroup()
-                                                                .addContainerGap()
-                                                                .addComponent(jOpen)
-                                                                .addContainerGap(GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)));
-
-                jPleaseTopUp.setFont(new Font("Segoe UI", 0, 10));
-                jPleaseTopUp.setForeground(new Color(255, 0, 0));
-                jPleaseTopUp.setText("* PLEASE TOP UP TO USE THE APP");
-
-                GroupLayout jPanel1Layout = new GroupLayout(jMainPanel);
-                jMainPanel.setLayout(jPanel1Layout);
-                jPanel1Layout.setHorizontalGroup(
-                                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                .addComponent(jLabel1)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(jLogOut)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
-                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)
-                                                                .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE,
-                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(
-                                                                                LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addGroup(jPanel1Layout.createParallelGroup(
-                                                                                GroupLayout.Alignment.LEADING, false)
-                                                                                .addComponent(jPanel3,
-                                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                                121, Short.MAX_VALUE)
-                                                                                .addComponent(jLabelBookRoom,
-                                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                                Short.MAX_VALUE))
-                                                                .addGap(15, 15, 15))
-                                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                .addContainerGap()
-                                                                .addGroup(jPanel1Layout.createParallelGroup(
-                                                                                GroupLayout.Alignment.LEADING)
-                                                                                .addGroup(jPanel1Layout
-                                                                                                .createSequentialGroup()
-                                                                                                .addComponent(jPanel4,
-                                                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                                                Short.MAX_VALUE)
-                                                                                                .addContainerGap())
-                                                                                .addGroup(jPanel1Layout
-                                                                                                .createSequentialGroup()
-                                                                                                .addGroup(jPanel1Layout
-                                                                                                                .createParallelGroup(
-                                                                                                                                GroupLayout.Alignment.LEADING)
-                                                                                                                .addGroup(jPanel1Layout
-                                                                                                                                .createSequentialGroup()
-                                                                                                                                .addGap(3)
-                                                                                                                                .addComponent(jMyBooking,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                136,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                                                                                .addPreferredGap(
-                                                                                                                                                LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                                .addComponent(jBookingButton,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                136,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                                                                                .addPreferredGap(
-                                                                                                                                                LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                                .addComponent(jOrderFood,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                136,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE))
-                                                                                                                .addGroup(jPanel1Layout
-                                                                                                                                .createSequentialGroup()
-                                                                                                                                .addGap(3)
-                                                                                                                                .addComponent(jTopUp,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                136,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                                                                                .addGap(0, 0, Short.MAX_VALUE))
-                                                                                                                .addComponent(jPleaseTopUp,
-                                                                                                                                GroupLayout.PREFERRED_SIZE,
-                                                                                                                                193,
-                                                                                                                                GroupLayout.PREFERRED_SIZE))
-                                                                                                .addGap(0, 8, Short.MAX_VALUE))
-                                                                                .addGroup(GroupLayout.Alignment.TRAILING,
-                                                                                                jPanel1Layout.createSequentialGroup()
-                                                                                                                // .addGap(35)
-                                                                                                                .addComponent(jPanelOpen,
-                                                                                                                                GroupLayout.PREFERRED_SIZE,
-                                                                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                                                                .addGap(65)))));
-                jPanel1Layout.setVerticalGroup(
-                                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                .addGroup(jPanel1Layout.createParallelGroup(
-                                                                                GroupLayout.Alignment.TRAILING)
-                                                                                .addGroup(jPanel1Layout
-                                                                                                .createSequentialGroup()
-                                                                                                .addGap(18, 18, 18)
-                                                                                                .addGroup(
-                                                                                                                jPanel1Layout.createParallelGroup(
-                                                                                                                                GroupLayout.Alignment.LEADING)
-                                                                                                                                .addGroup(jPanel1Layout
-                                                                                                                                                .createSequentialGroup()
-                                                                                                                                                .addGap(11, 11, 11)
-                                                                                                                                                .addComponent(jLabel1))
-                                                                                                                                .addComponent(jLogOut))
-                                                                                                .addPreferredGap(
-                                                                                                                LayoutStyle.ComponentPlacement.UNRELATED,
-                                                                                                                21,
-                                                                                                                Short.MAX_VALUE))
-                                                                                .addGroup(jPanel1Layout
-                                                                                                .createSequentialGroup()
-                                                                                                .addGap(0, 0, Short.MAX_VALUE)
-                                                                                                .addGroup(jPanel1Layout
-                                                                                                                .createParallelGroup(
-                                                                                                                                GroupLayout.Alignment.TRAILING)
-                                                                                                                .addComponent(jPanel2,
-                                                                                                                                GroupLayout.PREFERRED_SIZE,
-                                                                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                                                                .addGroup(jPanel1Layout
-                                                                                                                                .createSequentialGroup()
-                                                                                                                                .addComponent(jLabelBookRoom,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                25,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                                                                                .addGap(3, 3, 3)
-                                                                                                                                .addComponent(jPanel3,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                2,
-                                                                                                                                                GroupLayout.PREFERRED_SIZE)))
-                                                                                                .addGap(18, 18, 18)))
-                                                                .addComponent(jPanelOpen, GroupLayout.PREFERRED_SIZE,
-                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(18, 18, 18)
-                                                                .addGroup(jPanel1Layout.createParallelGroup(
-                                                                                GroupLayout.Alignment.LEADING)
-                                                                                .addGroup(jPanel1Layout
-                                                                                                .createSequentialGroup()
-                                                                                                .addComponent(jOrderFood,
-                                                                                                                GroupLayout.PREFERRED_SIZE,
-                                                                                                                45,
-                                                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                                                .addGap(0, 2, Short.MAX_VALUE))
-                                                                                .addComponent(jBookingButton,
-                                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                                39, Short.MAX_VALUE)
-                                                                                .addComponent(jMyBooking,
-                                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                                Short.MAX_VALUE))
-                                                                .addPreferredGap(
-                                                                                LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(jTopUp, GroupLayout.PREFERRED_SIZE, 45,
-                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(4, 4, 4)
-                                                                .addComponent(jPleaseTopUp)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(jPanel4, GroupLayout.PREFERRED_SIZE,
-                                                                                GroupLayout.DEFAULT_SIZE,
-                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(37, 37, 37)));
                 revalidate();
                 repaint();
-        }
-
-        private void loadRoom() {
-                ModelList1.clear();
-                try {
-                        String tempS;
-                        fr = new FileReader(fileRoomList);
-                        br = new BufferedReader(fr);
-                        while ((tempS = br.readLine()) != null) {
-                                String[] tempSplit = tempS.split("[)\\(\\;]");
-                                // System.out.println(mainframe.getUser().getUserId()+" = "+tempSplit[1]);
-                                if (mainframe.getUser().getUserId() == Integer.parseInt(tempSplit[1])) {
-                                        ModelList1.addElement(tempSplit[0] + " Date ; " + tempSplit[2] + " - "
-                                                        + tempSplit[3]);
-                                }
-                        }
-                } catch (Exception e) {
-                        System.out.println(e);
-                } finally {
-                        try {
-                                br.close();
-                                fr.close();
-                        } catch (Exception e) {
-                                System.out.println(e);
-                        }
-                }
         }
 
         private void jButtonOrderActionPerFormed(ActionEvent evt) {
@@ -460,11 +310,12 @@ public class Mybooking extends JPanel {
 
         private void jButtonRemoveRoom(ActionEvent e) {
                 if (jListRoom.getSelectedValue() != null) {
+                        System.out.println("tst");
                         String tempS = jListRoom.getSelectedValue();
                         String[] tempSplit = tempS.split("[:\\s\\-]");
                         Room tempRoom = null;
                         for (Room room : mainframe.getSystem().getRooms()) {
-                        
+
                                 if (Integer.parseInt(tempSplit[0]) == room.getIdRoom()) {
                                         tempRoom = room;
                                         break;
@@ -474,7 +325,7 @@ public class Mybooking extends JPanel {
                         int[] tempInt = new int[tempSplit.length];
                         for (int i = 0; i < tempInt.length; i++) {
                                 try {
-                                        tempInt[i] = Integer.parseInt(tempSplit[i]); 
+                                        tempInt[i] = Integer.parseInt(tempSplit[i]);
                                 } catch (Exception ea) {
                                         tempInt[i] = 0;
                                 }
@@ -488,6 +339,60 @@ public class Mybooking extends JPanel {
                 }
         }
 
+        private void loadRoom() {
+                ModelList1.clear();
+                try {
+                        String tempS;
+                        fr = new FileReader(fileRoomList);
+                        br = new BufferedReader(fr);
+                        while ((tempS = br.readLine()) != null) {
+                                String[] tempSplit = tempS.split("[)\\(\\;]");
+                                if (mainframe.getUser().getUserId() == Integer.parseInt(tempSplit[1])) {
+                                        // System.out.println(mainframe.getUser().getUserId()+" = "+tempSplit[1]);
+                                        ModelList1.addElement(tempSplit[0] + " Date ; " + tempSplit[2] + " - "
+                                                        + tempSplit[3]);
+                                }
+                        }
+                } catch (Exception e) {
+                        System.out.println(e);
+                } finally {
+                        try {
+                                br.close();
+                                fr.close();
+                        } catch (Exception e) {
+                                System.out.println(e);
+                        }
+                }
+        }
+
+        private void setUpTime() {
+                String tempPMAM1;
+                String tempPMAM2;
+                if (mainframe.getHourStart() <= 12) {
+                        tempPMAM1 = "A.M.";
+                } else {
+                        tempPMAM1 = "P.M.";
+                }
+                if (mainframe.getHourEnd() <= 12) {
+                        tempPMAM2 = "A.M.";
+                } else {
+                        tempPMAM2 = "P.M.";
+                }
+
+                if (mainframe.getMinuteStartEnd() == 0) {
+                        jOpen.setText("OPEN " + mainframe.getHourStart() + " : 00 " + tempPMAM1 + " - "
+                                        + mainframe.getHourEnd() + " : 00 " + tempPMAM2);
+                } else {
+                        jOpen.setText("OPEN " + mainframe.getHourStart() + " : " + mainframe.getMinuteStartEnd() + " "
+                                        + tempPMAM1 + " - " + mainframe.getHourEnd() + " : "
+                                        + mainframe.getMinuteStartEnd() + " " + tempPMAM2);
+                }
+        }
+
+        public void reGUI() {
+                initComponents();
+        }
+
         private void setUpFont() {
                 File fileTwCenMT = new File("./Font/TwCenMT.ttf");
                 File fileITCKRIST = new File("./Font/ITCKRIST.ttf");
@@ -499,25 +404,4 @@ public class Mybooking extends JPanel {
                 }
         }
 
-        private JButton jBookingButton;
-        private JButton jOrderFood;
-        private JButton jTopUp;
-        private JButton jMyBooking;
-        private JButton jButtonCancel;
-        private JButton jLogOut;
-        private JLabel jLabel1;
-        private JLabel jLabelBookRoom;
-        private JLabel jOpen;
-        private JLabel jMoney;
-        private JLabel jLabelOnlist;
-        private JLabel jPleaseTopUp;
-
-        private JList<String> jListRoom;
-        private JPanel jMainPanel;
-        private JPanel jPanelOpen;
-        private JPanel jPanel2;
-        private JPanel jPanel3;
-        private JPanel jPanel4;
-        private JScrollPane jScrollPane1;
-        // End of variables declaration//GEN-END:variables
 }

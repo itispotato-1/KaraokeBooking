@@ -86,7 +86,7 @@ public class menudrink extends JPanel {
         JLabel jLabelMenuDrink = new JLabel();
         jLabelMenuDrink.setForeground(Color.WHITE);
         jLabelMenuDrink.setFont(FontTWCENMT.deriveFont((float) 35).deriveFont((int) 1)); // NOI18N
-        jLabelMenuDrink.setText("MENU FOOD");
+        jLabelMenuDrink.setText("MENU DRINK");
         jLabelMenuDrink.setBounds(90, 2, 300, 50);
 
         JPanel panelOrder = new RoundedPanel(30, 30);
@@ -104,17 +104,18 @@ public class menudrink extends JPanel {
 
                 ButtonImage[i] = new JButton();
                 ButtonImage[i].setBounds(10, 10, 125, 90);
+                ButtonImage[i].setBorder(BorderFactory.createLineBorder(Color.black, 2, true));
                 ImageIcon tempIcon = new ImageIcon(
                         getClass().getResource("/GUI/Picture/Drink/" + product.getProductId() + ".jpg"));
                 Image img = tempIcon.getImage().getScaledInstance(ButtonImage[i].getSize().width,
                         ButtonImage[i].getSize().height,
                         Image.SCALE_SMOOTH);
                 ButtonImage[i].setIcon(new ImageIcon(img));
-                
+
                 jLabelCost[i] = new JLabel("Cost : " + product.getPrice());
                 jLabelCost[i].setFont(FontTWCENMT.deriveFont((float) 14).deriveFont(1));
                 jLabelCost[i].setBounds(10, 100, 100, 70);
-                
+
                 jLabelNameFood[i] = new JLabel(product.getProductName());
                 jLabelNameFood[i].setFont(FontTWCENMT.deriveFont((float) 14).deriveFont(1));
                 jLabelNameFood[i].setBounds(10, 80, 100, 70);
@@ -126,6 +127,12 @@ public class menudrink extends JPanel {
                 ButtonOrder[i].setIcon(new ImageIcon(tempImage3));
                 ButtonOrder[i].setFont(FontTWCENMT.deriveFont((float) 12).deriveFont(1));
                 ButtonOrder[i].setBounds(100, 107, 38, 38);
+                ButtonOrder[i].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new Order().setVisible(true);
+                    }
+                });
 
                 panelOrderIn[i].add(ButtonOrder[i]);
                 panelOrderIn[i].add(jLabelNameFood[i]);

@@ -1,323 +1,388 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.JSpinner.*;
+import javax.swing.border.*;
 
 import GUI.Decorate.*;
-import lib.BookRoom.*;
-import lib.loginregister.*;
-import store.Product;
+import lib.BookRoom.Room;
+import lib.BookRoom.RoomSystem;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 
-public class test extends JDialog {
+public class test extends JPanel {
     private Font FontITCKRIST;
     private Font FontTWCENMT;
-    private DefaultListModel<RoomTime> ModelList1;
-    private DefaultListModel<RoomTime> ModelList2;
-    private int year, month, day;
-    private int hourStart;
-    private int hourEnd;
-    private int minuteStartEnd;
-    private User user;
-    private Room room;
-    private RoomSystem system;
-    private LocalDate date;
-    private Mainframe mainFrame;
+    private Mainframe mainframe;
+    private DefaultListModel<String> ModelList1;
+    private File fileRoomList = null;
+    private FileReader fr = null;
+    private BufferedReader br = null;
 
-    JList<RoomTime> jListLeft;
-    JList<RoomTime> jListRight;
+    private JList<String> jListRoom;
 
-    private static class roomTimeListRenderer extends DefaultListCellRenderer {
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-                boolean isSelected, boolean cellHasFocus) {
+    JLabel jOpen;
 
-            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-            if (value instanceof RoomTime) {
-                RoomTime roomTime = (RoomTime) value;
-
-                if (roomTime.getTimeStart().getMinute() == 0) {
-                    setText(roomTime.getTimeStart().getHour() + ":"
-                            + roomTime.getTimeStart().getMinute() + "0 - "
-                            + roomTime.getTimeEnd().getHour() + ":"
-                            + roomTime.getTimeEnd().getMinute() + "0");
-                } else {
-                    setText(roomTime.getTimeStart().getHour() + ":"
-                            + roomTime.getTimeStart().getMinute() + " - "
-                            + roomTime.getTimeEnd().getHour() + ":"
-                            + roomTime.getTimeEnd().getMinute());
-                }
-            }
-            return this;
-        }
-    }
-
-    public test(User user, Room room, JPanel j, LocalDate date, Mainframe mainFrame) {
-        this.user = user;
-        this.room = room;
-        this.date = date;
-        this.mainFrame = mainFrame;
-        hourStart = mainFrame.getHourStart();
-        hourEnd = mainFrame.getHourEnd();
-        minuteStartEnd = mainFrame.getMinuteStartEnd();
-
-        setUpLookAndFeel();
+    public test(Mainframe mainframe) {
+        ModelList1 = new DefaultListModel<>();
+        fileRoomList = new File("./file/RoomTimes.csv");
+        this.mainframe = mainframe;
         setUpFont();
-        setUpTime(hourStart, hourEnd);
-        setModal(true);
-        setResizable(false);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);//
-        setSize(new Dimension(465 ,355));
-        setLocationRelativeTo(j);//
+        setVisible(true);
         initComponents();
     }
 
     private void initComponents() {
+        removeAll();
 
-        JPanel panelMain = new JPanel(null);
-        panelMain.setBackground(new Color(250, 243, 222));
+        JPanel panelMain = new JPanel();
+        panelMain.setLayout(new BoxLayout(panelMain, BoxLayout.Y_AXIS));
+        panelMain.setPreferredSize(new Dimension(440, 664));
+        panelMain.setBackground(Color.WHITE);
         add(panelMain);
 
-        JLabel LabelImageMicRight = new JLabel("");
-        ImageIcon tempIcon1 = new ImageIcon("./GUI/Picture/MicLeft.png");
-        Image tempImage1 = tempIcon1.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        LabelImageMicRight.setIcon(new ImageIcon(tempImage1));
-        LabelImageMicRight.setBounds(55, 2, 50, 50);
+        JPanel panelSecound = new JPanel();
+        panelSecound.setOpaque(false);
+        panelSecound.setLayout(new BoxLayout(panelSecound, BoxLayout.Y_AXIS));
+        panelSecound.setBackground(Color.WHITE);
+        panelSecound.setMaximumSize(new Dimension(400, 600));
 
-        JLabel jBookTime = new JLabel();
-        jBookTime.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 45));
-        jBookTime.setText("BOOK A TIME");
-        jBookTime.setBounds((getWidth() / 2) - 140, 2, 300, 50);
+        // -------------------------------- Panel ข้างบนสุด ------------------------
+        JPanel panelTop = new JPanel(null);
+        panelTop.setOpaque(false);
+        panelTop.setBackground(Color.WHITE);
+        panelTop.setMaximumSize(new Dimension(400, 60));
 
-        JLabel LabelImageMicLeft = new JLabel("");
-        ImageIcon tempIcon2 = new ImageIcon("./GUI/Picture/MicRight.png");
-        Image tempImage2 = tempIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        LabelImageMicLeft.setIcon(new ImageIcon(tempImage2));
-        LabelImageMicLeft.setBounds(365, 2, 50, 50);
+        JButton buttonExit = new JButton("X");
+        buttonExit.setForeground(Color.WHITE);
+        buttonExit.setBackground(Color.RED);
+        buttonExit.setMaximumSize(new Dimension(40, 40));
+        buttonExit.setBounds(5, 10, 35, 35);
+        buttonExit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtonLogoutActionPerformed(e);
+            }
+        });
+
+        JPanel panelMoney = new JPanel();
+        panelMoney.setLayout(new BoxLayout(panelMoney, BoxLayout.X_AXIS));
+        panelMoney.setBackground(new Color(255, 255, 204));
+        panelMoney.setMaximumSize(new Dimension(200, 40));
+        panelMoney.setBounds(150, 15, 115, 30);
+
+        JLabel labelMoney = new JLabel();
+        labelMoney.setBackground(new Color(255, 255, 255));
+        labelMoney.setFont(FontTWCENMT.deriveFont((float) 14).deriveFont((int) 1)); // NOI18N
+        labelMoney.setText("MONEY : " + mainframe.getUser().getMoney());// ไว้แก้Money
+
+        panelMoney.add(Box.createHorizontalStrut(5));
+        panelMoney.add(labelMoney);
+
+        JPanel panelBookRoom = new JPanel();
+        panelBookRoom.setOpaque(false);
+        panelBookRoom.setLayout(new BoxLayout(panelBookRoom, BoxLayout.Y_AXIS));
+        panelBookRoom.setBackground(Color.WHITE);
+        panelBookRoom.setPreferredSize(new Dimension(250, 50));
+        panelBookRoom.setMaximumSize(new Dimension(250, 50));
+        panelBookRoom.setBounds(270, 5, 130, 50);
+
+        JLabel jLabelBookRoom = new JLabel();
+        jLabelBookRoom.setFont(FontITCKRIST.deriveFont((float) 14));
+        jLabelBookRoom.setText("BOOK A ROOM");
 
         JPanel panelLine = new JPanel();
         panelLine.setBackground(Color.BLACK);
-        panelLine.setBounds(95, 45, 263, 7);
+        panelLine.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
+        panelLine.setPreferredSize(new Dimension(250, 5));
+        panelLine.setMaximumSize(new Dimension(250, 4));
 
-        jListLeft = new JList<>();
-        jListLeft.setBackground(new Color(255, 241, 234));
-        jListLeft.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
-        jListLeft.setBounds(30, 62, 175, 165);
-        jListLeft.setModel(ModelList1);
-        jListLeft.setCellRenderer(new roomTimeListRenderer());//
+        panelBookRoom.add(Box.createVerticalStrut(10));
+        panelBookRoom.add(jLabelBookRoom);
+        panelBookRoom.add(Box.createVerticalStrut(5));
+        panelBookRoom.add(panelLine);
+        panelBookRoom.add(Box.createVerticalStrut(10));
+
+        panelTop.add(buttonExit);
+        panelTop.add(panelMoney);
+        panelTop.add(panelBookRoom);
+        // -------------------------------- Panel ข้างบนสุด ------------------------
+
+        // -------------------------------- Panel เวลา ------------------------
+        JPanel panelTime = new JPanel(new BorderLayout());
+        panelTime.setOpaque(false);
+        panelTime.setLayout(new BoxLayout(panelTime, BoxLayout.X_AXIS));
+        panelTime.setBackground(Color.WHITE);
+        panelTime.setMaximumSize(new Dimension(300, 50));
+
+        jOpen = new JLabel("NULL");
+        jOpen.setFont(FontITCKRIST.deriveFont((float) 18));
+        setUpTime();
+
+        panelTime.add(Box.createHorizontalGlue());
+        panelTime.add(jOpen);
+        panelTime.add(Box.createHorizontalGlue());
+        // -------------------------------- Panel เวลา ------------------------
+
+        // -------------------------------- Panel ปุ่มเปลี่ยนหน้า -----------------
+        JPanel panelButtonSwitch = new JPanel();
+        panelButtonSwitch.setOpaque(false);
+        panelButtonSwitch.setLayout(new GridLayout(2, 3, 5, 5));
+        panelButtonSwitch.setBackground(Color.WHITE);
+        panelButtonSwitch.setMaximumSize(new Dimension(400, 100));
+
+        int SIZE_FONTBUTTON = 16;
+        int STYLE_FONTBUTTON = 1;
+        Font fontButton = FontTWCENMT.deriveFont(STYLE_FONTBUTTON, SIZE_FONTBUTTON).deriveFont((float) SIZE_FONTBUTTON);
+
+        JButton jBookingButton = new JButton();
+        jBookingButton.setBackground(new Color(163, 228, 255));
+        jBookingButton.setFont(fontButton);
+        jBookingButton.setText("BOOKING");
+        jBookingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtonBookingActionPerFormed(e);
+            }
+        });
+
+        JButton jMyBooking = new JButton();
+        jMyBooking.setBackground(new Color(245, 147, 130));
+        jMyBooking.setFont(fontButton);
+        jMyBooking.setText("MY BOOKING");
+        jMyBooking.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtonMyBookingActionPerFormed(e);
+            }
+        });
+
+        JButton jOrderFood = new JButton();
+        jOrderFood.setBackground(new Color(250, 206, 172));
+        jOrderFood.setFont(fontButton);
+        jOrderFood.setText("ORDER FOOD");
+        jOrderFood.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtonOrderActionPerFormed(e);
+            }
+        });
+
+        JButton jTopUp = new JButton();
+        jTopUp.setBackground(new Color(204, 255, 204));
+        jTopUp.setFont(fontButton);
+        jTopUp.setText("TOP UP");
+        jTopUp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButton1TopupActionPerformed(e);
+            }
+        });
+
+        panelButtonSwitch.add(jMyBooking);
+        panelButtonSwitch.add(jBookingButton);
+        panelButtonSwitch.add(jOrderFood);
+        panelButtonSwitch.add(jTopUp);
+        panelButtonSwitch.add(Box.createRigidArea(new Dimension(50, 50)));
+        panelButtonSwitch.add(Box.createRigidArea(new Dimension(50, 50)));
+        // -------------------------------- Panel ปุ่มเปลี่ยนหน้า -----------------
+
+        // -------------------------------- Panel อักษรใต้ปุ่ม -----------------
+        JPanel panelText = new JPanel();
+        panelText.setOpaque(false);
+        panelText.setLayout(new BoxLayout(panelText, BoxLayout.X_AXIS));
+        panelText.setBackground(Color.WHITE);
+        panelText.setMaximumSize(new Dimension(400, 20));
+
+        JLabel jPleaseTopUp = new JLabel();
+        jPleaseTopUp.setFont(new Font("Segoe UI", 0, 10));
+        jPleaseTopUp.setForeground(new Color(255, 0, 0));
+        jPleaseTopUp.setText("* PLEASE TOP UP TO USE THE APP");
+
+        panelText.add(jPleaseTopUp);
+        // -------------------------------- Panel อักษรใต้ปุ่ม -----------------
+
+        // -------------------------------- Panel ห้อง -----------------
+        JPanel jPanelRoom = new JPanel();
+        jPanelRoom.setLayout(new BoxLayout(jPanelRoom, BoxLayout.Y_AXIS));
+        jPanelRoom.setBackground(new Color(250, 248, 227));
+        jPanelRoom.setMaximumSize(new Dimension(400, 400));
+
+        JPanel jPanelRoomTop = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        jPanelRoomTop.setBackground(Color.WHITE);
+        jPanelRoomTop.setOpaque(false);
+        jPanelRoomTop.setMaximumSize(new Dimension(350, 50));
+        jPanelRoomTop.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        JLabel jLabelOnlist = new JLabel();
+        jLabelOnlist.setFont(FontTWCENMT.deriveFont((float) 35).deriveFont((int) 1));
+        jLabelOnlist.setForeground(new Color(1, 41, 94));
+        jLabelOnlist.setText("MY BOOKING");
+
+        jPanelRoomTop.add(jLabelOnlist, BorderLayout.CENTER);
+
+        JPanel jPanelRoomCenter = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        jPanelRoomCenter.setBackground(Color.WHITE);
+        jPanelRoomCenter.setBorder(BorderFactory.createLineBorder(new Color(0, 74, 173), 3));
+        jPanelRoomCenter.setMaximumSize(new Dimension(300, 300));
+
+        jListRoom = new JList<>();
+        jListRoom.setBackground(new Color(255, 241, 234));
+        jListRoom.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+        jListRoom.setFont(FontITCKRIST.deriveFont(1).deriveFont((float) 14));
+        loadRoom();
+        jListRoom.setModel(ModelList1);
         JScrollPane jScrollPane1 = new JScrollPane();
-        jScrollPane1.setViewportView(jListLeft);
+        jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.getVerticalScrollBar().setUnitIncrement(8);
+        jScrollPane1.setViewportView(jListRoom);
 
-        jListRight = new JList<>();
-        jListRight.setBackground(new Color(255, 241, 234));
-        jListRight.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
-        jListRight.setModel(ModelList2);
-        jListRight.setCellRenderer(new roomTimeListRenderer());//
-        JScrollPane jScrollPane2 = new JScrollPane();
-        jScrollPane2.setViewportView(jListRight);
-        jListRight.setBounds(245, 62, 175, 165);
+        JPanel jPanelRoomButtom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        jPanelRoomButtom.setBackground(Color.WHITE);
+        jPanelRoomButtom.setOpaque(false);
+        jPanelRoomButtom.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
+        jPanelRoomButtom.setMaximumSize(new Dimension(300, 50));
 
-        JButton jButtonAdd = new JButton();
-        jButtonAdd.setBackground(new Color(183, 255, 207));
-        jButtonAdd.setFont(new Font("MS Gothic", 0, 18));
-        jButtonAdd.setText("Add Room");
-        jButtonAdd.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
-        jButtonAdd.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jButtonAddRoom(evt);
+        JButton jButtonCancel = new JButton();
+        jButtonCancel.setBackground(new Color(255, 25, 25));
+        jButtonCancel.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 18)); // NOI18N
+        jButtonCancel.setForeground(new Color(255, 255, 255));
+        jButtonCancel.setPreferredSize(new Dimension(130, 40));
+        jButtonCancel.setText("Cancel Room");
+        jButtonCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtonRemoveRoom(e);
             }
         });
-        jButtonAdd.setBounds(25, 250, 130, 50);
 
-        JButton jButtonRemove = new JButton();
-        jButtonRemove.setBackground(new Color(255, 107, 131));
-        jButtonRemove.setFont(new Font("MS Gothic", 0, 18));
-        jButtonRemove.setForeground(new Color(255, 255, 255));
-        jButtonRemove.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
-        jButtonRemove.setText("Remove Room");
-        jButtonRemove.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jButtonRemoveRoom(evt);
-            }
-        });
-        jButtonRemove.setBounds(getWidth() / 2 - 70, 250, 130, 50);
+        jPanelRoomButtom.add(jButtonCancel);
 
-        JButton jButtonConfirm = new JButton();
-        jButtonConfirm.setBackground(new Color(205, 255, 255));
-        jButtonConfirm.setFont(new Font("MS Gothic", 0, 18));
-        jButtonConfirm.setText("Confirm");
-        jButtonConfirm.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
-        jButtonConfirm.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jButtonConfirmRoom(evt);
-            }
-        });
-        jButtonConfirm.setBounds(getWidth() / 2 + 70, 250, 130, 50);
+        jPanelRoom.add(jPanelRoomTop);
+        jPanelRoom.add(jPanelRoomCenter);
+        jPanelRoom.add(jPanelRoomButtom);
 
-        panelMain.add(jButtonConfirm);
-        panelMain.add(jButtonRemove);
-        panelMain.add(jButtonAdd);
+        // -------------------------------- Panel ห้อง -----------------
 
-        panelMain.add(LabelImageMicRight);
-        panelMain.add(jBookTime);
-        panelMain.add(LabelImageMicLeft);
-        panelMain.add(panelLine);
-        panelMain.add(jListLeft);
-        panelMain.add(jListRight);
+        panelSecound.add(panelTop);
+        panelSecound.add(panelTime);
+        panelSecound.add(panelButtonSwitch);
+        panelSecound.add(panelText);
+        panelSecound.add(jPanelRoom);
+
+        panelMain.add(Box.createVerticalStrut(10));
+        panelMain.add(panelSecound);
 
         revalidate();
         repaint();
     }
 
-    private void jButtonRemoveRoom(ActionEvent evt) {
-        if (jListRight.getSelectedValue() != null) {
-            // System.out.println(jList2.getSelectedValue());
-            ModelList1.addElement(jListRight.getSelectedValue());
-            ArrayList<RoomTime> listSort = Collections.list(ModelList1.elements());
-            Collections.sort(listSort, (r1, r2) -> Integer.compare(r1.getTimeStart().getHour(),
-                    r2.getTimeStart().getHour()));
-            ModelList1.clear();
-            for (int i = 0; i < listSort.size(); i++) {
-                ModelList1.addElement(listSort.get(i));
+    private void jButtonOrderActionPerFormed(ActionEvent evt) {
+        mainframe.showPanel("menufood");
+    }
+
+    private void jButtonBookingActionPerFormed(ActionEvent evt) {
+        mainframe.showPanel("book");
+    }
+
+    private void jButtonLogoutActionPerformed(ActionEvent evt) {
+        mainframe.showPanel("login");
+    }
+
+    private void jButtonMyBookingActionPerFormed(ActionEvent evt) {
+        mainframe.showPanel("mybooking");
+    }
+
+    private void jButton1TopupActionPerformed(ActionEvent evt) {
+        mainframe.showPanel("topup");
+    }
+
+    private void jButtonRemoveRoom(ActionEvent e) {
+        if (jListRoom.getSelectedValue() != null) {
+            String tempS = jListRoom.getSelectedValue();
+            String[] tempSplit = tempS.split("[:\\s\\-]");
+            Room tempRoom = null;
+            for (Room room : mainframe.getSystem().getRooms()) {
+
+                if (Integer.parseInt(tempSplit[0]) == room.getIdRoom()) {
+                    tempRoom = room;
+                    break;
+                }
             }
-            ModelList2.removeElementAt(jListRight.getSelectedIndex());
-            jListRight.setModel(ModelList2);
-            jListLeft.setModel(ModelList1);
+
+            int[] tempInt = new int[tempSplit.length];
+            for (int i = 0; i < tempInt.length; i++) {
+                try {
+                    tempInt[i] = Integer.parseInt(tempSplit[i]);
+                } catch (Exception ea) {
+                    tempInt[i] = 0;
+                }
+            }
+            LocalDateTime timeStart = LocalDateTime.of(tempInt[5], tempInt[4], tempInt[3], tempInt[6],
+                    tempInt[7], tempInt[8]);
+            LocalDateTime timeEnd = LocalDateTime.of(tempInt[5], tempInt[4], tempInt[3], tempInt[14],
+                    tempInt[15], tempInt[16]);
+            mainframe.getSystem().removeBookRoom(tempRoom, mainframe.getUser(), timeStart, timeEnd);
+            initComponents();
         }
     }
 
-    private void jButtonAddRoom(ActionEvent evt) {
-        if (jListLeft.getSelectedValue() != null) {
-            ModelList2.addElement(jListLeft.getSelectedValue());
-            ArrayList<RoomTime> listSort = Collections.list(ModelList2.elements());
-            Collections.sort(listSort, (r1, r2) -> Integer.compare(r1.getTimeStart().getHour(),
-                    r2.getTimeStart().getHour()));
-            ModelList2.clear();
-            for (int i = 0; i < listSort.size(); i++) {
-                ModelList2.addElement(listSort.get(i));
+    private void loadRoom() {
+        ModelList1.clear();
+        try {
+            String tempS;
+            fr = new FileReader(fileRoomList);
+            br = new BufferedReader(fr);
+            while ((tempS = br.readLine()) != null) {
+                String[] tempSplit = tempS.split("[)\\(\\;]");
+                // System.out.println(mainframe.getUser().getUserId()+" = "+tempSplit[1]);
+                if (mainframe.getUser().getUserId() == Integer.parseInt(tempSplit[1])) {
+                    ModelList1.addElement(tempSplit[0] + " Date ; " + tempSplit[2] + " - "
+                            + tempSplit[3]);
+                }
             }
-            ModelList1.removeElementAt(jListLeft.getSelectedIndex());
-            jListRight.setModel(ModelList2);
-            jListLeft.setModel(ModelList1);
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                br.close();
+                fr.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 
-    private void jButtonConfirmRoom(ActionEvent evt) {
-        ArrayList<RoomTime> tempRoomTime = new ArrayList<>();
-        boolean check = false;
-        double sum = 0;
-        for (int i = 0; i < ModelList2.size(); i++) {
-            sum += ModelList2.get(i).getRoom().getPrice();
-        }
-
-        if (mainFrame.getUser().getMoney() - sum < 0) {
-            JOptionPane.showMessageDialog(this,
-                    "Not enough money, missing another "
-                            + (-1 * (mainFrame.getUser().getMoney() - sum)),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+    private void setUpTime() {
+        String tempPMAM1;
+        String tempPMAM2;
+        if (mainframe.getHourStart() <= 12) {
+            tempPMAM1 = "A.M.";
         } else {
-            mainFrame.getUser().setMoney(mainFrame.getUser().getMoney() - sum);
-            mainFrame.getService().setMoneyUserInUserList(mainFrame.getUser());
-            mainFrame.showPanel("book");
-            for (int i = 0; i < ModelList2.size(); i++) {
-                RoomTime tempModel = ModelList2.get(i);
-                if (!(system.checkLocalDateTimeIsSame(tempModel.getRoom(), tempModel.getTimeStart(),
-                        tempModel.getTimeEnd()))
-                        && !(LocalDateTime.now().isAfter(tempModel.getTimeStart()))) {
-                    tempRoomTime.add(tempModel);
+            tempPMAM1 = "P.M.";
+        }
+        if (mainframe.getHourEnd() <= 12) {
+            tempPMAM2 = "A.M.";
+        } else {
+            tempPMAM2 = "P.M.";
+        }
 
-                } else {
-                    if (check == false) {
-                        JOptionPane.showMessageDialog(this,
-                                "The time matches what others have booked.",
-                                "",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
-                    check = true;
-                }
-            }
-            ModelList2.clear();
-
-            if (check == false) {
-                for (int i = 0; i < tempRoomTime.size(); i++) {
-                    try {
-                        system.addBookRoom(tempRoomTime.get(i).getRoom(),
-                                tempRoomTime.get(i).getUser(),
-                                tempRoomTime.get(i).getTimeStart(),
-                                tempRoomTime.get(i).getTimeEnd());
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
-                }
-            } else {
-                Collections.sort(tempRoomTime, (r1, r2) -> Integer.compare(r1.getTimeStart().getHour(),
-                        r2.getTimeStart().getHour()));
-                for (int i = 0; i < tempRoomTime.size(); i++) {
-                    ModelList2.addElement(tempRoomTime.get(i));
-
-                }
-            }
-            jListRight.setModel(ModelList2);
+        if (mainframe.getMinuteStartEnd() == 0) {
+            jOpen.setText("OPEN " + mainframe.getHourStart() + " : 00 " + tempPMAM1 + " - "
+                    + mainframe.getHourEnd() + " : 00 " + tempPMAM2);
+        } else {
+            jOpen.setText("OPEN " + mainframe.getHourStart() + " : " + mainframe.getMinuteStartEnd() + " "
+                    + tempPMAM1 + " - " + mainframe.getHourEnd() + " : "
+                    + mainframe.getMinuteStartEnd() + " " + tempPMAM2);
         }
     }
 
-    public void setUpTime(int TimeStart, int TimeEnd) {
-        if (TimeStart == TimeEnd) {
-            throw new RuntimeException("TimeStart and TimeEnd is same");
-        }
-        system = new RoomSystem();
-        year = date.getYear();
-        month = date.getMonthValue();
-        day = date.getDayOfMonth();
-        ModelList1 = new DefaultListModel<>();
-        ModelList2 = new DefaultListModel<>();
-        int loopHour1;
-        int loopHour2;
-        if (hourEnd - hourStart >= 0) {
-            loopHour1 = 0;
-            loopHour2 = hourEnd - hourStart;
-        } else {
-            loopHour1 = hourEnd;
-            loopHour2 = 24 - hourStart;
-        }
-        for (int i = 0; i < loopHour1; i++) {
-            hourStart = hourStart % 24;
-            if (!(system.checkLocalDateTimeIsSame(room,
-                    LocalDateTime.of(year, month, day, loopHour1 + i,
-                            minuteStartEnd),
-                    LocalDateTime.of(year, month, day, loopHour1 + i + 1, minuteStartEnd)))
-                    && LocalDateTime.now().isBefore(
-                            LocalDateTime.of(year, month, day, 0 + i, minuteStartEnd))) {
-                ModelList1.addElement(new RoomTime(room, user,
-                        LocalDateTime.of(year, month, day, 0 + i, minuteStartEnd),
-                        LocalDateTime.of(year, month, day, 0 + i + 1, minuteStartEnd)));
-            }
-        }
-        for (int i = 0; i < loopHour2; i++) {// ปรับการจัดเวลา24:00
-            int temphourStart = hourStart + i;
-            int temphourStartNext = hourStart + i + 1;
-            if (temphourStart + 1 == 24) {
-                temphourStartNext = 0;
-            }
-            if (!(system.checkLocalDateTimeIsSame(room,
-                    LocalDateTime.of(year, month, day, temphourStart,
-                            minuteStartEnd),
-                    LocalDateTime.of(year, month, day, temphourStartNext, minuteStartEnd)))
-                    && LocalDateTime.now().isBefore(LocalDateTime.of(year, month, day,
-                            temphourStart, minuteStartEnd))) {
-                ModelList1.addElement(new RoomTime(room, user,
-                        LocalDateTime.of(year, month, day, temphourStart, minuteStartEnd),
-                        LocalDateTime.of(year, month, day, temphourStartNext, minuteStartEnd)));
-            }
-        }
+    public void reGUI() {
+        initComponents();
     }
 
     private void setUpFont() {
@@ -331,21 +396,4 @@ public class test extends JDialog {
         }
     }
 
-    private void setUpLookAndFeel() {
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(listbook.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        }
-    }
-
-    public static void main(String[] args) {
-        new test(new User("A", "123", "12345678"), new Room("a", 220, 150), null, null, null);
-    }
 }

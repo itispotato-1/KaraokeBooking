@@ -344,8 +344,4 @@ public class listbook extends JDialog {
                     null, ex);
         }
     }
-
-    public static void main(String[] args) {
-        new test(new User("A", "123", "12345678"), new Room("a", 220, 150), null, null, null);
-    }
 }

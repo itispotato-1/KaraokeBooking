@@ -104,6 +104,7 @@ public class menufood extends JPanel {
 
                 ButtonImage[i] = new JButton();
                 ButtonImage[i].setBounds(10, 10, 125, 90);
+                ButtonImage[i].setBorder(BorderFactory.createLineBorder(Color.black, 2, true));
                 ImageIcon tempIcon = new ImageIcon(
                         getClass().getResource("/GUI/Picture/Food/" + product.getProductId() + ".jpg"));
                 Image img = tempIcon.getImage().getScaledInstance(ButtonImage[i].getSize().width,
@@ -118,7 +119,7 @@ public class menufood extends JPanel {
                 jLabelNameFood[i] = new JLabel(product.getProductName());
                 jLabelNameFood[i].setFont(FontTWCENMT.deriveFont((float) 14).deriveFont(1));
                 jLabelNameFood[i].setBounds(10, 80, 100, 70);
-
+                
                 ButtonOrder[i] = new RoundedButton(30, 30, Color.BLACK, 4);
                 ButtonOrder[i].setBackground(new Color(97, 255, 152));
                 ImageIcon tempIcon3 = new ImageIcon("./GUI/Picture/IconOrder.png");
@@ -126,6 +127,12 @@ public class menufood extends JPanel {
                 ButtonOrder[i].setIcon(new ImageIcon(tempImage3));
                 ButtonOrder[i].setFont(FontTWCENMT.deriveFont((float) 12).deriveFont(1));
                 ButtonOrder[i].setBounds(100, 107, 38, 38);
+                ButtonOrder[i].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new Order().setVisible(true);
+                    }        
+                });
 
                 panelOrderIn[i].add(ButtonOrder[i]);
                 panelOrderIn[i].add(jLabelNameFood[i]);

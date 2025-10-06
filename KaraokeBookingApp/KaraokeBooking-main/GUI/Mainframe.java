@@ -82,7 +82,7 @@ public class Mainframe extends JFrame {
         container.add(drink, "menudrink");
         container.add(food, "menufood");
         container.add(topup, "topup");
-        //container.add(new test(this), "test");
+        container.add(new test(this), "test");
 
         add(container);
         setResizable(false);
@@ -98,9 +98,9 @@ public class Mainframe extends JFrame {
     public void showPanel(String name) {
         system.ClearRoomTimeBeforeDate(LocalDate.now());
         if (name.equals("book")) {
-            Book.initComponents();
+            Book.reGUI();
         } else if (name.equals("mybooking")) {
-            mybooking.initComponents();
+            mybooking.reGUI();
         }
 
         cardLayout.show(container, name);
@@ -158,6 +158,9 @@ public class Mainframe extends JFrame {
             java.util.logging.Logger.getLogger(Mainframe.class.getName()).log(java.util.logging.Level.SEVERE,
                     null, ex);
         }
+        UIManager.put("RootPane.contentMargins", new Insets(0, 0, 0, 0));
+        UIManager.put("Panel.contentMargins", new Insets(0, 0, 0, 0));
+        UIManager.put("Panel.background", java.awt.Color.WHITE);
     }
 
     public static void main(String[] args) {

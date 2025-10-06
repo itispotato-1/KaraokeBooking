@@ -3,6 +3,7 @@ package GUI;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+import GUI.Decorate.RoundedButton;
 import lib.loginregister.*;
 
 import java.awt.*;
@@ -25,20 +26,20 @@ public class TOPUP extends JPanel {
         setUpFont();
         initComponents();
     }
-
+    
     private void initComponents() {
-        JPanel panelMain = new JPanel(null);
+        JPanel panelMain = new PanelSetImage(null, "./GUI/Picture/BGMoney.png");//แก้ไฟล์ไม่แสดง
         panelMain.setPreferredSize(new Dimension(440, 664));
+        panelMain.setSize(new Dimension(440, 664));
         panelMain.setBackground(Color.WHITE);
         add(panelMain);
 
-        JButton jButtonBack = new JButton();
-        jButtonBack.setBackground(new Color(255, 89, 100));
-        jButtonBack.setForeground(new Color(255, 255, 255));
-        jButtonBack.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 18));
-        jButtonBack.setText("BACK");
-        jButtonBack.setBounds(10, 20, 75, 30);
-        jButtonBack.addActionListener(new ActionListener() {
+        JButton homeButton = new RoundedButton(100, 100);
+        ImageIcon tempIcon2 = new ImageIcon("./GUI/Picture/IconHome.png");
+        Image tempImage2 = tempIcon2.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        homeButton.setIcon(new ImageIcon(tempImage2));
+        homeButton.setBounds((panelMain.getWidth() / 2) - 25, 10, 45, 45);
+        homeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jButtonBackActionPerformed(e);
@@ -49,15 +50,15 @@ public class TOPUP extends JPanel {
         JPanel panel1 = new JPanel();
         panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
         panel1.setBackground(Color.WHITE);
-        panel1.setBounds(12, 100, 400, 475);
+        panel1.setBounds((panelMain.getWidth() / 2) - 200, 100, 400, 475);
 
         jLabel1 = new JLabel();
-        jLabel1.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 21)); // NOI18N
+        jLabel1.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 21)); 
         jLabel1.setText("TOP - UP SYSTEM");
         jLabel1.setAlignmentX(CENTER_ALIGNMENT);
 
         jLabel2 = new JLabel();
-        jLabel2.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 21)); // NOI18N
+        jLabel2.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 21)); 
         jLabel2.setText("BOOK A ROOM AND ORDER FOOD");
         jLabel2.setAlignmentX(CENTER_ALIGNMENT);
 
@@ -65,7 +66,7 @@ public class TOPUP extends JPanel {
         ImageIcon tempIcon = new ImageIcon("./GUI/Picture/FAKE_QR.png");
         Image tempImage = tempIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
         jLabelImg.setIcon(new ImageIcon(tempImage));
-        jLabelImg.setBorder(new LineBorder(Color.BLACK, 10));
+        jLabelImg.setBorder(new LineBorder(Color.BLACK, 10,true));
         jLabelImg.setAlignmentX(CENTER_ALIGNMENT);
 
         JPanel panelMoney = new JPanel(null);
@@ -108,7 +109,7 @@ public class TOPUP extends JPanel {
         panel1.add(panelMoney);
         // ---------------------------------- panel1 ------------------------
 
-        panelMain.add(jButtonBack);
+        panelMain.add(homeButton);
         panelMain.add(panel1);
 
         panelMain.revalidate();
@@ -129,10 +130,9 @@ public class TOPUP extends JPanel {
     }
 
     private void jButtonBackActionPerformed(ActionEvent evt) {
+        jTextFieldMoney.setText("0");
         mainframe.showPanel("book");
     }
-
-
 
     private void setUpFont() {
         File fileTwCenMT = new File("./Font/TwCenMT.ttf");
@@ -145,3 +145,18 @@ public class TOPUP extends JPanel {
         }
     }
 }
+class PanelSetImage extends JPanel {
+    private Image backgroundImage;
+
+    public PanelSetImage(LayoutManager layout, String fileName) {
+        setLayout(layout);
+        backgroundImage = new ImageIcon(fileName).getImage();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+    }
+}
+
