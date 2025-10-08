@@ -3,8 +3,13 @@ package GUI;
 import javax.swing.*;
 import javax.swing.JSpinner.*;
 import javax.swing.border.*;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import GUI.Decorate.*;
+import store.Product;
+import store.ProductCatalog;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,15 +18,26 @@ import java.io.*;
 public class Order extends JDialog {
     private Font FontITCKRIST;
     private Font FontTWCENMT;
+    private Product product;
+    private Mainframe mainframe;
+    private File fileOrder = null;
+    private FileWriter fw = null;
+    private BufferedWriter bw = null;
+    private ProductCatalog productCatalog;
 
-    public Order() {
+    private JSpinner spinnerAmount;
+
+    public Order(Product product,Mainframe mainframe,JPanel panel) {
+        fileOrder = new File("./file/Order.csv");
+        this.product = product;
+        this.mainframe = mainframe;
         setUpLookAndFeel();
         setUpFont();
         setModal(true);
         setResizable(false);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);//
         setSize(new Dimension(465, 355));
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(panel);
         initComponents();
     }
 
@@ -48,7 +64,12 @@ public class Order extends JDialog {
         panelImgIn.setBounds(5, 5, this.getWidth() / 2 - 20, (int) panelImg.getPreferredSize().getHeight() + 20);
 
         JLabel labelImg = new JLabel("");
-        ImageIcon tempImageIcon1 = new ImageIcon("./GUI/Picture/Food/F001.jpg");
+        ImageIcon tempImageIcon1 = null;
+        if(product.getProductId().charAt(0)=='F') {
+            tempImageIcon1 = new ImageIcon("./GUI/Picture/Food/" + product.getProductId() + ".jpg");
+        } else if(product.getProductId().charAt(0)=='D') {
+            tempImageIcon1 = new ImageIcon("./GUI/Picture/Drink/" + product.getProductId() + ".jpg");
+        }
         Image tempImage1 = tempImageIcon1.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         labelImg.setIcon(new ImageIcon(tempImage1));
         labelImg.setBounds(10, 12, this.getWidth() / 2 - 40, (int) panelImg.getPreferredSize().getHeight() - 5);
@@ -62,6 +83,7 @@ public class Order extends JDialog {
         panelCost.setPreferredSize(new Dimension(panelLeft.getWidth(), 50));
 
         JTextField textAreaCost = new JTextField("0");
+        textAreaCost.setText(Double.toString(product.getPrice()));
         textAreaCost.setFont(FontITCKRIST.deriveFont(1).deriveFont((float) 40));
         textAreaCost.setForeground(Color.WHITE);
         textAreaCost.setBackground(new Color(182, 77, 0));
@@ -147,13 +169,20 @@ public class Order extends JDialog {
         panelRight2.setPreferredSize(new Dimension(this.getWidth() / 2, 70));
         panelRight2.setMaximumSize(new Dimension(210, 100));
 
-        JSpinner spinnerAmount = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
+        spinnerAmount = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
         spinnerAmount.setPreferredSize(new Dimension((int) panelRight2.getPreferredSize().getWidth() - 20,
                 (int) panelRight2.getPreferredSize().getHeight() - 10));
         spinnerAmount.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 30));
         spinnerAmount.setForeground(Color.WHITE);
         spinnerAmount.setBackground(new Color(14, 81, 171));
         ((DefaultEditor) spinnerAmount.getEditor()).getTextField().setEditable(false);// ไปเข้าดึงTextFieldมันแทนเพื่อไม่ให้แก้
+        spinnerAmount.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+               textAreaCost.setText(Double.toString(product.getPrice()*(int)spinnerAmount.getValue())); 
+            }
+        });
 
         panelRight2.add(spinnerAmount);
 
@@ -206,7 +235,25 @@ public class Order extends JDialog {
     }
 
     protected void jButtonConfirmActionPerformed(ActionEvent e) {
-        System.out.println("HI");
+        double sumCost = product.getPrice()*((int)spinnerAmount.getValue());
+        //productCatalog.writerOrder(mainframe.getUser().getUsername(), product.getProductName(), "0000", sumCost);
+        System.out.println(sumCost);
+        try {
+            fw = new FileWriter(fileOrder, true);
+            bw = new BufferedWriter(fw);
+            bw.write(mainframe.getUser().getUsername()+" : "+product.getProductName() +", Cost = "+sumCost+"\n");
+        } catch (Exception ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                bw.close();
+                fw.close();
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+        }
+        
+        
     }
 
     private void setUpFont() {
