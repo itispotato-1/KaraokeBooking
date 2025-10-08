@@ -10,6 +10,9 @@ public final class Product {
         if (productId == null || productId.isBlank()) {
             throw new RuntimeException("RI violated: productId cannot be blank.");
         }
+        if (productId.charAt(0) != 'F' && productId.charAt(0) != 'D') {
+            throw new RuntimeException("RI violated: productId cannot be Food or Drink.");
+        }
         if (productName == null || productName.isBlank()) {
             throw new RuntimeException("RI violated: productName cannot be blank.");
         }

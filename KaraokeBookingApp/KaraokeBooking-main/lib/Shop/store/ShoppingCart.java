@@ -17,9 +17,6 @@ public class ShoppingCart {
             if (item == null) {
                 throw new RuntimeException("RI violated: cart contains a null item.");
             }
-            if (seenProducts.contains(item.getProduct())) {
-                throw new RuntimeException("RI violated: duplicate product found in cart: " + item.getProduct().getProductId());
-            }
             seenProducts.add(item.getProduct());
         }
     }
@@ -39,7 +36,7 @@ public class ShoppingCart {
         Product p = productCatalog.findById(productId);
 
         for (CartItem item : items) {
-            if (item.getProduct().equals(p)) {
+            if (item.getProduct().equals(p) && item.getTpye()==tpye) {
                 item.increaseQuantity(quantity);
                 return;
             }
@@ -86,5 +83,5 @@ public class ShoppingCart {
 
     public List<CartItem> getItems() { 
         return new ArrayList<>(items);
-}
+    }
 }
