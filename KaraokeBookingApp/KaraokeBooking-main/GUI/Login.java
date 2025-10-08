@@ -10,6 +10,8 @@ import java.io.File;
 
 public class Login extends JPanel {
     private Mainframe mainframe;
+    
+    @SuppressWarnings("unused")
     private Font FontITCKRIST;
     private Font FontTWCENMT;
     private LoginRegisterService loginService;
@@ -75,7 +77,7 @@ public class Login extends JPanel {
         // --------------------------------- panelกลาง ---------------------------------
         panel2.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelLineLeft = new JPanel();
-        panelLineLeft.setPreferredSize(new Dimension(113, 10));
+        panelLineLeft.setPreferredSize(new Dimension(113, 5));
         panelLineLeft.setBackground(new Color(0, 57, 134));
 
         labelLoginTop = new JLabel();
@@ -84,7 +86,7 @@ public class Login extends JPanel {
         labelLoginTop.setText("LOGIN");
 
         panelLineRight = new JPanel();
-        panelLineRight.setPreferredSize(new Dimension(113, 10));
+        panelLineRight.setPreferredSize(new Dimension(113, 5));
         panelLineRight.setBackground(new Color(0, 57, 134));
 
         panelLineLeft.setAlignmentY(CENTER_ALIGNMENT);
@@ -123,6 +125,16 @@ public class Login extends JPanel {
 
         user = new JTextField();
         user.setBounds(0, 40, 350, 40);
+        user.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == ' ')
+                    e.consume();
+                else if (user.getText().length() >= 45) {
+                    e.consume();
+                }
+            }
+        });
 
         panelUserName.add(jLabelUserName);
         panelUserName.add(user);
@@ -139,6 +151,14 @@ public class Login extends JPanel {
 
         pass = new JPasswordField();
         pass.setBounds(0, 30, 350, 40);
+        pass.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (String.valueOf(pass.getPassword()).length() > 60) {
+                    e.consume();
+                }
+            }
+        });
 
         jPassOrNameWrong = new JLabel();
         jPassOrNameWrong.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 14));
@@ -150,7 +170,7 @@ public class Login extends JPanel {
         panelPassword.add(pass);
         panelPassword.add(jPassOrNameWrong);
 
-        JPanel panelButtonLogin = new JPanel();
+        JPanel panelButtonLogin = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panelButtonLogin.setBackground(Color.WHITE);
         panelButtonLogin.setPreferredSize(new Dimension(440, 100));
         panelButtonLogin.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -159,26 +179,28 @@ public class Login extends JPanel {
         jButtonLogin.setBackground(new Color(0, 57, 134));
         jButtonLogin.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 24));
         jButtonLogin.setForeground(new Color(255, 255, 255));
-        jButtonLogin.setText("                  LOGIN                  ");
+        jButtonLogin.setText("LOGIN");
+        jButtonLogin.setPreferredSize(new Dimension(350, 45));
         jButtonLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 loginActionPerformed(evt);
             }
         });
-
+        
         panelButtonLogin.add(jButtonLogin);
-
+        
         JPanel panelBottomIn3 = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
         panelBottomIn3.setBackground(Color.WHITE);
         panelBottomIn3.setPreferredSize(new Dimension(440, 200));
         panelBottomIn3.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+        
         JButton jButtonSignUp = new JButton();
         jButtonSignUp.setBackground(new Color(0, 57, 134));
         jButtonSignUp.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 22));
         jButtonSignUp.setForeground(new Color(255, 255, 255));
         jButtonSignUp.setText("SIGN UP");
         jButtonSignUp.setBorderPainted(false);
+        jButtonSignUp.setPreferredSize(new Dimension(150, 45));
         jButtonSignUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 signUpActionPerformed(evt);

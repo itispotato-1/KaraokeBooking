@@ -1,8 +1,6 @@
 package GUI;
 
 import javax.swing.*;
-import javax.swing.JSpinner.*;
-import javax.swing.border.*;
 
 import GUI.Decorate.*;
 import lib.BookRoom.Room;

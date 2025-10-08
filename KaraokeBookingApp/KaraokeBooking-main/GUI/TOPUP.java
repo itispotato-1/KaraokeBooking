@@ -11,6 +11,7 @@ import java.awt.event.*;
 import java.io.File;
 
 public class TOPUP extends JPanel {
+    @SuppressWarnings("unused")
     private Font FontITCKRIST;
     private Font FontTWCENMT;
     private Mainframe mainframe;
@@ -26,9 +27,9 @@ public class TOPUP extends JPanel {
         setUpFont();
         initComponents();
     }
-    
+
     private void initComponents() {
-        JPanel panelMain = new PanelSetImage(null, "./GUI/Picture/BGMoney.png");//แก้ไฟล์ไม่แสดง
+        JPanel panelMain = new PanelSetImage(null, "./GUI/Picture/BGMoney.png");// แก้ไฟล์ไม่แสดง
         panelMain.setPreferredSize(new Dimension(440, 664));
         panelMain.setSize(new Dimension(440, 664));
         panelMain.setBackground(Color.WHITE);
@@ -53,12 +54,12 @@ public class TOPUP extends JPanel {
         panel1.setBounds((panelMain.getWidth() / 2) - 200, 100, 400, 475);
 
         jLabel1 = new JLabel();
-        jLabel1.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 21)); 
+        jLabel1.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 21));
         jLabel1.setText("TOP - UP SYSTEM");
         jLabel1.setAlignmentX(CENTER_ALIGNMENT);
 
         jLabel2 = new JLabel();
-        jLabel2.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 21)); 
+        jLabel2.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 21));
         jLabel2.setText("BOOK A ROOM AND ORDER FOOD");
         jLabel2.setAlignmentX(CENTER_ALIGNMENT);
 
@@ -66,7 +67,7 @@ public class TOPUP extends JPanel {
         ImageIcon tempIcon = new ImageIcon("./GUI/Picture/FAKE_QR.png");
         Image tempImage = tempIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
         jLabelImg.setIcon(new ImageIcon(tempImage));
-        jLabelImg.setBorder(new LineBorder(Color.BLACK, 10,true));
+        jLabelImg.setBorder(new LineBorder(Color.BLACK, 10, true));
         jLabelImg.setAlignmentX(CENTER_ALIGNMENT);
 
         JPanel panelMoney = new JPanel(null);
@@ -145,6 +146,7 @@ public class TOPUP extends JPanel {
         }
     }
 }
+
 class PanelSetImage extends JPanel {
     private Image backgroundImage;
 
@@ -159,4 +161,3 @@ class PanelSetImage extends JPanel {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
 }
-

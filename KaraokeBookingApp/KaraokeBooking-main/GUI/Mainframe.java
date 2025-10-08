@@ -2,12 +2,13 @@ package GUI;
 
 import javax.swing.*;
 
-import lib.*;
 import lib.BookRoom.Room;
 import lib.BookRoom.RoomSystem;
 import lib.loginregister.*;
 import store.Product;
 import store.ProductCatalog;
+import store.Topping;
+import store.toppings;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -28,7 +29,7 @@ public class Mainframe extends JFrame {
     private Mybooking mybooking;
     private SignUp signUp;
     private menudrink drink;
-    private menufood food;
+    private menufood menufood;
     private TOPUP topup;
 
     private LoginRegisterService service;
@@ -42,7 +43,7 @@ public class Mainframe extends JFrame {
         Product Holy_basil_rice = new Product("F002", "Holy basil rice", 50.0);
         Product Noodles = new Product("F003", "Noodles", 40.0);
         Product od1 = new Product("F004", "od1", 40.0);
-        Product Water1 = new Product("D001", "od2", 40.0);
+        Product Water1 = new Product("D001", "Water", 10.0);
         Product od2 = new Product("F006", "od3", 40.0);
         Product od4 = new Product("F007", "od4", 40.0);
         Product od5 = new Product("F008", "od5", 40.0);
@@ -56,6 +57,18 @@ public class Mainframe extends JFrame {
         catalog.addProduct(Water1);
         catalog.addProduct(od4);
         catalog.addProduct(od5);
+
+        toppings rice = new toppings("rice", 10);
+        toppings food = new toppings("food", 20);
+
+        toppings ice = new toppings("ice", 10);
+        toppings hot = new toppings("hot", 20);
+
+        catalog.addtopping(Topping.FOOD, rice);
+        catalog.addtopping(Topping.FOOD, food);
+
+        catalog.addtopping(Topping.DRINK, ice);
+        catalog.addtopping(Topping.DRINK, hot);
 
         system = new RoomSystem();
         for (int i = 0; i < 10; i++) {
@@ -71,7 +84,7 @@ public class Mainframe extends JFrame {
         mybooking = new Mybooking(this);
         signUp = new SignUp(this);
         drink = new menudrink(this);
-        food = new menufood(this);
+        menufood = new menufood(this);
         topup = new TOPUP(this);
 
         // ใส่ panel ต่าง ๆ
@@ -80,7 +93,7 @@ public class Mainframe extends JFrame {
         container.add(mybooking, "mybooking");
         container.add(signUp, "signup");
         container.add(drink, "menudrink");
-        container.add(food, "menufood");
+        container.add(menufood, "menufood");
         container.add(topup, "topup");
         container.add(new test(this), "test");
 

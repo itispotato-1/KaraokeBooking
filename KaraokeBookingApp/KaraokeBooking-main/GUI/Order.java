@@ -10,10 +10,13 @@ import javax.swing.event.ChangeListener;
 import GUI.Decorate.*;
 import store.Product;
 import store.ProductCatalog;
+import store.toppings;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class Order extends JDialog {
     private Font FontITCKRIST;
@@ -25,9 +28,12 @@ public class Order extends JDialog {
     private BufferedWriter bw = null;
     private ProductCatalog productCatalog;
 
+    private JPanel panelCheck[];
+    private JCheckBox checkBox[];
+
     private JSpinner spinnerAmount;
 
-    public Order(Product product,Mainframe mainframe,JPanel panel) {
+    public Order(Product product, Mainframe mainframe, JPanel panel) {
         fileOrder = new File("./file/Order.csv");
         this.product = product;
         this.mainframe = mainframe;
@@ -65,9 +71,9 @@ public class Order extends JDialog {
 
         JLabel labelImg = new JLabel("");
         ImageIcon tempImageIcon1 = null;
-        if(product.getProductId().charAt(0)=='F') {
+        if (product.getProductId().charAt(0) == 'F') {
             tempImageIcon1 = new ImageIcon("./GUI/Picture/Food/" + product.getProductId() + ".jpg");
-        } else if(product.getProductId().charAt(0)=='D') {
+        } else if (product.getProductId().charAt(0) == 'D') {
             tempImageIcon1 = new ImageIcon("./GUI/Picture/Drink/" + product.getProductId() + ".jpg");
         }
         Image tempImage1 = tempImageIcon1.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
@@ -121,38 +127,59 @@ public class Order extends JDialog {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
         // ------------------------------------------------------------------------------
-        JPanel panelCheck1 = new RoundedPanel(10, 10);
-        panelCheck1.setLayout(new BoxLayout(panelCheck1, BoxLayout.Y_AXIS));
-        panelCheck1.setBackground(new Color(255, 186, 125));
-        panelCheck1.setBounds(0, 0, 200, 40);
+        ArrayList<toppings> toppinglist = new ArrayList<>();
+        if (product.getProductId().charAt(0) == 'F') {
+            for (toppings toppings : mainframe.getCatalog().getAllTopFood()) {
+                toppinglist.add(toppings);
+            }
+        } else if (product.getProductId().charAt(0) == 'D') {
+            for (toppings toppings : mainframe.getCatalog().getAllTopDrink()) {
+                toppinglist.add(toppings);
+                
+            }
+        }
+        panelCheck = new JPanel[toppinglist.size()];
+        checkBox = new JCheckBox[toppinglist.size()];
+        int i = 0;
+        int y = 0;
+        for (toppings toppings : toppinglist) {
+            panelCheck[i] = new RoundedPanel(10, 10);
+            panelCheck[i].setLayout(new BoxLayout(panelCheck[i], BoxLayout.Y_AXIS));
+            panelCheck[i].setBackground(new Color(255, 186, 125));
+            panelCheck[i].setBounds(0, y, 200, 40);
 
-        JCheckBox checkBox1 = new JCheckBox("More RICE");
-        checkBox1.setBorder(new EmptyBorder(0, 10, 0, 0));
-        checkBox1.setAlignmentY(SwingConstants.CENTER);
-        checkBox1.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 30));
-        checkBox1.setBounds(5, 5, 300, 50);
+            checkBox[i] = new JCheckBox("More "+toppings.getTop());
+            checkBox[i].setBorder(new EmptyBorder(0, 10, 0, 0));
+            checkBox[i].setAlignmentY(SwingConstants.CENTER);
+            checkBox[i].setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 30));
+            checkBox[i].setBounds(5, 5, 300, 50);
 
-        panelCheck1.add(Box.createVerticalGlue());
-        panelCheck1.add(checkBox1);
-        panelCheck1.add(Box.createVerticalGlue());
+            panelCheck[i].add(Box.createVerticalGlue());
+            panelCheck[i].add(checkBox[i]);
+            panelCheck[i].add(Box.createVerticalGlue());
 
-        JPanel panelCheck2 = new RoundedPanel(10, 10);
-        panelCheck2.setLayout(new BoxLayout(panelCheck2, BoxLayout.Y_AXIS));
-        panelCheck2.setBackground(new Color(255, 186, 125));
-        panelCheck2.setBounds(0, 45, 200, 40);
+            y += 50;
 
-        JCheckBox checkBox2 = new JCheckBox("More FOOD");
-        checkBox2.setBorder(new EmptyBorder(0, 10, 0, 0));
-        checkBox2.setAlignmentY(SwingConstants.CENTER);
-        checkBox2.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 30));
-        checkBox2.setBounds(5, 5, 300, 50);
+            panelCheckMain.add(panelCheck[i]);
+            i++;
+        }
 
-        panelCheck2.add(Box.createVerticalGlue());
-        panelCheck2.add(checkBox2);
-        panelCheck2.add(Box.createVerticalGlue());
+        // JPanel panelCheck2 = new RoundedPanel(10, 10);
+        // panelCheck2.setLayout(new BoxLayout(panelCheck2, BoxLayout.Y_AXIS));
+        // panelCheck2.setBackground(new Color(255, 186, 125));
+        // panelCheck2.setBounds(0, 45, 200, 40);
 
-        panelCheckMain.add(panelCheck1);
-        panelCheckMain.add(panelCheck2);
+        // JCheckBox checkBox2 = new JCheckBox("More FOOD");
+        // checkBox2.setBorder(new EmptyBorder(0, 10, 0, 0));
+        // checkBox2.setAlignmentY(SwingConstants.CENTER);
+        // checkBox2.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 30));
+        // checkBox2.setBounds(5, 5, 300, 50);
+
+        // panelCheck2.add(Box.createVerticalGlue());
+        // panelCheck2.add(checkBox2);
+        // panelCheck2.add(Box.createVerticalGlue());
+
+        // panelCheckMain.add(panelCheck2);
 
         int maxHeight = 0;
         for (Component comp : panelCheckMain.getComponents()) {
@@ -180,7 +207,7 @@ public class Order extends JDialog {
 
             @Override
             public void stateChanged(ChangeEvent e) {
-               textAreaCost.setText(Double.toString(product.getPrice()*(int)spinnerAmount.getValue())); 
+                textAreaCost.setText(Double.toString(product.getPrice() * (int) spinnerAmount.getValue()));
             }
         });
 
@@ -235,13 +262,15 @@ public class Order extends JDialog {
     }
 
     protected void jButtonConfirmActionPerformed(ActionEvent e) {
-        double sumCost = product.getPrice()*((int)spinnerAmount.getValue());
-        //productCatalog.writerOrder(mainframe.getUser().getUsername(), product.getProductName(), "0000", sumCost);
+        double sumCost = product.getPrice() * ((int) spinnerAmount.getValue());
+        // productCatalog.writerOrder(mainframe.getUser().getUsername(),
+        // product.getProductName(), "0000", sumCost);
         System.out.println(sumCost);
         try {
             fw = new FileWriter(fileOrder, true);
             bw = new BufferedWriter(fw);
-            bw.write(mainframe.getUser().getUsername()+" : "+product.getProductName() +", Cost = "+sumCost+"\n");
+            bw.write(mainframe.getUser().getUsername() + " : " + product.getProductName() + ", Cost = " + sumCost
+                    + "\n");
         } catch (Exception ex) {
             System.out.println(ex);
         } finally {
@@ -252,8 +281,7 @@ public class Order extends JDialog {
                 System.out.println(ex);
             }
         }
-        
-        
+
     }
 
     private void setUpFont() {
