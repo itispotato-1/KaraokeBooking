@@ -127,11 +127,14 @@ public class menudrink extends JPanel {
                 ButtonOrder[i].setIcon(new ImageIcon(tempImage3));
                 ButtonOrder[i].setFont(FontTWCENMT.deriveFont((float) 12).deriveFont(1));
                 ButtonOrder[i].setBounds(100, 107, 38, 38);
+                ButtonOrder[i].putClientProperty(1, new Product(product.getProductId(), product.getProductName(), product.getPrice()));
                 ButtonOrder[i].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new Order().setVisible(true);
-                    }
+                        JButton tempButton = (JButton)e.getSource();
+                        Product tempProduct = (Product)tempButton.getClientProperty(1);
+                        new Order(tempProduct,mainframe,menudrink.this).setVisible(true);
+                    }        
                 });
 
                 panelOrderIn[i].add(ButtonOrder[i]);

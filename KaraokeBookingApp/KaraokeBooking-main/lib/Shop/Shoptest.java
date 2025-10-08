@@ -22,10 +22,20 @@ public class Shoptest{
         Product Holy_basil_rice = new Product("F002", "Holy basil rice", 50.0);
         Product Noodles = new Product("F003", "Noodles", 40.0);
 
+        toppings rice = new toppings("RiceUp", 10.0);
+
+        // ProductSystem food = new ProductSystem();
+        
+
+
         ProductCatalog Food = new ProductCatalog();
+        ProductCatalog topfood = new ProductCatalog();
         Food.addProduct(fried_rice);
         Food.addProduct(Holy_basil_rice);
         Food.addProduct(Noodles);
+        topfood.addtopps(rice);
+
+        Food.writerOrder("sdsd", "dsd", "sdsd", 0.0);
 
         PricingService pricingService = new PricingService();
         ShoppingCart cart = new ShoppingCart(pricingService, Food);
