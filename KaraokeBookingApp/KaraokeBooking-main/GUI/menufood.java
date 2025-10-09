@@ -46,7 +46,7 @@ public class menufood extends JPanel {
         ImageIcon tempIcon2 = new ImageIcon("./GUI/Picture/IconHome.png");
         Image tempImage2 = tempIcon2.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         homeButton.setIcon(new ImageIcon(tempImage2));
-        homeButton.setBounds((panelMain.getWidth() / 2) - 25, 10, 45, 45);
+        homeButton.setBounds((panelMain.getWidth() / 2) - 23, 10, 45, 45);
         homeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

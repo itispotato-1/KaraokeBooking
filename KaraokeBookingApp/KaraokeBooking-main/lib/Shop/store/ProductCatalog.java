@@ -21,9 +21,21 @@ public class ProductCatalog {
 
         for (int i = 0; i < products.size(); i++) {
             for (int j = i + 1; j < products.size(); j++) {
-                if (products.get(i).equals(products.get(j))) {
+                //System.out.println(j+"|"+products.get(i).getProductId() +":"+products.get(j).getProductId());
+                if (products.get(i).getProductId().equals(products.get(j).getProductId())) {
                     throw new RuntimeException("RI violated: catalog contains duplicate products.");
                 }
+            }
+        }
+
+        for (int i = 0; i< toppingDrink.size()-1 ;i++) {
+            if(toppingDrink.get(i).getTop().equals(toppingDrink.get(i+1).getTop())){
+                throw new RuntimeException("RI violated: toppingDrink Same");
+            }
+        }
+        for (int i = 0; i< toppingFood.size()-1 ;i++) {
+            if(toppingFood.get(i).getTop().equals(toppingFood.get(i+1).getTop())){
+                throw new RuntimeException("RI violated: toppingFood Same");
             }
         }
     }
@@ -34,7 +46,7 @@ public class ProductCatalog {
     }
 
     public void addProduct(Product product) {
-        if (product != null && !products.contains(product)) {
+        if (product != null ) {
             products.add(product);
         }
         checkRep();
@@ -61,6 +73,7 @@ public class ProductCatalog {
                 toppingDrink.add(tps);
             }
         }
+        checkRep();
     }
 
     public List<toppings> getAllTopFood() {

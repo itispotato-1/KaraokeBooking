@@ -148,7 +148,7 @@ public class SignUp extends JPanel {
                         public void keyTyped(KeyEvent e) {
                                 if (Character.isAlphabetic(e.getKeyChar()))
                                         e.consume();
-                                else if (phoneNumberField.getText().length() >= 45) {
+                                else if (phoneNumberField.getText().length() >= 10) {
                                         e.consume();
                                 }
                         }

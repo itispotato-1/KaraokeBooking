@@ -42,33 +42,46 @@ public class Mainframe extends JFrame {
         Product fried_rice = new Product("F001", "fried rice", 40.0);
         Product Holy_basil_rice = new Product("F002", "Holy basil rice", 50.0);
         Product Noodles = new Product("F003", "Noodles", 40.0);
-        Product od1 = new Product("F004", "od1", 40.0);
-        Product Water1 = new Product("D001", "Water", 10.0);
-        Product od2 = new Product("F006", "od3", 40.0);
-        Product od4 = new Product("F007", "od4", 40.0);
-        Product od5 = new Product("F008", "od5", 40.0);
+        Product garlicPepperPork = new Product("F004", "Garlic Pepper Pork", 40.0);
+        Product omelet = new Product("F006", "Omelet", 40.0);
+        Product radNa = new Product("F007", "RadNa", 40.0);
+        Product chickenRice = new Product("F008", "ChickenRice", 40.0);
+        
+        Product coffee = new Product("D001", "Coffee", 35.0);
+        Product greenTea = new Product("D002", "GreenTea", 35.0);
+        Product Cocoa = new Product("D003", "Cocoa", 35.0);
+        Product espresso = new Product("D004", "Espresso", 35.0);
+        Product americano = new Product("D005", "Americano", 40.0);
 
         catalog = new ProductCatalog();
         catalog.addProduct(fried_rice);
         catalog.addProduct(Holy_basil_rice);
         catalog.addProduct(Noodles);
-        catalog.addProduct(od1);
-        catalog.addProduct(od2);
-        catalog.addProduct(Water1);
-        catalog.addProduct(od4);
-        catalog.addProduct(od5);
+        catalog.addProduct(garlicPepperPork);
+        catalog.addProduct(omelet);
+        catalog.addProduct(radNa);
+        catalog.addProduct(chickenRice);
+        
+        catalog.addProduct(coffee);
+        catalog.addProduct(greenTea);
+        catalog.addProduct(Cocoa);
+        catalog.addProduct(espresso);
+        catalog.addProduct(americano);
 
-        toppings rice = new toppings("rice", 10);
-        toppings food = new toppings("food", 20);
 
-        toppings ice = new toppings("ice", 10);
-        toppings hot = new toppings("hot", 20);
+        toppings rice = new toppings("Rice", 10.0);
+        toppings food = new toppings("Food", 20.0);
+
+        toppings hot = new toppings("HOT", 0.0);
+        toppings ice = new toppings("ICE", 10.0);
+        toppings mix = new toppings("MIX", 20.0);
 
         catalog.addtopping(Topping.FOOD, rice);
         catalog.addtopping(Topping.FOOD, food);
 
-        catalog.addtopping(Topping.DRINK, ice);
         catalog.addtopping(Topping.DRINK, hot);
+        catalog.addtopping(Topping.DRINK, ice);
+        catalog.addtopping(Topping.DRINK, mix);
 
         system = new RoomSystem();
         for (int i = 0; i < 10; i++) {
