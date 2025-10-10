@@ -31,6 +31,7 @@ public class Mainframe extends JFrame {
     private menudrink drink;
     private menufood menufood;
     private TOPUP topup;
+    private MyOrder myOrder;
 
     private LoginRegisterService service;
     private ProductCatalog catalog;
@@ -99,6 +100,7 @@ public class Mainframe extends JFrame {
         drink = new menudrink(this);
         menufood = new menufood(this);
         topup = new TOPUP(this);
+        myOrder = new MyOrder(this);
 
         // ใส่ panel ต่าง ๆ
         container.add(login, "login");
@@ -108,6 +110,7 @@ public class Mainframe extends JFrame {
         container.add(drink, "menudrink");
         container.add(menufood, "menufood");
         container.add(topup, "topup");
+        container.add(myOrder, "myorder");
         container.add(new test(this), "test");
 
         add(container);
@@ -127,6 +130,8 @@ public class Mainframe extends JFrame {
             Book.reGUI();
         } else if (name.equals("mybooking")) {
             mybooking.reGUI();
+        }else if (name.equals("myorder")){
+            myOrder.reGUI();
         }
 
         cardLayout.show(container, name);

@@ -152,7 +152,7 @@ public class Order extends JDialog {
             panelCheck[i].setBackground(new Color(255, 186, 125));
             panelCheck[i].setBounds(0, y, 200, 40);
             if (product.getProductId().charAt(0) == 'F') {
-                checkBox[i] = new JCheckBox("Add " + toppings.getTop() + " + " +toppings.getCost());
+                checkBox[i] = new JCheckBox("Add " + toppings.getTop() + " + " + toppings.getCost());
                 checkBox[i].setBorder(new EmptyBorder(0, 10, 0, 0));
                 checkBox[i].setAlignmentY(SwingConstants.CENTER);
                 checkBox[i].setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 20));
@@ -170,12 +170,12 @@ public class Order extends JDialog {
                 panelCheck[i].add(checkBox[i]);
                 panelCheck[i].add(Box.createVerticalGlue());
             } else if (product.getProductId().charAt(0) == 'D') {
-                radioButton[i] = new JRadioButton(toppings.getTop() + " + " +toppings.getCost());
+                radioButton[i] = new JRadioButton(toppings.getTop() + " + " + toppings.getCost());
                 radioButton[i].setBorder(new EmptyBorder(0, 10, 0, 0));
                 radioButton[i].setAlignmentY(SwingConstants.CENTER);
                 radioButton[i].setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 24));
                 radioButton[i].addActionListener(new ActionListener() {
-                    
+
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         updateMoney();
@@ -184,7 +184,7 @@ public class Order extends JDialog {
                 });
                 radioButton[0].setSelected(true);
                 radioButton[i].setBounds(5, 5, 300, 50);
-                
+
                 panelCheck[i].add(Box.createVerticalGlue());
                 panelCheck[i].add(radioButton[i]);
                 panelCheck[i].add(Box.createVerticalGlue());
@@ -331,28 +331,23 @@ public class Order extends JDialog {
                         }
                     }
                 }
+            } else if (product.getProductId().charAt(0) == 'D') {
+                for (int i = 0; i < radioButton.length; i++) {
+                    if (radioButton[i].isSelected()) {
+                        for (toppings topping : mainFrame.getCatalog().getAllTopDrink()) {
+                            String[] tempCheckboxText = radioButton[i].getText().split("[ ]");
+                            if (tempCheckboxText[0].equals(topping.getTop())) {
+                                stringTopping += " +" + tempCheckboxText[0];
+                            }
+                        }
+                    }
+                }
             }
 
             double sumCost = (Double.parseDouble(textAreaCost.getText()));
-            try {
-                fw = new FileWriter(fileOrder, true);
-                bw = new BufferedWriter(fw);
-                bw.write(mainFrame.getUser().getUsername() + " : " + product.getProductName() + stringTopping + " x"
-                        + spinnerAmount.getValue() + ", Cost = "
-                        + sumCost
-                        + "\n");
-            } catch (Exception ex) {
-                System.out.println(ex);
-            } finally {
-                try {
-                    bw.close();
-                    fw.close();
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                }
-            }
+            int USER_ID = mainFrame.getUserId();
+            mainFrame.getCatalog().addOrder(USER_ID, product, stringTopping, sumCost, (int) spinnerAmount.getValue());// เพิ่มOrder
         }
-
     }
 
     private void setUpFont() {

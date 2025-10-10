@@ -188,11 +188,22 @@ public class book extends JPanel {
             }
         });
 
+        JButton jMyOrder = new JButton();
+        jMyOrder.setBackground(new Color(250, 186, 255));
+        jMyOrder.setFont(fontButton);
+        jMyOrder.setText("MY ORDER");
+        jMyOrder.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               jButton1MyOrderActionPerformed(e);
+            }
+        });
+
         panelButtonSwitch.add(jMyBooking);
         panelButtonSwitch.add(jBookingButton);
         panelButtonSwitch.add(jOrderFood);
         panelButtonSwitch.add(jTopUp);
-        panelButtonSwitch.add(Box.createRigidArea(new Dimension(50, 50)));
+        panelButtonSwitch.add(jMyOrder);
         panelButtonSwitch.add(Box.createRigidArea(new Dimension(50, 50)));
         // -------------------------------- Panel ปุ่มเปลี่ยนหน้า -----------------
 
@@ -297,6 +308,10 @@ public class book extends JPanel {
 
     private void jButton1TopupActionPerformed(ActionEvent evt) {
         mainframe.showPanel("topup");
+    }
+
+    private void jButton1MyOrderActionPerformed(ActionEvent evt) {
+        mainframe.showPanel("myorder");
     }
 
     private void setUpComboBoxDate(int amountDate) {

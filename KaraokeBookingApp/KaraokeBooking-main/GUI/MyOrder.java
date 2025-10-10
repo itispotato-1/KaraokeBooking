@@ -1,7 +1,10 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
+import GUI.Decorate.RoundedButton;
+import GUI.Decorate.RoundedPanel;
 import lib.BookRoom.Room;
 
 import java.awt.*;
@@ -9,22 +12,20 @@ import java.awt.event.*;
 import java.io.*;
 import java.time.LocalDateTime;
 
-public class Mybooking extends JPanel {
+public class MyOrder extends JPanel {
         private Font FontITCKRIST;
         private Font FontTWCENMT;
         private Mainframe mainframe;
-        private DefaultListModel<String> ModelList1;
         private File fileRoomList = null;
         private FileReader fr = null;
         private BufferedReader br = null;
 
-        private JList<String> jListRoom;
+        private JPanel panelFoodAndDrinkIn;
+        private JLabel jOpen;
 
-        JLabel jOpen;
-
-        public Mybooking(Mainframe mainframe) {
-                ModelList1 = new DefaultListModel<>();
+        public MyOrder(Mainframe mainframe) {
                 fileRoomList = new File("./file/RoomTimes.csv");
+
                 this.mainframe = mainframe;
                 setUpFont();
                 setVisible(true);
@@ -213,71 +214,55 @@ public class Mybooking extends JPanel {
                 panelText.add(jPleaseTopUp);
                 // -------------------------------- Panel อักษรใต้ปุ่ม -----------------
 
-                // -------------------------------- Panel ห้อง -----------------
+                // -------------------------------- Panel อาหารและน้ำ -----------------
                 JPanel jPanelRoom = new JPanel();
                 jPanelRoom.setLayout(new BoxLayout(jPanelRoom, BoxLayout.Y_AXIS));
                 jPanelRoom.setBackground(new Color(250, 248, 227));
-                jPanelRoom.setMaximumSize(new Dimension(400, 390));
+                jPanelRoom.setMaximumSize(new Dimension(400, 403));
 
                 JPanel jPanelRoomTop = new JPanel(new FlowLayout(FlowLayout.CENTER));
                 jPanelRoomTop.setBackground(Color.WHITE);
                 jPanelRoomTop.setOpaque(false);
-                jPanelRoomTop.setMaximumSize(new Dimension(350, 50));
+                jPanelRoomTop.setPreferredSize(new Dimension(350, 45));
+                jPanelRoomTop.setMaximumSize(new Dimension(350, 45));
                 jPanelRoomTop.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
                 JLabel jLabelOnlist = new JLabel();
                 jLabelOnlist.setFont(FontTWCENMT.deriveFont((float) 35).deriveFont((int) 1));
                 jLabelOnlist.setForeground(new Color(1, 41, 94));
-                jLabelOnlist.setText("MY BOOKING");
+                jLabelOnlist.setText("MY ORDER");
 
                 jPanelRoomTop.add(jLabelOnlist, BorderLayout.CENTER);
 
                 JPanel jPanelRoomCenter = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
                 jPanelRoomCenter.setBackground(Color.WHITE);
                 jPanelRoomCenter.setOpaque(false);
-                jPanelRoomCenter.setMaximumSize(new Dimension(380, 300));
+                jPanelRoomCenter.setMaximumSize(new Dimension(380, 320));
 
-                jListRoom = new JList<>();
-                jListRoom.setBackground(Color.WHITE);
-                // jListRoom.setOpaque(false);
-                jListRoom.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
-                jListRoom.setFont(FontITCKRIST.deriveFont(1).deriveFont((float) 14));
-                loadRoom();
-                jListRoom.setModel(ModelList1);
+                panelFoodAndDrinkIn = new JPanel(null);
+                panelFoodAndDrinkIn.setBackground(Color.WHITE);
+
+                loadMyOrder();
+
+                int maxHeight = 0;
+                for (Component comp : panelFoodAndDrinkIn.getComponents()) {
+                        Rectangle bounds = comp.getBounds();
+                        maxHeight = Math.max(maxHeight, bounds.y + bounds.height);
+                }
+                panelFoodAndDrinkIn.setPreferredSize(new Dimension(getSize().width, maxHeight + 20));
+                // -------------------------------------------------------------------------------
                 JScrollPane jScrollPane1 = new JScrollPane();
                 jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 jScrollPane1.getVerticalScrollBar().setUnitIncrement(8);
                 jScrollPane1.setBackground(Color.WHITE);
-                jScrollPane1.setViewportView(jListRoom);
-                jScrollPane1.setPreferredSize(new Dimension(380, 280));
+                jScrollPane1.setViewportView(panelFoodAndDrinkIn);
+                jScrollPane1.setPreferredSize(new Dimension(380, 310));
                 jScrollPane1.setBorder(BorderFactory.createLineBorder(new Color(0, 74, 173), 3));
 
                 jPanelRoomCenter.add(jScrollPane1);
 
-                JPanel jPanelRoomButtom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-                jPanelRoomButtom.setBackground(Color.WHITE);
-                jPanelRoomButtom.setOpaque(false);
-                jPanelRoomButtom.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
-                jPanelRoomButtom.setMaximumSize(new Dimension(380, 50));
-
-                JButton jButtonCancel = new JButton();
-                jButtonCancel.setBackground(new Color(255, 25, 25));
-                jButtonCancel.setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 18)); // NOI18N
-                jButtonCancel.setForeground(new Color(255, 255, 255));
-                jButtonCancel.setPreferredSize(new Dimension(130, 40));
-                jButtonCancel.setText("Cancel Room");
-                jButtonCancel.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                jButtonRemoveRoom(e);
-                        }
-                });
-
-                jPanelRoomButtom.add(jButtonCancel);
-
                 jPanelRoom.add(jPanelRoomTop);
                 jPanelRoom.add(jPanelRoomCenter);
-                jPanelRoom.add(jPanelRoomButtom);
 
                 // -------------------------------- Panel ห้อง -----------------
 
@@ -291,7 +276,9 @@ public class Mybooking extends JPanel {
                 panelMain.add(panelSecound);
 
                 revalidate();
+
                 repaint();
+
         }
 
         private void jButtonOrderActionPerFormed(ActionEvent evt) {
@@ -318,60 +305,164 @@ public class Mybooking extends JPanel {
                 mainframe.showPanel("myorder");
         }
 
-        private void jButtonRemoveRoom(ActionEvent e) {
-                if (jListRoom.getSelectedValue() != null) {
-                        System.out.println("tst");
-                        String tempS = jListRoom.getSelectedValue();
-                        String[] tempSplit = tempS.split("[:\\s\\-]");
-                        Room tempRoom = null;
-                        for (Room room : mainframe.getSystem().getRooms()) {
+        private void loadMyOrder() {
+                // ----------------------------- Setup --------------------------------
+                int SIZE_SETUP = 100;
+                RoundedPanel[] panelOrderIn = new RoundedPanel[SIZE_SETUP];
+                JPanel[] panelLeft = new JPanel[SIZE_SETUP];
+                JPanel[] panelRight = new JPanel[SIZE_SETUP];
+                JLabel[] labelImg = new JLabel[SIZE_SETUP];
+                JPanel[] panelRightTop = new JPanel[SIZE_SETUP];
+                JPanel[] panelRightCenter = new JPanel[SIZE_SETUP];
+                JPanel[] panelRightBottom = new JPanel[SIZE_SETUP];
+                JLabel[] labelNameOrder = new JLabel[SIZE_SETUP];
+                JLabel[] labelToppingOrder = new JLabel[SIZE_SETUP];
+                JButton[] buttonCancel1 = new JButton[SIZE_SETUP];
+                JButton[] buttonCancelAll = new JButton[SIZE_SETUP];
+                JTextField[] textAreaCost = new JTextField[SIZE_SETUP];
 
-                                if (Integer.parseInt(tempSplit[0]) == room.getIdRoom()) {
-                                        tempRoom = room;
-                                        break;
-                                }
-                        }
+                int x = 20, y = 10, i = 0;
+                for (String Order : mainframe.getCatalog().getOrder(mainframe.getUserId())) {
+                        String[] tempSplit = Order.split("[|]");
+                        // [0]ID [1]PRODUCT [2]AMOUNT [3]PRICE [4]ID_PRODUCT
+                        int ID = Integer.parseInt(tempSplit[0]);
+                        String PRODUCT = tempSplit[1];
+                        int AMOUNT = Integer.parseInt(tempSplit[2].substring(1));
+                        double PRICE = Double.parseDouble(tempSplit[3]);
+                        String[] tempSplitNameOrder = tempSplit[1].trim().split("[+]");
+                        panelOrderIn[i] = new RoundedPanel(30, 30, Color.black, 4);
+                        panelOrderIn[i].setBackground(new Color(230, 230, 230));
+                        panelOrderIn[i].setLayout(new BoxLayout(panelOrderIn[i], BoxLayout.X_AXIS));
+                        panelOrderIn[i].setBounds(x, y, 320, 150);
 
-                        int[] tempInt = new int[tempSplit.length];
-                        for (int i = 0; i < tempInt.length; i++) {
-                                try {
-                                        tempInt[i] = Integer.parseInt(tempSplit[i]);
-                                } catch (Exception ea) {
-                                        tempInt[i] = 0;
-                                }
-                        }
-                        LocalDateTime timeStart = LocalDateTime.of(tempInt[5], tempInt[4], tempInt[3], tempInt[6],
-                                        tempInt[7], tempInt[8]);
-                        LocalDateTime timeEnd = LocalDateTime.of(tempInt[5], tempInt[4], tempInt[3], tempInt[14],
-                                        tempInt[15], tempInt[16]);
-                        mainframe.getSystem().removeBookRoom(tempRoom, mainframe.getUser(), timeStart, timeEnd);
-                        initComponents();
-                }
-        }
+                        panelLeft[i] = new JPanel(new FlowLayout(FlowLayout.RIGHT, 3, 7));
+                        panelLeft[i].setMaximumSize(new Dimension(150, 150));
+                        panelLeft[i].setBackground(Color.GRAY);
+                        panelLeft[i].setOpaque(false);
 
-        private void loadRoom() {
-                ModelList1.clear();
-                try {
-                        String tempS;
-                        fr = new FileReader(fileRoomList);
-                        br = new BufferedReader(fr);
-                        while ((tempS = br.readLine()) != null) {
-                                String[] tempSplit = tempS.split("[)\\(\\;]");
-                                if (mainframe.getUser().getUserId() == Integer.parseInt(tempSplit[1])) {
-                                        // System.out.println(mainframe.getUser().getUserId()+" = "+tempSplit[1]);
-                                        ModelList1.addElement(tempSplit[0] + " Date ; " + tempSplit[2] + " - "
-                                                        + tempSplit[3]);
+                        labelImg[i] = new JLabel("");
+                        ImageIcon tempImageIcon1 = null;
+                        if (tempSplit[4].charAt(0) == 'F') {
+                                tempImageIcon1 = new ImageIcon("./GUI/Picture/Food/" + tempSplit[4] + ".jpg");
+                        } else if (tempSplit[4].charAt(0) == 'D') {
+                                tempImageIcon1 = new ImageIcon("./GUI/Picture/Drink/" + tempSplit[4] + ".jpg");
+                        }
+                        Image tempImage1 = tempImageIcon1.getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH);
+                        labelImg[i].setIcon(new ImageIcon(tempImage1));
+                        labelImg[i].setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));
+                        panelLeft[i].add(labelImg[i]);
+
+                        panelRight[i] = new JPanel();
+                        panelRight[i].setLayout(new BoxLayout(panelRight[i], BoxLayout.Y_AXIS));
+                        panelRight[i].setBackground(Color.BLUE);
+                        panelRight[i].setOpaque(false);
+                        panelRight[i].setMaximumSize(new Dimension(170, 150));
+
+                        int tempwidth = 150;
+                        panelRightTop[i] = new JPanel(null);
+                        panelRightTop[i].setBackground(Color.WHITE);
+                        panelRightTop[i].setPreferredSize(new Dimension(tempwidth, 60));
+                        panelRightTop[i].setMaximumSize(new Dimension(tempwidth, 60));
+
+                        labelNameOrder[i] = new JLabel();
+                        labelNameOrder[i].setText(tempSplitNameOrder[0]);
+                        labelNameOrder[i].setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 20));
+                        labelNameOrder[i].setBounds(10, 5, 140, 30);
+
+                        String tempTopping = "";
+                        for (int j = 1; j < tempSplitNameOrder.length; j++) {
+                                tempTopping += "+" + tempSplitNameOrder[j] + " ";
+                        }
+                        labelToppingOrder[i] = new JLabel();
+                        labelToppingOrder[i].setText(tempTopping);
+                        labelToppingOrder[i].setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 12));
+                        labelToppingOrder[i].setBounds(10, 25, 140, 30);
+
+                        panelRightTop[i].add(labelNameOrder[i]);
+                        panelRightTop[i].add(labelToppingOrder[i]);
+
+                        panelRightCenter[i] = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+                        panelRightCenter[i].setBackground(Color.PINK);
+                        panelRightCenter[i].setOpaque(false);
+                        panelRightCenter[i].setPreferredSize(new Dimension(tempwidth, 35));
+                        panelRightCenter[i].setMaximumSize(new Dimension(tempwidth, 35));
+
+                        textAreaCost[i] = new JTextField("0");
+                        textAreaCost[i].setText(tempSplit[3]);
+                        textAreaCost[i].setFont(FontITCKRIST.deriveFont(1).deriveFont((float) 15));
+                        textAreaCost[i].setForeground(Color.WHITE);
+                        textAreaCost[i].setBackground(new Color(182, 77, 0));
+                        textAreaCost[i].setPreferredSize(new Dimension(tempwidth, 35));
+                        textAreaCost[i].setHorizontalAlignment(JTextField.RIGHT);
+                        textAreaCost[i].setEditable(false);
+
+                        panelRightCenter[i].add(textAreaCost[i]);
+
+                        panelRightBottom[i] = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+                        panelRightBottom[i].setBackground(Color.GRAY);
+                        panelRightBottom[i].setOpaque(false);
+                        panelRightBottom[i].setPreferredSize(new Dimension(tempwidth, 40));
+                        panelRightBottom[i].setMaximumSize(new Dimension(tempwidth, 40));
+
+                        buttonCancel1[i] = new JButton("CANCEL x1");
+                        buttonCancel1[i].setForeground(Color.WHITE);
+                        buttonCancel1[i].setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 15));
+                        buttonCancel1[i].setPreferredSize(new Dimension(105, 40));
+                        buttonCancel1[i].setBackground(Color.red);
+                        buttonCancel1[i].putClientProperty(1, Order);
+                        buttonCancel1[i].addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                        int confirm = JOptionPane.showConfirmDialog(MyOrder.this, "Do you want to remove x1 "+tempSplitNameOrder[0]+"?",
+                                                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                                        if (confirm == JOptionPane.YES_OPTION) {
+                                        mainframe.getCatalog().removeOrder(ID, PRODUCT,
+                                                        1);
+                                        mainframe.getUser().setMoney(
+                                                        mainframe.getUser().getMoney() + ((PRICE * AMOUNT) * 0.70));
+                                        reGUI();
+                                        }
                                 }
-                        }
-                } catch (Exception e) {
-                        System.out.println(e);
-                } finally {
-                        try {
-                                br.close();
-                                fr.close();
-                        } catch (Exception e) {
-                                System.out.println(e);
-                        }
+                        });
+
+                        buttonCancelAll[i] = new JButton("ALL");
+                        buttonCancelAll[i].setForeground(Color.WHITE);
+                        buttonCancelAll[i].setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 11));
+                        buttonCancelAll[i].setPreferredSize(new Dimension(45, 40));
+                        buttonCancelAll[i].setBackground(Color.red);
+                        buttonCancelAll[i].putClientProperty(1, Order);
+                        buttonCancelAll[i].addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                        int confirm = JOptionPane.showConfirmDialog(MyOrder.this, "Do you want to removeAll "+tempSplitNameOrder[0]+"?",
+                                                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                                        if (confirm == JOptionPane.YES_OPTION) {
+                                                mainframe.getCatalog().removeOrder(ID, PRODUCT,
+                                                                AMOUNT);
+                                                mainframe.getUser().setMoney(mainframe.getUser().getMoney() + (PRICE * 0.70));
+                                                reGUI();
+                                        }
+                                }
+                        });
+
+                        panelRightBottom[i].add(buttonCancel1[i]);
+                        panelRightBottom[i].add(buttonCancelAll[i]);
+
+                        panelRight[i].add(Box.createVerticalStrut(5));
+                        panelRight[i].add(panelRightTop[i]);
+                        panelRight[i].add(panelRightCenter[i]);
+                        panelRight[i].add(Box.createVerticalStrut(5));
+                        panelRight[i].add(panelRightBottom[i]);
+                        panelRight[i].add(Box.createVerticalStrut(5));
+
+                        panelOrderIn[i].add(panelLeft[i]);
+                        panelOrderIn[i].add(panelRight[i]);
+
+                        panelFoodAndDrinkIn.add(panelOrderIn[i]);
+                        y += 160;
+                        i++;
                 }
         }
 
