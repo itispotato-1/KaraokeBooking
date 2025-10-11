@@ -317,6 +317,7 @@ public class MyOrder extends JPanel {
                 JPanel[] panelRightBottom = new JPanel[SIZE_SETUP];
                 JLabel[] labelNameOrder = new JLabel[SIZE_SETUP];
                 JLabel[] labelToppingOrder = new JLabel[SIZE_SETUP];
+                JLabel[] lableAmount = new JLabel[SIZE_SETUP];
                 JButton[] buttonCancel1 = new JButton[SIZE_SETUP];
                 JButton[] buttonCancelAll = new JButton[SIZE_SETUP];
                 JTextField[] textAreaCost = new JTextField[SIZE_SETUP];
@@ -378,7 +379,13 @@ public class MyOrder extends JPanel {
                         labelToppingOrder[i].setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 12));
                         labelToppingOrder[i].setBounds(10, 25, 140, 30);
 
+                        lableAmount[i] = new JLabel();
+                        lableAmount[i].setText("x"+AMOUNT);
+                        lableAmount[i].setFont(FontTWCENMT.deriveFont(1).deriveFont((float) 16));
+                        lableAmount[i].setBounds(10, 37, 140, 30);
+
                         panelRightTop[i].add(labelNameOrder[i]);
+                        panelRightTop[i].add(lableAmount[i]);
                         panelRightTop[i].add(labelToppingOrder[i]);
 
                         panelRightCenter[i] = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
