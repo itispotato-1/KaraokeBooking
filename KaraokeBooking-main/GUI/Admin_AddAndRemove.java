@@ -479,17 +479,17 @@ public class Admin_AddAndRemove extends JPanel {
         labelRoom.setFont(FontTWCENMT.deriveFont((float) 24).deriveFont((int) 1));
         labelRoom.setText("Name:");
         labelRoom.setBounds(5, 5, 150, 50);
-        labelRoom.addKeyListener(new KeyAdapter() {
+
+        textFieldRoom = new JTextField();
+        textFieldRoom.setFont(FontTWCENMT.deriveFont((float) 20).deriveFont((int) 1));
+        textFieldRoom.setBounds(70, 10, 100, 40);
+        textFieldRoom.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == ' ')
                     e.consume();
             }
         });
-
-        textFieldRoom = new JTextField();
-        textFieldRoom.setFont(FontTWCENMT.deriveFont((float) 20).deriveFont((int) 1));
-        textFieldRoom.setBounds(70, 10, 100, 40);
 
         JLabel labelCost = new JLabel();
         labelCost.setFont(FontTWCENMT.deriveFont((float) 24).deriveFont((int) 1));
