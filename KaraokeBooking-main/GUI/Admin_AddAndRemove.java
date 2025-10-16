@@ -358,9 +358,9 @@ public class Admin_AddAndRemove extends JPanel {
             double price = Double.parseDouble(textFieldCost.getText());
             String For;
             if (textFieldFor2.getText().isBlank()) {
-                For = textFieldFor1.getText() + "+";
+                For = Integer.parseInt(textFieldFor1.getText()) + "+";
             } else {
-                For = textFieldFor1.getText() + "-" + textFieldFor2.getText();
+                For = Integer.parseInt(textFieldFor1.getText()) + "-" + Integer.parseInt(textFieldFor2.getText());
             }
             Room tempRoom = new Room(For, idRoom, price);
             mainframe.getSystem().addRoom(tempRoom);
