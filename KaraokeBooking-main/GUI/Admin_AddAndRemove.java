@@ -479,6 +479,13 @@ public class Admin_AddAndRemove extends JPanel {
         labelRoom.setFont(FontTWCENMT.deriveFont((float) 24).deriveFont((int) 1));
         labelRoom.setText("Name:");
         labelRoom.setBounds(5, 5, 150, 50);
+        labelRoom.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == ' ')
+                    e.consume();
+            }
+        });
 
         textFieldRoom = new JTextField();
         textFieldRoom.setFont(FontTWCENMT.deriveFont((float) 20).deriveFont((int) 1));
@@ -523,7 +530,7 @@ public class Admin_AddAndRemove extends JPanel {
                 JFileChooser chooser = new JFileChooser();
                 chooser.setDialogTitle("Choose a File...");
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        "Images (*.jpg, *.jpeg ,*png)", "jpg", "jpeg","png","avif");
+                        "Images (*.jpg, *.jpeg ,*png)", "jpg", "jpeg", "png", "avif");
                 chooser.setFileFilter(filter);
                 int result = chooser.showOpenDialog(Admin_AddAndRemove.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
@@ -573,7 +580,7 @@ public class Admin_AddAndRemove extends JPanel {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        //System.out.println(mainframe.getProductSystem().searchIdAvailable(ProductEnum.FOOD));
+        // System.out.println(mainframe.getProductSystem().searchIdAvailable(ProductEnum.FOOD));
         String tempString = null;
 
         int choice = -2;
