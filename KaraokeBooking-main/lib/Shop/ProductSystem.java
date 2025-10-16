@@ -23,13 +23,13 @@ public class ProductSystem {// คิดว่าจะเปลี่ยนช�
             throw new RuntimeException("RI violated: products list cannot be null.");
         }
 
-        for (int i = 0; i < products.size(); i++) {
-            for (int j = i + 1; j < products.size(); j++) {
-                if (products.get(i).getProductId().equals(products.get(j).getProductId())) {
-                    throw new RuntimeException("RI violated: catalog contains duplicate products.");
-                }
-            }
-        } // คิดว่าจะลบ
+        // for (int i = 0; i < products.size(); i++) {
+        //     for (int j = i + 1; j < products.size(); j++) {
+        //         if (products.get(i).getProductId().equals(products.get(j).getProductId())) {
+        //             throw new RuntimeException("RI violated: catalog contains duplicate products.");
+        //         }
+        //     }
+        // } // คิดว่าจะลบ
 
         for (int i = 0; i < toppingDrink.size() - 1; i++) {
             if (toppingDrink.get(i).getTop().equals(toppingDrink.get(i + 1).getTop())) {
@@ -265,10 +265,10 @@ public class ProductSystem {// คิดว่าจะเปลี่ยนช�
      * @param productEnum ประเภทสินค้า
      */
     public void addCatalogProduct(Product product, ProductEnum productEnum) {
-        if (product != null) {
-            products.add(product);
-        }
-        checkRep();
+        // if (product != null) {
+        //     products.add(product);
+        // }
+        // checkRep();
 
         File file = null;
         if (productEnum == ProductEnum.FOOD) {
