@@ -523,7 +523,7 @@ public class Admin_AddAndRemove extends JPanel {
                 JFileChooser chooser = new JFileChooser();
                 chooser.setDialogTitle("Choose a File...");
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        "JPEG Images (*.jpg, *.jpeg)", "jpg", "jpeg");
+                        "JPEG Images (*.jpg, *.jpeg)", "jpg", "jpeg","png");
                 chooser.setFileFilter(filter);
                 int result = chooser.showOpenDialog(Admin_AddAndRemove.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
